@@ -1,11 +1,11 @@
 import React from 'react';
-import { Select, MenuItem, ListItemIcon, Avatar } from '@mui/material';
+import { Select, MenuItem, ListItemIcon, InputBase } from '@mui/material';
 import vnFlag from '../assets/vnFlag.png'; // Import flag images for Vietnam
 import usFlag from '../assets/usFlag.jpg'; // Import flag images for United States
 
 const languages = [
-  { code: 'en', name: 'English', flag: usFlag }, // Example: US flag image
-  { code: 'vi', name: 'Tiếng Việt', flag: vnFlag }, // Example: Vietnam flag image
+  { code: 'EN', name: 'English', flag: usFlag }, // Example: US flag image
+  { code: 'VI', name: 'Tiếng Việt', flag: vnFlag }, // Example: Vietnam flag image
   // Add more languages as needed
 ];
 
@@ -15,27 +15,23 @@ const LanguageSelect = ({ selectedLanguage, onChange }) => {
       value={selectedLanguage}
       onChange={onChange}
       displayEmpty
-      inputProps={{ 'aria-label': 'select language' }}
+      input={<InputBase sx={{ bgcolor: '#fff', border: 'none' }} />} // Customized InputBase without border
+      MenuProps={{ PaperProps: { style: { borderRadius: 4 } } }} // Customized PaperProps for Menu
       sx={{
-        minWidth: 50,
-        padding: '4px 12px', // Adjust padding as needed
-        borderRadius: 0, // Remove border radius
+        minWidth: 100,
         border: 'none', // Remove border
-        backgroundColor: 'transparent', // Transparent background
-        '&:focus': {
-          backgroundColor: 'transparent', // Transparent background on focus
-        },
       }}
     >
       {languages.map((lang) => (
-        <MenuItem key={lang.code} value={lang.code} sx={{ padding: '8px 16px', minWidth: 100 }}>
-          <ListItemIcon>
-          <img
+        <MenuItem key={lang.code} value={lang.code} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <ListItemIcon sx={{ minWidth: 'auto' }}>
+            <img
               src={lang.flag}
               alt={lang.name}
-              style={{ width: 20, height: 15, marginRight: 8 }} // Adjust size and spacing as needed
+              style={{ width: 25, height: 19, marginRight: 10, marginTop: 10 }}
             />
           </ListItemIcon>
+          <span>{lang.code}</span>
         </MenuItem>
       ))}
     </Select>

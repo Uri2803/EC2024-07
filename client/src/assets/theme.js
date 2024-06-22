@@ -12,7 +12,7 @@ const theme = {
       code: 'Courier, monospace',
     },
     app: {
-        HEIGHT_HEADER: '69px'
+        HEIGHT_HEADER: '100px'
     }
   };
   

@@ -8,9 +8,11 @@ import styled, { withTheme } from 'styled-components';
 import theme from '../assets/theme'; 
 import SearchIcon from '@mui/icons-material/Search';
 import LanguageSelect from './LanguageSelect';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Header = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState('en'); // Default language is English
+  const [selectedLanguage, setSelectedLanguage] = useState('EN'); // Default language is English
 
   const handleLanguageChange = (event) => {
     setSelectedLanguage(event.target.value);
@@ -21,28 +23,27 @@ const Header = () => {
       <Toolbar sx={{
         bgcolor: '#fbf6f0',
         width: "100%",
-        position: "fixed",
         zIndex: 100,
         top: 0, 
         padding: 0 }}>
-        <Container sx={{maxWidth: "lg" }}>
+        <Container sx={{maxWidth: "lg"}}>
         <Grid container justifyContent="space-between" alignItems="center"> 
-          <Grid item sx={{ display: 'flex', justifyContent: 'space-between', width: '43%' }}>
-            <Typography variant="h7" >
+          <Grid item xs={4} sx={{ top: 0, display: 'flex', justifyContent: 'space-between', width: '43%'}}>
+            <Typography fontSize={12} >
                 TRANG CHỦ
               </Typography>
-              <Typography variant="h7" >
+              <Typography fontSize={12} >
                 VỀ CHÚNG TÔI
               </Typography>
-              <Typography variant="h7" >
+              <Typography fontSize={12} >
                 SẢN PHẨM
               </Typography>
-              <Typography variant="h7" >
+              <Typography fontSize={12} >
                 TIN TỨC
               </Typography>
           </Grid>
 
-          <Grid item sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Grid item xs={1} sx={{  top: 10, justifyContent: 'space-between' }}>
           <img src="../public/Logo.jpg" alt="Logo" style={{ width: 100, height: 'auto' }} />
           </Grid>
 
@@ -74,6 +75,14 @@ const Header = () => {
                 selectedLanguage={selectedLanguage}
                 onChange={handleLanguageChange}
               />
+              <IconButton sx={{ p: '10px' }} aria-label="account">
+                <AccountCircleIcon sx={{ fontSize: 32 }} /> 
+              </IconButton>
+
+              <IconButton sx={{ p: '10px' }} aria-label="cart">
+                <ShoppingCartIcon sx={{ fontSize: 32 }} /> 
+              </IconButton>
+
 
               
 
