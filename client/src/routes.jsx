@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from './pages/Home';
+import Home from './pages/mainPage';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 const routes = [
