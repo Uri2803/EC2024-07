@@ -10,6 +10,7 @@ const mainPage = () => {
       justifyContent: "center",
       alignItems: "center",
     }}>
+    
       <Typography >
           avxdgdgdgdgdg
       </Typography>

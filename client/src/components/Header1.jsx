@@ -29,6 +29,7 @@ const Header = () => {
         <Container sx={{maxWidth: "lg"}}>
         <Grid container justifyContent="space-between" alignItems="center"> 
           <Grid item xs={4} sx={{ top: 0, display: 'flex', justifyContent: 'space-between', width: '43%'}}>
+            
             <Typography fontSize={12} >
                 TRANG CHỦ
               </Typography>

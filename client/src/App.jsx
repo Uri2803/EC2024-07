@@ -1,7 +1,7 @@
 import React from 'react';
 import { CssBaseline, Box, Toolbar, Typography } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header.jsx';
+import Header from './components/Header';
 import routes from './routes';
 import styled from 'styled-components';
 
