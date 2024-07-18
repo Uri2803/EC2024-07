@@ -1,7 +1,8 @@
 import React from 'react';
 import { CssBaseline, Box, Toolbar, Typography } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
+import Header from './components/Header1';
+import Footer from './components/Footer';
 import routes from './routes';
 import styled from 'styled-components';
 
@@ -12,7 +13,6 @@ const Wrapper = styled.div`
 function App() {
   return (
     <Wrapper>
-      
       <Router>
       <Header />
         <Box sx={{ minWidth: "100%", height: "100vh", display: 'flex' }}>
@@ -30,6 +30,7 @@ function App() {
             </Routes>
           </Box>
           </Box>
+      <Footer/>
       
       </Router>
     </Wrapper>

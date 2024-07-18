@@ -1,38 +1,43 @@
+//import { CloseSVG } from "../../assets/images"; 
+//import MegaMenu1 from "../MegaMenu1";
+//import { Img, SelectBox, Input, Text } from "./..";
 import React, { useState } from 'react';
-import HeaderLeft from './HeaderLeft';
-import HeaderRight from './HederRight';
-import Logo from './Logo';
-import { Box, Grid } from '@mui/material';
+const dropDownOptions = [
+    { label: "Option1", value: "option1" }, 
+    { label: "Option2", value: "option?" },
+    { label: "Option3", value: "option3" },
+] ;
+const Header = ({...props }) =>{
+    const [searchBarValue, setSearchBarValue] = useState ('');
+    const [menuOpen, setMenuOpen] = useState(false);
 
-const Header = ()=>{
-    return(
-        <Box sx={{
-        bgcolor: '#fbf6f0',
-        width: "100%",
-        zIndex: 100,
-        top: 0, 
-        padding: 0 }}
-        >
-            <Grid container sx={{justifyContent: "space-between",
-                                alignContent: "center"}}
-            >
-                <Grid item xs={4}>
-                    <HeaderLeft/>
-                </Grid>
-                <Grid item xs={3}>
-                   <Logo/>
-                </Grid>
-                <Grid item xs={4}>
-                    <HeaderRight/>
-                </Grid>
-
-            </Grid>
-                
-              
-        </Box>
-       
-
-    )
+return(
+    <header {...props} className={'${props,className) relative'}> 
+        <div className="flex w-full flex-col items-center">
+            <div className="flex justify-center self-stretch bg-gray-100 py-[30px] sm:py-5">
+                <div className="container-xs flex items-center justify-between gap-5 md: flex-col md:p-5">
+                    <div className="flex">
+                        <ul className="flex items-center gap-7 sm:flex-col">
+                            <li>
+                                <a href="#">
+                                    <Text as="p" className="tracking-I-0.18px]">
+                                        TRANG CHỦ
+                                    </Text>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <Text as="p" className="tracking-I-0.18px]">
+                                        VỀ CHÚNG TÔI
+                                    </Text>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+)
 }
-
 export default Header;
