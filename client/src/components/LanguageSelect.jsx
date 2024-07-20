@@ -18,7 +18,8 @@ const LanguageSelect = ({ selectedLanguage, onChange }) => {
       input={<InputBase sx={{ bgcolor: '#fff', border: 'none' }} />} // Customized InputBase without border
       MenuProps={{ PaperProps: { style: { borderRadius: 4 } } }} // Customized PaperProps for Menu
       sx={{
-        minWidth: 100,
+        marginLeft: '1.5vw',
+        minWidth: '10px',
         border: 'none', // Remove border
       }}
     >
@@ -28,7 +29,7 @@ const LanguageSelect = ({ selectedLanguage, onChange }) => {
             <img
               src={lang.flag}
               alt={lang.name}
-              style={{ width: 25, height: 19, marginRight: 10, marginTop: 10 }}
+              style={{ width: '1.5vh', height: '1.5vh', marginRight: '1vw', marginTop: '1vh' }}
             />
           </ListItemIcon>
           <span>{lang.code}</span>

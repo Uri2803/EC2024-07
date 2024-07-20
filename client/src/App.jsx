@@ -1,39 +1,25 @@
 import React from 'react';
 import { CssBaseline, Box, Toolbar, Typography } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header1';
-import Footer from './components/Footer';
 import routes from './routes';
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  background: ${(props) => props.theme.colors.background};
-`;
+import Mainpage from './pages/Mainpage';
 
 function App() {
   return (
-    <Wrapper>
-      <Router>
-      <Header />
-        <Box sx={{ minWidth: "100%", height: "100vh", display: 'flex' }}>
-          <CssBaseline />
-          <Box component="main" sx={{ flexGrow: 1 }}>
-          
-            <Routes>
-              {routes.map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.component />}
-                />
-              ))}
-            </Routes>
-          </Box>
-          </Box>
-      <Footer/>
-      
-      </Router>
-    </Wrapper>
+    <Router>
+    <Box>
+      <Routes>
+        {routes.map(route => (
+          <Route 
+            key={route.path}
+            path={route.path}
+            element={<route.component/>}
+          />
+        ))}
+        <Route path="*" element={<Mainpage  />} />
+      </Routes>
+    </Box>
+  </Router>
   );
 }
 

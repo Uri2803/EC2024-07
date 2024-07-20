@@ -1,12 +1,12 @@
 import React from 'react';
-import Home from './pages/mainPage';
+import Mainpage from './pages/Mainpage';
 import About from './pages/About';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 const routes = [
   {
     path: "/",
-    component: Home,
+    component: Mainpage,
     propsLayout: {
       title: "Home",
       icon: <PermIdentityIcon fontSize="large" />,
@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: "/Home",
-    component: Home,
+    component: Mainpage,
     propsLayout: {
       title: "Dashboard",
       icon: <PermIdentityIcon fontSize="large" />,

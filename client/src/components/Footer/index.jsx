@@ -9,23 +9,37 @@ import EmailIcon from '@mui/icons-material/Email';
 import styled from 'styled-components';
 
 const FooterContainer = styled(Box)`
+  width: 100vw;
+  max-height: 50vh;
   background-image: url('/public/footer_backgroud.png');
-  padding: 32px 24px;
+  padding: 32px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const Payment = styled.img`
-  height: 48px;
+  height: 2vw;
   width: auto;
   margin-bottom: 16px;
+  @media (max-width: 768px) {
+    height: 3vw;
+  }
+  @media (max-width: 480px) {
+    height: 4vw;
+  }
 `;
 
-const StyledTypography = styled(Typography)`
+const StyledTypography = styled.p`
   font-family: Tahoma, sans-serif;
-  font-size: 30px;
-  color: #fff; /* Màu trắng */
+  font-size: 1.2vw;
+  color: #fff; 
+   @media (max-width: 768px) {
+    font-size: 1.8vw;
+  }
+  @media (max-width: 480px) {
+    font-size: 2vw;
+  }
 `;
 
 const Menu = styled(Grid)`
@@ -64,23 +78,7 @@ const Contact = styled.div`
   }
 `;
 
-const SocialIcons = styled.div`
-  display: flex;
-  justify-content: center;
 
-  .social-icon {
-    margin-right: 16px;
-
-    & > svg {
-      font-size: 24px;
-      color: #666;
-    }
-
-    &:hover > svg {
-      color: #fbf6f0;
-    }
-  }
-`;
 
 const Copyright = styled(Typography)`
   font-size: 14px;
@@ -88,11 +86,13 @@ const Copyright = styled(Typography)`
   margin-top: 16px;
 `;
 
+
+
 const Footer = () => {
   return (
     <FooterContainer>
       <Grid container spacing={2}>
-        <Grid item xs={5} style={{ marginLeft: '100px' }}>
+        <Grid item xs={5} style={{ marginLeft: '4vw' }}>
           <StyledTypography variant="h5" gutterBottom>QKAA Bakery</StyledTypography>
           <StyledTypography gutterBottom>Địa chỉ: 227 Nguyễn Văn Cừ, phường 4, Quận 5, TP. HCM</StyledTypography>
           <StyledTypography gutterBottom>Hotline: 0987654321</StyledTypography>
@@ -108,14 +108,14 @@ const Footer = () => {
                 <InstagramIcon />
               </IconButton>
             </Grid>
-            <Grid item>
+            <Grid item> 
               <IconButton aria-label="Email">
                 <EmailIcon />
               </IconButton>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs>
+        <Grid item xs={3}>
           <StyledTypography variant="h6" gutterBottom>Liên kết nhanh</StyledTypography>
           <StyledTypography gutterBottom>Giới thiệu</StyledTypography>
           <StyledTypography gutterBottom>Chính sách đổi trả</StyledTypography>
