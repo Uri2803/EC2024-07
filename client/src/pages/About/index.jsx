@@ -105,10 +105,8 @@ const About = () => {
                 <TitleBox >
                     <TextTitle> Câu chuyện  </TextTitle>
                     <br/>
-                    <TextTitle > từ QKKA.Bakery </TextTitle>
-                    
+                    <TextTitle > từ QKKA.Bakery </TextTitle> 
                 </TitleBox>
-                
                 <StoryBox>
                     <div>
                     <StoryText>
@@ -120,10 +118,7 @@ const About = () => {
                     {/* <StoryText>
                         Chúng tôi tin rằng, một chiếc bánh ngon không chỉ nằm ở hương vị mà còn ở câu chuyện phía sau nó. Với phương châm "Chất lượng từ tâm", QKKA.Bakery luôn nỗ lực mang đến những sản phẩm tốt nhất, an toàn và bổ dưỡng cho khách hàng. Mỗi khách hàng đến với chúng tôi đều là một phần của câu chuyện này, là nguồn động lực để chúng tôi tiếp tục sáng tạo và hoàn thiện mình.
                     </StoryText> */}
-
                     </div>
-                    
-
                     <AboutImg src="/public/about_img1.png" alt="" />
 
 

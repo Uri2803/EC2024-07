@@ -2,7 +2,7 @@ import React from 'react';
 import Mainpage from './pages/Mainpage';
 import About from './pages/About';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-
+import Login from './pages/Login';
 const routes = [
   {
     path: "/",
@@ -25,6 +25,14 @@ const routes = [
     component: About,
     propsLayout: {
       title: "About",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/login",
+    component: Login,
+    propsLayout: {
+      title: "Login",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
