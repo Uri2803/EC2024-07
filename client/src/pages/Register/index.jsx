@@ -6,6 +6,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import Footer from '../../components/Footer';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockPersonIcon from '@mui/icons-material/LockPerson';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 const MainContainer = styled.div`
   margin: 0;
   padding: 0;
@@ -89,31 +90,41 @@ const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: orange;
 `;
-export default function Login() {
+export default function Register() {
   return (
     <MainContainer>
         
-        <ImgLogin src="/public/login_img1.png" alt="login_img" />
+        <ImgLogin src="/public/register_img1.png" alt="login_img" />
         <FormLogin>
-            <TitleLogin> Sign in</TitleLogin>
-            < TextLogin> If you don't have an account register <br/>
-              You can 
-              <StyledNavLink to="/register" exact activeClassName="active">
-               Register here! </StyledNavLink>
-              </TextLogin>
+            <TitleLogin> Sign up</TitleLogin>
+            < TextLogin> If you already have an account register <br/> You can   
+              <StyledNavLink to="/login" exact activeClassName="active">Login here! </StyledNavLink>
+            </TextLogin>
+
             <InputStyled 
-             placeholder="Enter your Rmail"
+             placeholder="Enter your Email"
             sx={{mb: 4}}
             id="input-with-icon-textfield"
             label="Email"
+            variant="standard"
             InputProps={{
-            startAdornment: (
-                <InputAdornment position="start">
-                    <MailOutlineIcon/>
-                </InputAdornment>
+            startAdornment: (<InputAdornment position="start"> <MailOutlineIcon/> </InputAdornment>
             ),
             }}
-            variant="standard"/>
+            
+            />
+            <InputStyled 
+                placeholder="Enter your username"
+                sx={{mb: 4}}
+                id="input-with-icon-textfield"
+                label="username"
+                variant="standard"
+                InputProps={{
+                startAdornment: (
+                    <InputAdornment  position="start"> <PersonOutlineIcon/> </InputAdornment>
+                ),
+                }} 
+            />
             <InputStyled 
                 placeholder="Enter your Password"
                 sx={{mb: 4}}
@@ -128,7 +139,21 @@ export default function Login() {
                 }}
                 variant="standard"
             />
-            <SubmitButon>  Login </SubmitButon>
+            <InputStyled 
+                placeholder="Confrim your Password"
+                sx={{mb: 4}}
+                id="input-with-icon-textfield"
+                label="Password"
+                InputProps={{
+                startAdornment: (
+                    <InputAdornment  position="start">
+                        <LockPersonIcon />
+                    </InputAdornment>
+                ),
+                }}
+                variant="standard"
+            />
+            <SubmitButon>  Register </SubmitButon>
         </FormLogin>
         
 

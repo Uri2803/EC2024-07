@@ -3,6 +3,9 @@ import Mainpage from './pages/Mainpage';
 import About from './pages/About';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import Login from './pages/Login';
+import Register from './pages/Register';
+import Account from './pages/Acount';
+import Product from './pages/Product';
 const routes = [
   {
     path: "/",
@@ -33,6 +36,30 @@ const routes = [
     component: Login,
     propsLayout: {
       title: "Login",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/register",
+    component: Register,
+    propsLayout: {
+      title: "Register",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/acount",
+    component: Account,
+    propsLayout: {
+      title: "Acount",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/products",
+    component: Product,
+    propsLayout: {
+      title: "Product",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },

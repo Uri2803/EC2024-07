@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
 import styled from 'styled-components';
-import Header from '../../components/Header1';
+import Header from '../../components/Header';
 import Footer from '../../components/Footer'
 
 
