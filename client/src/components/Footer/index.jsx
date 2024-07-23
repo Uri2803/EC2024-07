@@ -93,7 +93,7 @@ const Footer = () => {
     <FooterContainer>
       <Grid container spacing={2}>
         <Grid item xs={5} style={{ marginLeft: '4vw' }}>
-          <StyledTypography variant="h5" gutterBottom>QKAA Bakery</StyledTypography>
+          <StyledTypography variant="h1" gutterBottom>QKAA Bakery</StyledTypography>
           <StyledTypography gutterBottom>Địa chỉ: 227 Nguyễn Văn Cừ, phường 4, Quận 5, TP. HCM</StyledTypography>
           <StyledTypography gutterBottom>Hotline: 0987654321</StyledTypography>
           <StyledTypography gutterBottom>Email: qkaa.bakery@gmail.com</StyledTypography>
