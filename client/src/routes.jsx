@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Account from './pages/Acount';
 import Product from './pages/Product';
+import ProductDetail from './pages/ProductDetail';
 const routes = [
   {
     path: "/",
@@ -60,6 +61,14 @@ const routes = [
     component: Product,
     propsLayout: {
       title: "Product",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/productdetail",
+    component: ProductDetail,
+    propsLayout: {
+      title: "ProductDetail",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },

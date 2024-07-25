@@ -4,15 +4,15 @@ import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 
-
+// Styling for the rating box container
 const BoxRating = styled(Box)`
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: 1vw;    
+  display: flex;
+  align-items: center; 
+  font-size: 1vw;    
 `;
-export default function RatingBox({value}) {
+
+// Component for displaying rating and review count
+export default function RatingBox({ value }) {
   return (
     <BoxRating 
       sx={{
@@ -21,15 +21,16 @@ export default function RatingBox({value}) {
     >
       <Rating
         name="simple-controlled"
-        value={value}
+        value={value.value}
         readOnly
         sx={{ 
             fontSize: '2vw',
-            paddingTop: '1vw',
-          }}
-        
-      />(88)
-    </BoxRating >
-
-  )
+            marginRight: '10px',
+        }}
+      />
+      <Typography variant="body2" sx={{ color: 'gray' }}>
+        {value.reviews}
+      </Typography>
+    </BoxRating>
+  );
 }

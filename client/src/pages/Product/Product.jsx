@@ -2,10 +2,12 @@ import React from 'react'
 import { Card, Box,Typography, CardContent, CardActions, Button } from '@mui/material'
 import RatingBox from '../../components/Rating';
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 
 const ItemBox = styled(Box)`
     width: 25%;
     margin: 2vw;
+    cursor: pointer;
 `;
 const BoxImg = styled.div`
     width: 13vw;
@@ -25,9 +27,13 @@ const ProductImg = styled.img`
     object-fit: cover;
 `;
 export default function ProductItem() {
+  const navigate = useNavigate(); 
+  const Click = (path) => {
+      navigate(path); 
+    };
   return (
 
-    <ItemBox >
+    <ItemBox  onClick={()=>Click("/productdetail")}>
     <BoxImg>
         <ProductImg src="/public/product1.png" alt="" />
     </BoxImg>
@@ -40,7 +46,8 @@ export default function ProductItem() {
         20,000đ
       </Typography>
     </CardContent>
-      <RatingBox value={5}/> 
+      <RatingBox value={{ value: 5, 
+                        reviews: '(88)'}}/> 
     </ItemBox>
   )
 }

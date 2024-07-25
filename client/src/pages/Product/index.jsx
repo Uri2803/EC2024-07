@@ -8,6 +8,7 @@ import Filter from './Filter';
 import Data from './Data';
 import FilterPrice from './FilterPrice';
 import ProductItem from './Product';
+
 const MainContainer = styled.div`
   margin: 0;
   padding: 0;
@@ -51,9 +52,9 @@ const Category = styled(Box)`
 
 const BoxProduct = styled(Box)`
     display: flex;
-    width: 50vw;
+    width: 55vw;
     display: flex;
-     flex-wrap: wrap;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     pading: 2vw;
@@ -88,8 +89,9 @@ const StyledPagination = styled(Pagination)`
   }
 `;
 
+
 export default function Product({ filter }) {
-   
+
 
 
     return (
@@ -107,12 +109,7 @@ export default function Product({ filter }) {
                     
                 </Category>
                 <BoxProduct>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
+                    <ProductItem />
                     <ProductItem/>
                     <ProductItem/>
                     <ProductItem/>
@@ -123,10 +120,6 @@ export default function Product({ filter }) {
                     <ProductItem/>
                     <ProductItem/>
                 </BoxProduct>
-                
-
-                
-
             </BodyBox>
             <StyledPagination count={5} shape="rounded"  sx={{fontSize: '5vw'}}/>
             <Footer/>
