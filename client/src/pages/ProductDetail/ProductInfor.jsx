@@ -1,14 +1,13 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, TextField } from '@mui/material'
 import Rating from '../../components/Rating'
 import styled from 'styled-components'
 
 const BoxRating = styled.div`
     width: 100%;
-     display: flex;
-
+    display: flex;
     align-items: center;
-   
+    margin: 1vw 0; 
 `;
 const BoxStatus = styled.div`
     display: flex;
@@ -18,9 +17,18 @@ const BoxStatus = styled.div`
     align-items: center;
 
 `;
-const InforStatus = styled.p`
+
+const BoxDescription = styled(Box)`
+    border-bottom: 1px solid black;
+    margin: 1vw 0;
+  
+`;
+
+const TextDescrip = styled.p`
+
 
 `;
+
 export default function ProductInfor() {
   return (
     <>
@@ -29,22 +37,23 @@ export default function ProductInfor() {
             <BoxRating>
                 <Rating  value={{ value: 4, 
                         reviews: ' (150 đánh giá)'}} />
-                | <Typography variant='h6'> Còn hàng </Typography>
+                <Typography sx={{marginLeft: '1vw'}}>|</Typography>
+                <Typography variant='body1' sx={{color: '#59A076', marginLeft: '1vw'}}> Còn hàng </Typography>
                
             </BoxRating>
-          
-           
-           
-            
-
         </BoxStatus>
-       
-
-      
-    
         <Typography gutterBottom variant="h5" component="div" sx={{fontSize: '1.3vw'}}>
             20.000đ
         </Typography>
+        <BoxDescription>
+            <TextDescrip>
+                Mô tả:  
+                <br/>
+                Bánh sừng bò với lớp vỏ ngoài giòn và nhiều lớp bên trong mềm mịn, tạo hình cong đặc trưng.
+                    
+            </TextDescrip>
+        </BoxDescription>
+       
     </>
   )
 }

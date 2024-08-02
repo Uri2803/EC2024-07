@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const BoxRating = styled(Box)`
   display: flex;
   align-items: center; 
-  font-size: 1vw;    
+  font-size: 1vw;  
 `;
 
 // Component for displaying rating and review count

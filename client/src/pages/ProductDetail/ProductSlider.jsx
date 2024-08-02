@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 
 const BoxImg = styled.div`
-    width: 20vw;
-    min-height: 20vw;
+    width: 25vw;
+    min-height: 25vw;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
@@ -22,8 +22,8 @@ const ProductImg = styled.img`
 `;
 
 const Thumbnai = styled.div`
-    width: 5vw;
-    min-height: 5vw;
+    width: 7vw;
+    min-height: 7vw;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
@@ -34,7 +34,7 @@ const Thumbnai = styled.div`
 
 `;
 const ThumbnailContainer = styled.div`
-  width: 7vw;
+  width: 10vw;
   display: flex;
   justify-content: center;
   flex-direction: column;

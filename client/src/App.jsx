@@ -3,10 +3,14 @@ import { CssBaseline, Box, Toolbar, Typography } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import routes from './routes';
 import Mainpage from './pages/Mainpage';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   return (
     <Router>
+      <CartProvider>
+
+     
     <Box>
       <Routes>
         {routes.map(route => (
@@ -18,8 +22,10 @@ function App() {
         ))}
         <Route path="*" element={<Mainpage  />} />
       </Routes>
-    </Box>
+    </Box> 
+    </CartProvider>
   </Router>
+
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Container, Grid, InputBase, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, Container, Grid, InputBase, IconButton, Badge } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
@@ -7,6 +7,17 @@ import LanguageSelect from '../LanguageSelect';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from "react-router-dom";
+import { useCart } from '../../context/CartContext'; 
+
+const StyledBadge = styled(Badge)(() => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: 13,
+    border: `2px solid`,
+    
+    padding: '0 4px',
+  },
+}));
 
 
 const StyledToolbar = styled(Toolbar)`
@@ -60,6 +71,7 @@ const IconButtonStyled = styled(IconButton)`
 
 const Header = () => {
   const navigate = useNavigate(); 
+  const { cartCount } = useCart();
   const [selectedLanguage, setSelectedLanguage] = useState('VI');
   const handleLanguageChange = (event) => {
     setSelectedLanguage(event.target.value);
@@ -122,7 +134,9 @@ const Header = () => {
               <AccountCircleIcon sx={{ fontSize: '2vw' }} />
             </StyledNavLink>
             <StyledNavLink to="/cart">
-            <ShoppingCartIcon sx={{ fontSize: '2vw' }} />
+              <StyledBadge badgeContent={cartCount} color="secondary">
+                <ShoppingCartIcon  sx={{ fontSize: '2vw' }}/>
+              </StyledBadge>
             </StyledNavLink>
             
 
