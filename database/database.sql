@@ -26,13 +26,12 @@ CREATE TABLE Orders (
     OrderID VARCHAR(10) PRIMARY KEY,
     CustomerID VARCHAR(6),
     OrderDate DATE,
-    OrderPrice DECIMAL(10 , 2 ),
     ShippingDate DATE,
-    ShippingPrice DECIMAL(10 , 2 ),
     ShippingAddress VARCHAR(250),
+    OrderPrice INT,
+    ShippingPrice INT,
     OrderStatus VARCHAR(50),
-    FOREIGN KEY (CustomerID)
-        REFERENCES Customers (CustomerID)
+    FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID)
 );
 
 -- Bảng TypeProducts
@@ -59,7 +58,7 @@ CREATE TABLE Products (
 -- Bảng Feedback
 CREATE TABLE Feedback (
     FeedBackID VARCHAR(10) PRIMARY KEY,
-    CustomerID VARCHAR(6),
+    CustomerID VARCHAR(10),
     Content VARCHAR(250),
     FeedBackDate DATE,
     FeedBackPoint INT,
@@ -85,13 +84,12 @@ CREATE TABLE OrderDetails (
     ProductID VARCHAR(10),
     Quantity INT,
     UnitPrice INT,
-    OrderDetailsStatus VARCHAR(50),
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
--- Bảng Ingredients
-CREATE TABLE Ingredients (
+-- Bảng Inventory
+CREATE TABLE Inventory (
     IngredientID VARCHAR(10) PRIMARY KEY,
     IngredientName VARCHAR(255) NOT NULL,
     StockQuantity INT,
@@ -99,39 +97,41 @@ CREATE TABLE Ingredients (
 );
 
 -- Bảng Suppliers
-CREATE TABLE Suppliers (
+CREATE TABLE Supplier (
     SupplierID VARCHAR(10) PRIMARY KEY,
     SupplierName VARCHAR(255) NOT NULL,
     PhoneNumber VARCHAR(20),
     Address VARCHAR(255)
 );
 
--- Bảng IngredientBatch
-CREATE TABLE IngredientBatch (
-    IngredientBatchID VARCHAR(10) PRIMARY KEY,
-    ImportDate DATE,
-    ImportPrice INT,
+-- Bảng ImportOrder
+CREATE TABLE ImportOrder (
+    ImportOrderID VARCHAR(10) PRIMARY KEY,
+    ImportOrderDate DATE,
+    TotalPrice INT,
     SupplierID VARCHAR(10),
-    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
+    FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
 );
 
--- Bảng Batch_Ingredient
-CREATE TABLE Batch_Ingredient (
-    IngredientBatchID VARCHAR(10),
+-- Bảng ImportOrderDetail
+CREATE TABLE ImportOrderDetail (
+    ImportOrderID VARCHAR(10),
     IngredientID VARCHAR(10),
     Quantity INT,
     ImportPrice INT,
-    PRIMARY KEY (IngredientBatchID, IngredientID),
-    FOREIGN KEY (IngredientBatchID) REFERENCES IngredientBatch(IngredientBatchID),
-    FOREIGN KEY (IngredientID) REFERENCES Ingredients(IngredientID)
+    PRIMARY KEY (ImportOrderID, IngredientID),
+    FOREIGN KEY (ImportOrderID) REFERENCES ImportOrder(ImportOrderID),
+    FOREIGN KEY (IngredientID) REFERENCES Inventory(IngredientID)
 );
 
--- Bảng Griller
-CREATE TABLE Griller (
-    GrillerID VARCHAR(10) PRIMARY KEY,
-    GrillerName VARCHAR(255),
-    GrillerStatus VARCHAR(50),
-    MaximumQuantity INT
+-- Bảng Recipe
+CREATE TABLE Recipe (
+    ProductID VARCHAR(10),
+    IngredientID VARCHAR(10),
+    Quantity INT,
+    PRIMARY KEY (ProductID, IngredientID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (IngredientID) REFERENCES Inventory(IngredientID)
 );
 
 -- Bảng Payment
@@ -156,24 +156,21 @@ CREATE TABLE Employees (
     Gender CHAR(3)
 );
 
+-- Bảng Griller
+CREATE TABLE Griller (
+    GrillerID VARCHAR(10) PRIMARY KEY,
+    GrillerName VARCHAR(255),
+    GrillerStatus VARCHAR(50),
+    MaximumQuantity INT
+);
+
 -- Bảng ProductBatch
 CREATE TABLE ProductBatch (
     ProductBatchID VARCHAR(10) PRIMARY KEY,
     ProductID VARCHAR(10),
     GrillerID VARCHAR(10),
-    Status VARCHAR(50),
     Quantity INT,
     CookingTime DATE,
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
     FOREIGN KEY (GrillerID) REFERENCES Griller(GrillerID)
-);
-
--- Bảng Product_Ingredient
-CREATE TABLE Product_Ingredient (
-    ProductID VARCHAR(10),
-    IngredientID VARCHAR(10),
-    Quantity INT,
-    PRIMARY KEY (ProductID, IngredientID),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
-    FOREIGN KEY (IngredientID) REFERENCES Ingredients(IngredientID)
 );
