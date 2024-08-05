@@ -1,6 +1,5 @@
--- Xóa CSDL nếu tồn tại và tạo lại
 DROP DATABASE IF EXISTS Bakery;
-CREATE DATABASE Bakery;
+CREATE DATABASE Bakery CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE Bakery;
 
 -- Bảng Customers
@@ -12,14 +11,14 @@ CREATE TABLE Customers (
     UserFullName VARCHAR(255),
     PhoneNumber VARCHAR(20),
     Gender CHAR(3)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Address
 CREATE TABLE Address (
     CustomerID VARCHAR(10) PRIMARY KEY,
     Address VARCHAR(250),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Orders
 CREATE TABLE Orders (
@@ -32,14 +31,14 @@ CREATE TABLE Orders (
     ShippingPrice INT,
     OrderStatus VARCHAR(50),
     FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng TypeProducts
 CREATE TABLE TypeProducts (
     TypeProductID VARCHAR(10) PRIMARY KEY,
     TypeProductName VARCHAR(255),
     Descriptions VARCHAR(250)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Products
 CREATE TABLE Products (
@@ -53,7 +52,7 @@ CREATE TABLE Products (
     Nutrition VARCHAR(255),
     TypeProductID VARCHAR(10) NOT NULL,
     FOREIGN KEY (TypeProductID) REFERENCES TypeProducts(TypeProductID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Feedback
 CREATE TABLE Feedback (
@@ -65,7 +64,7 @@ CREATE TABLE Feedback (
     ProductID VARCHAR(10),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Cart
 CREATE TABLE Cart (
@@ -75,7 +74,7 @@ CREATE TABLE Cart (
     CartItemQuantity INT,
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng OrderDetails
 CREATE TABLE OrderDetails (
@@ -86,7 +85,7 @@ CREATE TABLE OrderDetails (
     UnitPrice INT,
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Inventory
 CREATE TABLE Inventory (
@@ -94,7 +93,7 @@ CREATE TABLE Inventory (
     IngredientName VARCHAR(255) NOT NULL,
     StockQuantity INT,
     Unit VARCHAR(50)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Suppliers
 CREATE TABLE Supplier (
@@ -102,7 +101,7 @@ CREATE TABLE Supplier (
     SupplierName VARCHAR(255) NOT NULL,
     PhoneNumber VARCHAR(20),
     Address VARCHAR(255)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng ImportOrder
 CREATE TABLE ImportOrder (
@@ -111,7 +110,7 @@ CREATE TABLE ImportOrder (
     TotalPrice INT,
     SupplierID VARCHAR(10),
     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng ImportOrderDetail
 CREATE TABLE ImportOrderDetail (
@@ -122,7 +121,7 @@ CREATE TABLE ImportOrderDetail (
     PRIMARY KEY (ImportOrderID, IngredientID),
     FOREIGN KEY (ImportOrderID) REFERENCES ImportOrder(ImportOrderID),
     FOREIGN KEY (IngredientID) REFERENCES Inventory(IngredientID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Recipe
 CREATE TABLE Recipe (
@@ -132,7 +131,7 @@ CREATE TABLE Recipe (
     PRIMARY KEY (ProductID, IngredientID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
     FOREIGN KEY (IngredientID) REFERENCES Inventory(IngredientID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Payment
 CREATE TABLE Payment (
@@ -144,7 +143,7 @@ CREATE TABLE Payment (
     CustomerID VARCHAR(10),
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Employees
 CREATE TABLE Employees (
@@ -154,7 +153,7 @@ CREATE TABLE Employees (
     Salary INT,
     Email VARCHAR(255),
     Gender CHAR(3)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Griller
 CREATE TABLE Griller (
@@ -162,7 +161,7 @@ CREATE TABLE Griller (
     GrillerName VARCHAR(255),
     GrillerStatus VARCHAR(50),
     MaximumQuantity INT
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng ProductBatch
 CREATE TABLE ProductBatch (
@@ -173,4 +172,4 @@ CREATE TABLE ProductBatch (
     CookingTime DATE,
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
     FOREIGN KEY (GrillerID) REFERENCES Griller(GrillerID)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
