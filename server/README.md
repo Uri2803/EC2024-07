@@ -5,4 +5,5 @@
 + npm install body-parser
 + npm install cors
 + npm install express-session
++ npm install express mysql2
 
