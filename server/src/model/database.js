@@ -1,23 +1,14 @@
-import mysql from "mysql2";
-import database from "../config/database";
+import database from '../config/database'
+import mysql from 'mysql2/promise'
 
-
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: database.HOST,
   user: database.USER,
   password: database.PASSWORD,
-  database: database.DB
+  database: database.DB,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
-
-// Kết nối đến cơ sở dữ liệu
-db.connect((err) => {
-  if (err) {
-    console.error('Không thể kết nối đến cơ sở dữ liệu:', err);
-  } else {
-    console.log('Kết nối thành công đến cơ sở dữ liệu');
-  }
-});
-
-
 
 module.exports = db;

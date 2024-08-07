@@ -1,26 +1,30 @@
-INSERT INTO Customers (CustomerID, Email, Username, UserPassword, UserFullName, PhoneNumber, Gender) VALUES
-('KH0001', 'nguyen.van.a@example.com', 'nguyenvana', 'password1', 'Nguyễn Văn A', '0123456789', 'Nam'),
-('KH0002', 'tran.thi.b@example.com', 'tranthib', 'password2', 'Trần Thị B', '0987654321', 'Nữ'),
-('KH0003', 'le.van.c@example.com', 'levanc', 'password3', 'Lê Văn C', '0912345678', 'Nam'),
-('KH0004', 'pham.thi.d@example.com', 'phamthid', 'password4', 'Phạm Thị D', '0934567890', 'Nữ'),
-('KH0005', 'hoang.van.e@example.com', 'hoangvane', 'password5', 'Hoàng Văn E', '0945678901', 'Nam'),
-('KH0006', 'nguyen.thi.f@example.com', 'nguyenthif', 'password6', 'Nguyễn Thị F', '0956789012', 'Nữ'),
-('KH0007', 'phan.van.g@example.com', 'phanvang', 'password7', 'Phan Văn G', '0967890123', 'Nam'),
-('KH0008', 'vu.thi.h@example.com', 'vuthih', 'password8', 'Vũ Thị H', '0978901234', 'Nữ'),
-('KH0009', 'ngo.van.i@example.com', 'ngovani', 'password9', 'Ngô Văn I', '0989012345', 'Nam'),
-('KH0010', 'dinh.thi.j@example.com', 'dinhthij', 'password10', 'Đinh Thị J', '0990123456', 'Nữ');
 
-INSERT INTO Address (CustomerID, Address) VALUES
-('KH0001', '123 Lý Thường Kiệt, Quận 1, TP. Hồ Chí Minh'),
-('KH0002', '456 Trần Hưng Đạo, Quận 5, TP. Hồ Chí Minh'),
-('KH0003', '789 Nguyễn Trãi, Quận 3, TP. Hồ Chí Minh'),
-('KH0004', '101 Phan Xích Long, Quận Phú Nhuận, TP. Hồ Chí Minh'),
-('KH0005', '202 Hai Bà Trưng, Quận 1, TP. Hồ Chí Minh'),
-('KH0006', '303 Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh'),
-('KH0007', '404 Phạm Văn Đồng, Quận Thủ Đức, TP. Hồ Chí Minh'),
-('KH0008', '505 Lê Lợi, Quận 1, TP. Hồ Chí Minh'),
-('KH0009', '606 Cách Mạng Tháng 8, Quận 10, TP. Hồ Chí Minh'),
-('KH0010', '707 Võ Văn Kiệt, Quận 6, TP. Hồ Chí Minh');
+INSERT INTO Account (Email, UserPassword, Username, Role) VALUES
+('nguyen.van.a@example.com', 'password1', 'nguyenvana', 'Customer'),
+('tran.thi.b@example.com', 'password2', 'tranthib', 'Customer'),
+('le.van.c@example.com', 'password3', 'levanc', 'Customer'),
+('pham.thi.d@example.com', 'password4', 'phamthid', 'Customer'),
+('hoang.van.e@example.com', 'password5', 'hoangvane', 'Customer'),
+('nguyen.thi.f@example.com', 'password6', 'nguyenthif', 'Customer'),
+('phan.van.g@example.com', 'password7', 'phanvang', 'Customer'),
+('vu.thi.h@example.com', 'password8', 'vuthih', 'Customer'),
+('ngo.van.i@example.com', 'password9', 'ngovani', 'Customer'),
+('dinh.thi.j@example.com', 'password10', 'dinhthij', 'Customer'),
+('nguyen.van.abc@example.com', 'password11', 'nguyenvanabc', 'Employee');
+
+
+-- Thêm dữ liệu vào bảng Customers
+INSERT INTO Customers (CustomerID, Email, UserFullName, PhoneNumber, Gender, Address) VALUES
+('KH0001', 'nguyen.van.a@example.com', 'Nguyễn Văn A', '0123456789', 'Nam', '123 Lý Thường Kiệt, Quận 1, TP. Hồ Chí Minh'),
+('KH0002', 'tran.thi.b@example.com', 'Trần Thị B', '0987654321', 'Nữ', '456 Trần Hưng Đạo, Quận 5, TP. Hồ Chí Minh'),
+('KH0003', 'le.van.c@example.com', 'Lê Văn C', '0912345678', 'Nam', '789 Nguyễn Trãi, Quận 3, TP. Hồ Chí Minh'),
+('KH0004', 'pham.thi.d@example.com', 'Phạm Thị D', '0934567890', 'Nữ', '101 Phan Xích Long, Quận Phú Nhuận, TP. Hồ Chí Minh'),
+('KH0005', 'hoang.van.e@example.com', 'Hoàng Văn E', '0945678901', 'Nam', '202 Hai Bà Trưng, Quận 1, TP. Hồ Chí Minh'),
+('KH0006', 'nguyen.thi.f@example.com', 'Nguyễn Thị F', '0956789012', 'Nữ', '303 Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh'),
+('KH0007', 'phan.van.g@example.com', 'Phan Văn G', '0967890123', 'Nam', '404 Phạm Văn Đồng, Quận Thủ Đức, TP. Hồ Chí Minh'),
+('KH0008', 'vu.thi.h@example.com', 'Vũ Thị H', '0978901234', 'Nữ', '505 Lê Lợi, Quận 1, TP. Hồ Chí Minh'),
+('KH0009', 'ngo.van.i@example.com', 'Ngô Văn I', '0989012345', 'Nam', '606 Cách Mạng Tháng 8, Quận 10, TP. Hồ Chí Minh'),
+('KH0010', 'dinh.thi.j@example.com', 'Đinh Thị J', '0990123456', 'Nữ', '707 Võ Văn Kiệt, Quận 6, TP. Hồ Chí Minh');
 
 INSERT INTO TypeProducts (TypeProductID, TypeProductName) VALUES
 ('LB0001','Muffin'),
@@ -116,8 +120,8 @@ INSERT INTO Griller (GrillerID, GrillerName, GrillerStatus, MaximumQuantity) VAL
 INSERT INTO Payment (PaymentID, OrderID, PaymentType, PaymentStatus, PaymentDate, CustomerID) VALUES
 ('PA0001', 'DH0001', 'Credit Card', 'Completed', '2023-08-02', 'KH0001');
 
-INSERT INTO Employees (EmployeeID, EmployeeName, Position, Salary, Email, Gender) VALUES
-('EM0001', 'Nguyen Van B', 'Chef', 15000000, 'nguyenvanb@example.com', 'M');
+INSERT INTO Employees (EmployeeID, Email, EmployeeName, Position, Salary, Gender) VALUES
+('EM0001', 'nguyen.van.abc@example.com', 'Nguyễn Văn A', 'Chef', 15000000, 'Nam');
 
 INSERT INTO ProductBatch (ProductBatchID, ProductID, GrillerID, Quantity, CookingTime) VALUES
 ('PB0001', 'MU0001', 'GR0001', 5, '2023-08-02');

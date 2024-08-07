@@ -2,22 +2,23 @@ DROP DATABASE IF EXISTS Bakery;
 CREATE DATABASE Bakery CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE Bakery;
 
+
+CREATE TABLE Account (
+    Email VARCHAR(255) PRIMARY KEY,
+    UserPassword VARCHAR(255) NOT NULL, 
+    Username VARCHAR(255) NOT NULL,
+    Role ENUM('Customer', 'Employee') NOT NULL
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- Bảng Customers
 CREATE TABLE Customers (
     CustomerID VARCHAR(10) PRIMARY KEY,
     Email VARCHAR(255) NOT NULL,
-    Username VARCHAR(255) NOT NULL,
-    UserPassword VARCHAR(15) NOT NULL,
     UserFullName VARCHAR(255),
     PhoneNumber VARCHAR(20),
-    Gender CHAR(3)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- Bảng Address
-CREATE TABLE Address (
-    CustomerID VARCHAR(10) PRIMARY KEY,
+    Gender CHAR(3),
     Address VARCHAR(250),
-    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+    FOREIGN KEY (Email) REFERENCES Account(Email)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Orders
@@ -148,11 +149,12 @@ CREATE TABLE Payment (
 -- Bảng Employees
 CREATE TABLE Employees (
     EmployeeID VARCHAR(10) PRIMARY KEY,
+    Email VARCHAR(255),
     EmployeeName VARCHAR(255) NOT NULL,
     Position VARCHAR(50),
     Salary INT,
-    Email VARCHAR(255),
-    Gender CHAR(3)
+    Gender CHAR(3),
+    FOREIGN KEY (Email) REFERENCES Account(Email)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Bảng Griller

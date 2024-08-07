@@ -1,14 +1,14 @@
+import db from '../model/database';
 
-const db = require('../model/database');
+let getAllProducts = async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM Products');
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-let getAllProducts = (req, res) => {
-    db.query('SELECT * FROM Products', (error, results) => {
-      if (error) {
-        return res.status(500).json({ error: error.message });
-      }
-      res.status(200).json(results);
-    });
-  };
-  module.exports = {
-    getAllProducts: getAllProducts,
-}
+module.exports = {
+  getAllProducts
+};
