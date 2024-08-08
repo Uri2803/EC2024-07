@@ -45,6 +45,7 @@ const BoxButton = styled(Box)`
   width: 30vw;
   display: flex;
   flex-direction: row;
+  maxHeight: 3vw;
 
 `;
 const EvaluateBox = styled(Box)`
@@ -70,6 +71,8 @@ const Flag = styled(Box)`
     border-radius: 5px;
 `;
 const BoxProduct = styled(Box)`
+  min-height: 3vw;
+  max-height: 3vw;
     width: 90vw;
     display: flex;
     flex-direction: row;
@@ -109,6 +112,8 @@ const ProductDetail = () => {
           <Button onClick={handleDecrement}
             sx={{
                 borderRadius: "5px 0 0 5px",
+                maxHeight: '3vw',
+                minWidth: '3vw',
                 width: '2.5vw',
                 backgroundColor: 'transparent',
                 color: '#000',
@@ -130,7 +135,13 @@ const ProductDetail = () => {
               size="small"
               inputProps={{ readOnly: true, style: { textAlign: 'center' } }}
               sx={{
-                width: '5vw',
+                width: '4vw',
+                maxHeight: '3vw',
+                minWidth: '3vw',
+                backgroundColor: 'transparent',
+                color: '#000',
+                border: '1px solid #ccc',
+                padding: 0,
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 0,
                   border: 'none',
@@ -143,7 +154,9 @@ const ProductDetail = () => {
            <Button onClick={handleIncrement}
             sx={{
                 borderRadius: "0 5px 5px 0",
+                maxHeight: '3vw',
                 width: '2.5vw',
+                minWidth: '3vw',
                 backgroundColor: 'transparent',
                 color: '#000',
                 border: '1px solid #ccc',

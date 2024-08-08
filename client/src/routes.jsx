@@ -7,6 +7,9 @@ import Register from './pages/Register';
 import Account from './pages/Acount';
 import Product from './pages/Product';
 import ProductDetail from './pages/ProductDetail';
+import Checkout from './pages/Checkout';
+import Payment from './pages/Checkout';
+import Cart from './pages/Cart';
 const routes = [
   {
     path: "/",
@@ -72,6 +75,37 @@ const routes = [
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
+  {
+    path: "/checkout",
+    component: Checkout,
+    propsLayout: {
+      title: "checkout",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/payment",
+    component: Payment,
+    propsLayout: {
+      title: "Payment",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/cart",
+    component: Cart,
+    propsLayout: {
+      title: "Cart",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+
+
+
+
+
+
+
 ];
 
 export default routes;
