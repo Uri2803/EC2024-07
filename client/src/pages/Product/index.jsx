@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -8,6 +8,7 @@ import Filter from './Filter';
 import Data from './Data';
 import FilterPrice from './FilterPrice';
 import ProductItem from './Product';
+import { getAllProducts } from '../../service/api';
 
 const MainContainer = styled.div`
   margin: 0;
@@ -91,8 +92,26 @@ const StyledPagination = styled(Pagination)`
 
 
 export default function Product({ filter }) {
+    const [products, setProducts] = useState([]);
 
-
+    const getProducts = async () =>{
+        try{
+            const data = await getAllProducts();
+            
+            if (data.status && Array.isArray(data.products)) {
+                setProducts(data.products);
+            } else {
+                console.error('Products is not an array or status is false:', data.products);
+            }
+            
+        }catch(err){
+            console.error('Error fetching data:', err);
+        }
+    }
+    useEffect(()=>{
+        getProducts();
+        console.log('res: ', );
+    },[])
 
     return (
         <MainContainer>
@@ -109,17 +128,10 @@ export default function Product({ filter }) {
                     
                 </Category>
                 <BoxProduct>
-                    <ProductItem />
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                </BoxProduct>
+                {products.map((product, index) => (
+                        <ProductItem product={product} key={index}/>
+                ))}
+        </BoxProduct>
             </BodyBox>
             <StyledPagination count={5} shape="rounded"  sx={{fontSize: '5vw'}}/>
             <Footer/>

@@ -15,9 +15,11 @@ const BoxImg = styled.div`
 
 `;
 const ProductImg = styled.img`
-    width: 80%;
-    max-height: 60%;
+    width: 95%;
+    min-height: 95%;
+    max-height: 100%;
     object-fit: cover;
+    boder-radius: 15px;
   
 `;
 
@@ -42,13 +44,13 @@ const ThumbnailContainer = styled.div`
 `;
 
 
-const ProductSlider = () => {
+const ProductSlider = ({img}) => {
   const [mainImageIndex, setMainImageIndex] = useState(0);
 
   const images = [
-    '/public/Momo.png',
-    '/public/paypal.png',
-    '/public/vnp.png',
+    `${img}/img1.jpg`,
+    `${img}/img2.jpg`,
+    `${img}/img3.jpg`
   ];
   return (
    <>

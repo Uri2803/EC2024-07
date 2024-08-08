@@ -105,7 +105,6 @@ export default function Account() {
     try{
       const result = await getUserInfor();
       setUserInfor(result.userInfor)
-      console.log('tét: ', userInfor)
     }catch(err){
       setError(err.response?.data?.message || 'Login failed.');
     }

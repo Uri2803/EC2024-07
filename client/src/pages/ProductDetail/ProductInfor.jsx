@@ -29,10 +29,10 @@ const TextDescrip = styled.p`
 
 `;
 
-export default function ProductInfor() {
+export default function ProductInfor({product}) {
   return (
     <>
-        <Typography variant='h5'> Bánh sừng bò nhân kem</Typography>
+        <Typography variant='h5'> {product.ProductName}</Typography>
         <BoxStatus>
             <BoxRating>
                 <Rating  value={{ value: 4, 
@@ -43,14 +43,13 @@ export default function ProductInfor() {
             </BoxRating>
         </BoxStatus>
         <Typography gutterBottom variant="h5" component="div" sx={{fontSize: '1.3vw'}}>
-            20.000đ
+            {product.Price}đ
         </Typography>
         <BoxDescription>
             <TextDescrip>
                 Mô tả:  
                 <br/>
-                Bánh sừng bò với lớp vỏ ngoài giòn và nhiều lớp bên trong mềm mịn, tạo hình cong đặc trưng.
-                    
+                {product.Descriptions}
             </TextDescrip>
         </BoxDescription>
        

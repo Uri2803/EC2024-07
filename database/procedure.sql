@@ -43,3 +43,24 @@ END;
 
 
 --CALL LOGIN('nguyen.van.abc@example.com', 'password11');
+CREATE OR REPLACE PROCEDURE GET_USSER_INFOR(
+    IN email VARCHAR(255),
+    IN role VARCHAR(10)
+)
+BEGIN
+   IF role = 'Customer' THEN
+        SELECT CT.*, AC.Username
+        FROM Customers CT 
+        JOIN Account AC ON AC.Email =  CT.Email
+        WHERE CT.Email = email;
+    ELSEIF role = 'Employee' THEN
+        SELECT E.*, AC.Username
+        FROM Employee E 
+        JOIN Account AC ON AC.Email =  CT.Email
+        WHERE E.Email = email;
+    ELSE 
+     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Không có quyền truy cập';
+    END IF;
+END;
+
+

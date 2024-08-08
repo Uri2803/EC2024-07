@@ -76,7 +76,7 @@ const routes = [
     },
   },
   {
-    path: "/productdetail",
+    path: "/productdetail/:id",
     component: ProductDetail,
     propsLayout: {
       title: "ProductDetail",

@@ -11,9 +11,9 @@ let initWebRoutes = (app) => {
   app.get('/check-token', Acount.authenticateJWT, (req, res) => {
     res.json({ isAuthenticated: true });
   });
-  route.get('/userinfor', Acount.authenticateJWT, Acount.getUserInfor)
-
-  route.get('/products', Products.getAllProducts);
+  route.get('/userinfor', Acount.authenticateJWT, Acount.getUserInfor);
+  route.get('/productdetail/:productID', Products.getProductDetail);
+  route.get('/allproducts', Products.getAllProducts);
   route.post('/login', Acount.login);
 
   return app.use('/', route);

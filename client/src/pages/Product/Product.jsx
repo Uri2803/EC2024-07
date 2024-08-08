@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Box,Typography, CardContent, CardActions, Button } from '@mui/material'
+import { Card, Box,Typography, CardContent } from '@mui/material'
 import RatingBox from '../../components/Rating';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
@@ -8,10 +8,11 @@ const ItemBox = styled(Box)`
     width: 25%;
     margin: 1.5vw;
     cursor: pointer;
+    
 `;
 const BoxImg = styled.div`
-    width: 13vw;
-    height: 17vw;
+    width: 15vw;
+    height: 15vw;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: row;
@@ -22,28 +23,30 @@ const BoxImg = styled.div`
 
 `;
 const ProductImg = styled.img`
-    width: 80%;
-    max-height: 70%;
+    width: 95%;
+    min-height: 95%;
+    max-height: 100%;
     object-fit: cover;
+    boder-radius: 15px;
 `;
-export default function ProductItem() {
+export default function ProductItem({product}) {
   const navigate = useNavigate(); 
-  const Click = (path) => {
-      navigate(path); 
-    };
+  const handleClick = () => {
+    navigate(`/productdetail/${product.ProductID}`);
+  };
   return (
 
-    <ItemBox  onClick={()=>Click("/productdetail")}>
+    <ItemBox  onClick={handleClick}>
     <BoxImg>
-        <ProductImg src="/public/product1.png" alt="" />
+        <ProductImg src={`${product.ImageUrl}/img1.jpg`} alt="" />
     </BoxImg>
    
     <CardContent sx={{padding: 0}}>
       <Typography gutterBottom variant="h5" component="div" sx={{fontSize: '1.3vw'}}>
-        Muffin chocolate
+        {product.ProductName}
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{fontSize: '1vw'}}>
-        20,000đ
+        {product.Price}
       </Typography>
     </CardContent>
       <RatingBox value={{ value: 5, 
