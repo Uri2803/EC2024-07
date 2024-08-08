@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styled from 'styled-components';
 import { Box, Typography, Paper } from '@mui/material';
 import AcountInfor from './AcountInfor';
+import { getUserInfor } from '../../service/api';
 
 const MainContainer = styled.div`
   margin: 0;
@@ -82,11 +83,10 @@ const ContentContainer = styled(Box)`
 
 export default function Account() {
   const [activeButton, setActiveButton] = useState('Thông tin tài khoản');
-
   const renderContent = () => {
     switch (activeButton) {
       case 'Thông tin tài khoản':
-        return <AcountInfor/>;
+        return <AcountInfor userInfor={userInfor}/>;
       case 'Sổ địa chỉ':
         return <Typography variant="h6">Đây là sổ địa chỉ của bạn.</Typography>;
       case 'Lịch sử đơn hàng':
@@ -99,11 +99,25 @@ export default function Account() {
         return <Typography variant="h6">Vui lòng chọn một mục.</Typography>;
     }
   };
+  const [userInfor, setUserInfor] = useState('');
+  const [error, setError] = useState('');
+  const getUser = async ()=>{
+    try{
+      const result = await getUserInfor();
+      setUserInfor(result.userInfor)
+      console.log('tét: ', userInfor)
+    }catch(err){
+      setError(err.response?.data?.message || 'Login failed.');
+    }
+  }
+  useEffect(()=>{
+    getUser();
+  }, []);
 
   return (
     <MainContainer>
       <Header />
-      <TextDiv>Xin chào! QK KA</TextDiv>
+      <TextDiv>Xin chào! <strong>{userInfor.Username}  </strong> </TextDiv>
       <AcountBox>
       
         <BoxButton>

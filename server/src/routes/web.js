@@ -8,6 +8,10 @@ let initWebRoutes = (app) => {
   route.get('/', (req, res) => {
     res.json({ message: 'mainpage' });
   });
+  app.get('/check-token', Acount.authenticateJWT, (req, res) => {
+    res.json({ isAuthenticated: true });
+  });
+  route.get('/userinfor', Acount.authenticateJWT, Acount.getUserInfor)
 
   route.get('/products', Products.getAllProducts);
   route.post('/login', Acount.login);

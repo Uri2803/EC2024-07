@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Box, FormControl, InputLabel, OutlinedInput, Grid } from '@mui/material';
 import styled from 'styled-components';
 
@@ -62,57 +62,110 @@ const CancelButton = styled(SubmitButon)`
   background-color: #CCCCCC; 
   color: #000000;
 `;
-export default function AcountInfor() {
+
+export default function AcountInfor({ userInfor }) {
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const handlePasswordChange = () => {
+    if (newPassword !== confirmPassword) {
+      alert('Mật khẩu mới và xác nhận mật khẩu không khớp!');
+      return;
+    }
+    
+    // Thực hiện logic thay đổi mật khẩu ở đây, ví dụ như gọi API
+    console.log('Thay đổi mật khẩu thành công:', { currentPassword, newPassword });
+    
+    // Reset các trường mật khẩu sau khi xử lý xong
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+  };
+  
   return (
     <>
       <FormBox>
         <TileDiv style={{ color: '#F48C48', fontWeight: 600 }}>Thông tin tài khoản</TileDiv>
-        <Grid container spacing={4} sx={{width: '50vw'}}>
-          {[
-            'Họ',
-            'Tên',
-            'Email',
-            'Địa chỉ'
-          ].map((label, index) => (
-            <Grid item xs={6} key={index}  >
-              <FormControl sx={{ width: '100%' }} variant="outlined">
-                <InputLabel htmlFor={`outlined-adornment-${label.replace(/ /g, '')}`}>{label.charAt(0).toUpperCase() + label.slice(1)}</InputLabel>
-                <OutlinedInput
-                  id={`outlined-adornment-${label.replace(/ /g, '')}`}
-                  label={label.toLocaleUpperCase()}
-                  name={label.replace(/ /g, '')}
-                />
-              </FormControl>
-            </Grid>
-          ))}
+        <Grid container spacing={4} sx={{ width: '50vw' }}>
+          <Grid item xs={6}>
+            <FormControl sx={{ width: '100%' }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-Họ" shrink >Họ Tên</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-Họ"
+                label="Họ Tên"
+                name="Họ Tên"
+                value={userInfor? userInfor.UserFullName: ''}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl sx={{ width: '100%' }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-Email"  shrink>Email</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-Email"
+                label="Email"
+                name="Email"
+                value={userInfor?userInfor.Email : ''}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl sx={{ width: '100%' }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-Địa chỉ" shrink>Địa chỉ</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-Địa chỉ"
+                label="Địa chỉ"
+                name="Địa chỉ"
+                value={userInfor?userInfor.Address : ''}
+              />
+            </FormControl>
+          </Grid>
         </Grid>
         <TileDiv style={{ fontWeight: 400 }}>Thay đổi mật khẩu</TileDiv>
 
-        <Grid container spacing={4} sx={{width: '55vw'}}>
-          {[
-            'Mật khẩu hiện tại ',
-            'Mật khẩu mới',
-            'Xác nhận mật khẩu mới',
-          ].map((label, index) => (
-            <Grid item xs={12} key={index}>
+        <Grid container spacing={4} sx={{ width: '55vw' }}>
+          <Grid item xs={12}>
               <FormControl sx={{ width: '100%' }} variant="outlined">
-                <InputLabel  htmlFor={`outlined-adornment-${label.replace(/ /g, '')}`}>{label.charAt(0).toUpperCase() + label.slice(1)}</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-Họ">Mật khẩu hiện tại</InputLabel>
                 <OutlinedInput
-                  id={`outlined-adornment-${label.replace(/ /g, '')}`}
-                  label={label.toLocaleUpperCase()}
-                  name={label.replace(/ /g, '')}
-                  
+                  id="outlined-adornment-Matkhauhientai"
+                  label="Mật khẩu hiện tại"
+                  name="Mật khẩu hiện tại"
+                  value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
                 />
               </FormControl>
             </Grid>
-          ))}
+            <Grid item xs={12}>
+              <FormControl sx={{ width: '100%' }} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-Họ" >Mật khẩu mới</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-Matkhaumoi"
+                  label="Mật khẩu mới"
+                  value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </FormControl>
+            </Grid>
+            
+            
+            <Grid item xs={12}>
+              <FormControl sx={{ width: '100%' }} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-Họ" >Xác nhận mật khẩu mới</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-xacnhanmatkhaumoi"
+                  label="Xác nhận mật khẩu mới"
+                  name="Xác nhận mật khẩu mới"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </FormControl>
+            </Grid>
         </Grid>
       </FormBox>
       <SubmitButonContainer>
-      <CancelButton>Huỷ</CancelButton>
+        <CancelButton>Huỷ</CancelButton>
         <SubmitButon>Lưu thay đổi</SubmitButon>
-        
-        
       </SubmitButonContainer>
     </>
   );

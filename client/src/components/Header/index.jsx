@@ -130,7 +130,7 @@ const Header = () => {
               }
             />
             <LanguageSelect selectedLanguage={selectedLanguage} onChange={handleLanguageChange}  />
-            <StyledNavLink to="/acount">
+            <StyledNavLink to="/account">
               <AccountCircleIcon sx={{ fontSize: '2vw' }} />
             </StyledNavLink>
             <StyledNavLink to="/cart">

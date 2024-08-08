@@ -10,6 +10,12 @@ import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
 import Payment from './pages/Checkout';
 import Cart from './pages/Cart';
+
+const isAuthenticated = () => {
+  // Check if user is authenticated
+  return localStorage.getItem('token') !== null;
+};
+
 const routes = [
   {
     path: "/",
@@ -52,10 +58,12 @@ const routes = [
     },
   },
   {
-    path: "/acount",
+    path: "/account",
     component: Account,
+    protected: true,
+    isAuthenticated,
     propsLayout: {
-      title: "Acount",
+      title: "Account",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
@@ -79,7 +87,7 @@ const routes = [
     path: "/checkout",
     component: Checkout,
     propsLayout: {
-      title: "checkout",
+      title: "Checkout",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
@@ -99,13 +107,6 @@ const routes = [
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
-
-
-
-
-
-
-
 ];
 
 export default routes;
