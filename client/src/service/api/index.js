@@ -24,7 +24,6 @@ export const isAuthenticated = async () => {
             return false;
         }
     } catch (error) {
-        console.error('Error checking authentication:', error);
         return false;
     }
 };
@@ -61,7 +60,19 @@ export const getProductDetail = async (productID) => {
         
         return response.data;
     } catch (error) {
-        console.log('data', error)
+        throw error;
+    }
+};
+
+export const register = async (email, username, password) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/register`, {
+            email,
+            password,
+            username
+        });
+        return response.data;
+    } catch (error) {
         throw error;
     }
 };

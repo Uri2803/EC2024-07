@@ -73,8 +73,32 @@ let getUserInfor = async (req, res) => {
         return res.status(404).json({ status: false, message: 'No data found or login failed' });
     }
 };
+
+let register = async (req, res)=>{
+    const {email, username, password} = req.body;
+    console.log(req.body);
+
+    if(email && username && password){
+        try{
+            await db.query('CALL REGISTER (?, ?, ?)', [email, username, password])
+
+            return res.status(200).json({
+                status: true
+            });
+        }catch(err){
+            console.log(err)
+            return res.status(500).json({ status: false, message: err.message });
+
+        }
+
+    }
+    else{
+        return res.status(404).json({ status: false, message: 'No data found' });
+    }
+}
 export default {
     login,
     authenticateJWT,
-    getUserInfor
+    getUserInfor,
+    register
 };

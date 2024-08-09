@@ -15,6 +15,7 @@ let initWebRoutes = (app) => {
   route.get('/productdetail/:productID', Products.getProductDetail);
   route.get('/allproducts', Products.getAllProducts);
   route.post('/login', Acount.login);
+  route.post('/register', Acount.register);
 
   return app.use('/', route);
 };
