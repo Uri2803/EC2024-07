@@ -49,8 +49,6 @@ CREATE TABLE Products (
     Price INT,
     PrepareTime INT,
     CookingTime INT,
-    ImageUrl VARCHAR(255),
-    Nutrition VARCHAR(255),
     TypeProductID VARCHAR(10) NOT NULL,
     FOREIGN KEY (TypeProductID) REFERENCES TypeProducts(TypeProductID)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -174,4 +172,24 @@ CREATE TABLE ProductBatch (
     CookingTime DATE,
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
     FOREIGN KEY (GrillerID) REFERENCES Griller(GrillerID)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Bảng ProductImages (new)
+CREATE TABLE ProductImages (
+    ImageID VARCHAR(10) PRIMARY KEY,
+    ProductID VARCHAR(10),
+    ImageUrl VARCHAR(255),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Bảng Nutrition (new)
+CREATE TABLE Nutrition (
+    NutritionID VARCHAR(10) PRIMARY KEY,
+    ProductID VARCHAR(10),
+    Calories INT,
+    Fat DECIMAL(5,2),
+    Carbs DECIMAL(5,2),
+    Protein DECIMAL(5,2),
+    Sugar DECIMAL(5,2),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
