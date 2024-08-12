@@ -1,5 +1,4 @@
-import React, { useState , useEffect} from 'react';
-import { useParams} from "react-router-dom";
+import React, { useState } from 'react';
 import { Box, Button, ButtonGroup, TextField, Typography } from '@mui/material';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -9,7 +8,6 @@ import ProductInfor from './ProductInfor';
 import Evaluate from './Evaluate';
 import Product from '../../components/Product'
 import { useCart } from '../../context/CartContext';
-import { getProductDetail } from '../../service/api';
 
 const MainContainer = styled.div`
   margin: 0;
@@ -84,10 +82,8 @@ const BoxProduct = styled(Box)`
 
 
 const ProductDetail = () => {
-  const {id} = useParams();
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
-  const [product, setProduct] = useState([]);
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
@@ -101,28 +97,17 @@ const ProductDetail = () => {
   const handleAddToCart = () => {
     addToCart();
   };
-  const getProduct = async (productID)=>{
-      try{
-        const data = await getProductDetail(productID);
-        setProduct(data.product)
-      }catch(err){
-        console.error('Error fetching data:', err);
-      }
-  }
-  useEffect(()=>{
-    getProduct(id);
-    console.log(product)
-  }, [])
  
+
   return (
     <MainContainer>
       <Header />
       <ProductBox>
         <ProductImgBox>
-          <ProductSlider img={product.ImageUrl}/>
+          <ProductSlider />
         </ProductImgBox>
-        <ProductInforBox >
-          <ProductInfor product={product} />
+        <ProductInforBox>
+          <ProductInfor />
           <BoxButton>
           <Button onClick={handleDecrement}
             sx={{
