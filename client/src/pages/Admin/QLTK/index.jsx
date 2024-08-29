@@ -34,6 +34,7 @@ const BoxButton = style(Box)`
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    color: #F48C48;
 `;
 
 
