@@ -10,6 +10,8 @@ import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
 import Payment from './pages/Checkout';
 import Cart from './pages/Cart';
+import AdminAccount from './pages/Admin/QLTK';
+import AdminChef from './pages/Admin/QLB'; 
 
 const isAuthenticated = () => {
   // Check if user is authenticated
@@ -104,6 +106,22 @@ const routes = [
     component: Cart,
     propsLayout: {
       title: "Cart",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/admin/accounts",
+    component: AdminAccount,
+    propsLayout: {
+      title: "Admin Accounts",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/admin/chef",
+    component: AdminChef,
+    propsLayout: {
+      title: "Admin Chef",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
