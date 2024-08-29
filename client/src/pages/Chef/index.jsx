@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styled from 'styled-components';
 import { Box, Typography, Paper } from '@mui/material';
-import AcountInfor from './AcountInfor';
+import Griller from './Griller';
 import { getUserInfor } from '../../service/api';
 
 const MainContainer = styled.div`
@@ -19,7 +19,7 @@ const MainContainer = styled.div`
   font-family: Tahoma, sans-serif;
 `;
 
-const AcountBox = styled(Box)`
+const ChefBox = styled(Box)`
   margin: 0px 10px;
   padding: 10px;
   display: flex;
@@ -81,18 +81,14 @@ const ContentContainer = styled(Box)`
 
 `;
 
-export default function Account() {
-  const [activeButton, setActiveButton] = useState('Thông tin tài khoản');
+export default function Chef() {
+  const [activeButton, setActiveButton] = useState('Quản lý bếp');
   const renderContent = () => {
     switch (activeButton) {
-      case 'Thông tin tài khoản':
-        return <AcountInfor userInfor={userInfor}/>;
-      case 'Sổ địa chỉ':
-        return <Typography variant="h6">Đây là sổ địa chỉ của bạn.</Typography>;
-      case 'Lịch sử đơn hàng':
-        return <Typography variant="h6">Đây là lịch sử đơn hàng của bạn.</Typography>;
-      case 'Đánh giá':
-        return <Typography variant="h6">Đây là đánh giá của bạn.</Typography>;
+      case 'Quản lý bếp':
+        return <Typography variant="h6">Quản lý bếp.</Typography>;
+      case 'Quản lý lò nướng':
+        return <Griller userInfor={userInfor}/>;
       case 'Đăng xuất':
         return <Typography variant="h6">Bạn đã đăng xuất.</Typography>;
       default:
@@ -110,17 +106,17 @@ export default function Account() {
   //   }
   // }
   // useEffect(()=>{
-    // getUser();
+  //   getUser();
   // }, []);
 
   return (
     <MainContainer>
       <Header />
       <TextDiv>Xin chào! <strong>{userInfor.Username}  </strong> </TextDiv>
-      <AcountBox>
+      <ChefBox>
       
         <BoxButton>
-          {['Thông tin tài khoản', 'Sổ địa chỉ', 'Lịch sử đơn hàng', 'Đánh giá', 'Đăng xuất'].map(buttonName => (
+          {['Quản lý bếp', 'Quản lý lò nướng', 'Đăng xuất'].map(buttonName => (
             <ItemButton
               key={buttonName}
               active={activeButton === buttonName}
@@ -133,7 +129,7 @@ export default function Account() {
         <ContentContainer>
           {renderContent()}
         </ContentContainer>
-      </AcountBox>
+      </ChefBox>
       <Footer />
     </MainContainer>
   );

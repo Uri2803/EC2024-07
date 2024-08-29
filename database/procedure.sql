@@ -9,6 +9,7 @@ BEGIN
     SET HashedPassword = LOWER(HEX(SHA2(Password, 256)));
     RETURN HashedPassword;
 END;
+
 ---------------------
 
 

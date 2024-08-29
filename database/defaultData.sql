@@ -10,7 +10,7 @@ INSERT INTO Account (Email, UserPassword, Username, Role) VALUES
 ('vu.thi.h@example.com', 'password8', 'vuthih', 'Customer'),
 ('ngo.van.i@example.com', 'password9', 'ngovani', 'Customer'),
 ('dinh.thi.j@example.com', 'password10', 'dinhthij', 'Customer'),
-('nguyen.van.abc@example.com', 'password11', 'nguyenvanabc', 'Employee');
+('nguyen.van.abc@example.com', 'password11', 'nguyenvanabc', 'Admin');
 
 
 -- Thêm dữ liệu vào bảng Customers
@@ -33,7 +33,7 @@ INSERT INTO TypeProducts (TypeProductID, TypeProductName) VALUES
 ('LB0004','Croissant');
 
 INSERT INTO Orders (OrderID, CustomerID, OrderDate, OrderPrice, ShippingDate, ShippingPrice, ShippingAddress, OrderStatus)
-VALUES ('DH0001', 'KH0001', '2024-08-01', 100000, '2024-08-03', 20000, '123 Lý Thường Kiệt, Quận 1, TP. Hồ Chí Minh', 'Processing');
+VALUES ('DH0001', 'KH0001', '2024-08-01', 100000, '2024-08-03', 20000, '123 Lý Thường Kiệt, Quận 1, TP. Hồ Chí Minh', 0);
 
 INSERT INTO Products (ProductID, ProductName, Descriptions, Price, PrepareTime, CookingTime, TypeProductID) VALUES 
 ('MU0001', 'Muffin Chocolate', 'Với lớp bột mềm mịn và những hạt chocolate tan chảy, mỗi miếng bánh sẽ mang đến cho bạn cảm giác đậm đà và thỏa mãn không thể chối từ.', 12000, 10, 20, 'LB0001'),

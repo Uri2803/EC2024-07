@@ -65,3 +65,12 @@ export const getProductDetail = async (productID) => {
         throw error;
     }
 };
+
+export const getAllOrders = async () => {
+    try {
+        const response = await axios.get(`${url.REST_API}/allorders`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

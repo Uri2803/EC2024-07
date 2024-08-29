@@ -10,6 +10,8 @@ import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
 import Payment from './pages/Checkout';
 import Cart from './pages/Cart';
+import Admin from './pages/Admin';
+import Chef from './pages/Chef';
 
 const isAuthenticated = () => {
   // Check if user is authenticated
@@ -104,6 +106,26 @@ const routes = [
     component: Cart,
     propsLayout: {
       title: "Cart",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/admin",
+    component: Admin,
+    protected: true,
+    isAuthenticated,
+    propsLayout: {
+      title: "Admin",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/chef",
+    component: Chef,
+    protected: true,
+    isAuthenticated,
+    propsLayout: {
+      title: "Chef",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
