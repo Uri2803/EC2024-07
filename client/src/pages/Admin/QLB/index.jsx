@@ -34,6 +34,7 @@ const BoxButton = style(Box)`
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    color: #F48C48;
 `;
 
 
@@ -58,7 +59,7 @@ const AdminChef = () => {
             <AcountInfor userInfor={userInfor}/>
             <TextDiv>Xin chào! <strong>{userInfor.Username}  </strong> </TextDiv>
                 <BoxButton>
-                {['Quản lý tài khoản', 'Duyệt đơn hàng',  'Đăng xuất'].map(buttonName => (
+                {['Quản lý bếp', 'Quản lý lò nướng',  'Đăng xuất'].map(buttonName => (
                     <ItemButton
                         key={buttonName}
                         active={activeButton === buttonName}
@@ -70,7 +71,7 @@ const AdminChef = () => {
                 </BoxButton>
 
             </BodyBox>
-            <AccountTable/>
+            <ChefTable/>
             <Footer/>
         </MainContainer>
     )
