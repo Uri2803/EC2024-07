@@ -110,10 +110,10 @@ const routes = [
     },
   },
   {
-    path: "/admin/accounts",
+    path: "/admin/allaccounts",
     component: AdminAccount,
     propsLayout: {
-      title: "Admin Accounts",
+      title: "Admin All Accounts",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
