@@ -54,6 +54,24 @@ export const getAllProducts = async () => {
         throw error;
     }
 };
+
+export const getAllAccounts = async () => {
+    try {
+        const response = await axios.get(`${url.REST_API}/admin/allaccounts`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getAllProductBatch = async () => {
+    try {
+        const response = await axios.get(`${url.REST_API}/admin/chef`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
 export const getProductDetail = async (productID) => {
     try {
         
