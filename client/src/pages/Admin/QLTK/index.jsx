@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
 import { Box, style } from '@mui/system';
-import AcountInfor from '../../Account/AcountInfor';
-import { getUserInfor } from '../../service/api';
+import AcountInfor from '../../Acount/AcountInfor';
+import { getUserInfor } from '../../../service/api';
 import AccountTable from './AccountTable';
 
 const MainContainer = styled.div`
