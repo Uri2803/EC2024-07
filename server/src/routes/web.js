@@ -15,7 +15,8 @@ let initWebRoutes = (app) => {
   route.get('/userinfor', Acount.authenticateJWT, Acount.getUserInfor);
   route.get('/productdetail/:productID', Products.getProductDetail);
   route.get('/allproducts', Products.getAllProducts);
-  route.get('/updateorders/:orderID', Order.setOrder);
+  route.post('/updateorders', Order.setOrder);
+  route.post('/deleteorders', Order.deleteOrder);
   route.get('/allorders', Order.getAllOrders);
   route.post('/login', Acount.login);
 

@@ -76,7 +76,15 @@ export const getAllOrders = async () => {
 };
 export const orderConfirmation = async (orderID) => {
     try {
-        const response = await axios.get(`${url.REST_API}/updateorders/${orderID}`);
+        const response = await axios.post(`${url.REST_API}/updateorders`, {orderID});
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const orderDelete = async (orderID) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/deleteorders`, {orderID});
         return response.data;
     } catch (error) {
         throw error;

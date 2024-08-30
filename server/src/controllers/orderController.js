@@ -25,7 +25,7 @@ let getAllOrders = async (req, res) => {
 };
 
 let setOrder = async (req, res) => {
-    const orderID = req.params.orderID;
+    const {orderID} = req.body;
     try {
         await db.query(
           `UPDATE Orders 
@@ -39,7 +39,25 @@ let setOrder = async (req, res) => {
     }
   };
 
+  let deleteOrder = async (req, res) => {
+    const {orderID} = req.body;
+    try {
+        // // await db.beginTransaction();
+        // await db.query(
+        //   `DELETE FROM OrderDetails WHERE OrderID = ?`, 
+        //   [orderID]
+        // );
+        await db.query('CALL deleteorder(?)', [orderID]);
+        // await db.commit();
+      res.status(200).json({ status: true });
+    } catch (error) {
+        // await db.rollback(); 
+      res.status(500).json({ error: error.message });
+    }
+  };
+
 module.exports = {
   getAllOrders: getAllOrders,
   setOrder: setOrder,
+  deleteOrder: deleteOrder,
 };

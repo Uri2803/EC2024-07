@@ -101,17 +101,17 @@ export default function Account() {
   };
   const [userInfor, setUserInfor] = useState('');
   const [error, setError] = useState('');
-  // const getUser = async ()=>{
-  //   try{
-  //     const result = await getUserInfor();
-  //     setUserInfor(result.userInfor)
-  //   }catch(err){
-  //     setError(err.response?.data?.message || 'Login failed.');
-  //   }
-  // }
-  // useEffect(()=>{
-    // getUser();
-  // }, []);
+  const getUser = async ()=>{
+    try{
+      const result = await getUserInfor();
+      setUserInfor(result.userInfor)
+    }catch(err){
+      setError(err.response?.data?.message || 'Login failed.');
+    }
+  }
+  useEffect(()=>{
+    getUser();
+  }, []);
 
   return (
     <MainContainer>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getAllOrders , orderConfirmation } from '../../service/api';
+import { getAllOrders , orderConfirmation ,orderDelete } from '../../service/api';
 // import orders from './Data';
 
 
@@ -102,13 +102,24 @@ const DataContainer = styled.div`
 export default function OrderReview() {
   const [rawData , setRawData] = useState([]);
 
-  const handleCheckTrue = (orderID) => {
-    orderConfirmation(orderID);
-    getRawData();
+  const handleCheckTrue = async (orderID) => {
+    try {
+      await orderConfirmation(orderID); 
+      await getRawData(); 
+    } catch (error) {
+      console.error('Error confirming order:', error);
+    }
   };
-  const handleCheckFalse = () => {
-    orderConfirmation();
+
+  const handleCheckFalse = async (orderID) => {
+    try {
+      await orderDelete(orderID); 
+      await getRawData(); 
+    } catch (error) {
+      console.error('Error confirming order:', error);
+    }
   };
+
   const getRawData = async () =>{
       try{
           const data = await getAllOrders();
@@ -176,7 +187,7 @@ export default function OrderReview() {
               </OrderItem>
             ))}
             <ActionButton onClick={() => handleCheckTrue(order.orderId)}>Xác nhận đơn hàng</ActionButton>
-            <ActionButton onClick={handleCheckFalse}>Hủy đơn hàng</ActionButton>
+            <ActionButton onClick={() => handleCheckFalse(order.orderId)}>Hủy đơn hàng</ActionButton>
           </OrderContent>
         </OrderContainer>
       ))}
