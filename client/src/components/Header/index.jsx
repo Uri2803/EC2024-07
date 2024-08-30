@@ -7,18 +7,16 @@ import LanguageSelect from '../LanguageSelect';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from "react-router-dom";
-import { useCart } from '../../context/CartContext'; 
+import { useCart } from '../../context/CartContext'; // Import CartContext
 
 const StyledBadge = styled(Badge)(() => ({
   '& .MuiBadge-badge': {
     right: -3,
     top: 13,
     border: `2px solid`,
-    
     padding: '0 4px',
   },
 }));
-
 
 const StyledToolbar = styled(Toolbar)`
   width: 100%;
@@ -27,8 +25,8 @@ const StyledToolbar = styled(Toolbar)`
   align-items: center;
   flex-direction: row;
   background-color: ${props => props.theme.colors.header}
- 
 `;
+
 const Logo = styled.img`
   width: 7vw;
   height: auto;
@@ -71,12 +69,14 @@ const IconButtonStyled = styled(IconButton)`
 
 const Header = () => {
   const navigate = useNavigate(); 
-  const { cartCount } = useCart();
+  const { cartCount } = useCart(); // Get cart count from CartContext
   const [selectedLanguage, setSelectedLanguage] = useState('VI');
+
   const handleLanguageChange = (event) => {
     setSelectedLanguage(event.target.value);
     // Add logic to change language settings in your application
   };
+
   const handleButtonClick = (path) => {
     navigate(path); 
   };
@@ -102,7 +102,6 @@ const Header = () => {
 
           <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center' }} >
             <Logo src="/public/Logo.jpg" alt="Logo" onClick={() => handleButtonClick("/")} />
-            
           </Grid>
 
           <Grid item xs={5} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -124,7 +123,7 @@ const Header = () => {
                 },
               }}
               endAdornment={
-                <IconButton type="submit"  aria-label="search">
+                <IconButton type="submit" aria-label="search">
                   <SearchIcon sx={{ fontSize: '2vw' }} />
                 </IconButton>
               }
@@ -135,12 +134,9 @@ const Header = () => {
             </StyledNavLink>
             <StyledNavLink to="/cart">
               <StyledBadge badgeContent={cartCount} color="secondary">
-                <ShoppingCartIcon  sx={{ fontSize: '2vw' }}/>
+                <ShoppingCartIcon sx={{ fontSize: '2vw' }}/>
               </StyledBadge>
             </StyledNavLink>
-            
-
-            
           </Grid>
         </Grid>
       </Container>

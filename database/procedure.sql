@@ -87,3 +87,20 @@ BEGIN
     END IF;
 END;
 
+
+
+CREATE TRIGGER before_insert_cart
+BEFORE INSERT ON Cart
+FOR EACH ROW
+BEGIN
+    DECLARE nextID INT;
+    DECLARE newCartID VARCHAR(10);
+
+    SELECT IFNULL(MAX(CAST(SUBSTRING(CartID, 3) AS UNSIGNED)), 0) + 1 INTO nextID
+    FROM Cart;
+    
+    -- Tạo CartID theo định dạng GH0001, GH0002, ...
+    SET newCartID = CONCAT('GH', LPAD(nextID, 4, '0'));
+    SET NEW.CartID = newCartID;
+END;
+

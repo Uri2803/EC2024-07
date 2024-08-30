@@ -45,14 +45,15 @@ export const getUserInfor = async () => {
     }
 };
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (filters = {}) => {
     try {
-        const response = await axios.get(`${url.REST_API}/allproducts`);
-        return response.data;
+      const filterParams = new URLSearchParams(filters).toString();
+      const response = await axios.get(`${url.REST_API}/allproducts?${filterParams}`);
+      return response.data;
     } catch (error) {
-        throw error;
+      throw error;
     }
-};
+  };
 export const getProductDetail = async (productID) => {
     try {
         
@@ -72,6 +73,40 @@ export const register = async (email, username, password) => {
             username
         });
         return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addToCart = async (productID, quantity) => {
+    try {
+      const response = await axios.post(`${url.REST_API}/cart/add`, {
+        productID,
+        quantity
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+  export const getCart = async () => {
+    try {
+        const response = await axios.get(`${url.REST_API}/cart`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            return [];
+        }
     } catch (error) {
         throw error;
     }
