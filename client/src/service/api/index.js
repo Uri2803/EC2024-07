@@ -111,3 +111,35 @@ export const addToCart = async (productID, quantity) => {
         throw error;
     }
 };
+export const removeFromCart = async (productID) => {
+    try {
+    console.log(productID)
+    const response = await axios.delete(`${url.REST_API}/remove/${productID}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+      console.log('Response Data:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      throw error;
+    }
+};
+export const updateCartQuantity = async (productID, quantity) => {
+    try {
+        const response = await axios.put(`${url.REST_API}/cart/update`, {
+            productID,
+            quantity
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

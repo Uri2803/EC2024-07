@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Container, Grid, InputBase, IconButton, Badge } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+// Header.js
+import React from 'react';
 import styled from 'styled-components';
+import { useCart } from '../../context/CartContext'; // Đảm bảo bạn đã import đúng Context
+import { Toolbar, Container, Grid, InputBase, IconButton, Badge } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import LanguageSelect from '../LanguageSelect';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { useNavigate } from "react-router-dom";
-import { useCart } from '../../context/CartContext'; // Import CartContext
+import { NavLink } from 'react-router-dom';
 
 const StyledBadge = styled(Badge)(() => ({
   '& .MuiBadge-badge': {
@@ -24,7 +24,7 @@ const StyledToolbar = styled(Toolbar)`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  background-color: ${props => props.theme.colors.header}
+  background-color: ${props => props.theme.colors.header};
 `;
 
 const Logo = styled.img`
@@ -63,29 +63,27 @@ const IconButtonStyled = styled(IconButton)`
     background-color: #f0f0f0;
   }
   &.active {
-    color: #F48C48; 
+    color: #F48C48;
   }
 `;
 
 const Header = () => {
-  const navigate = useNavigate(); 
-  const { cartCount } = useCart(); // Get cart count from CartContext
-  const [selectedLanguage, setSelectedLanguage] = useState('VI');
-
+  const { cartCount } = useCart(); // Lấy số lượng sản phẩm từ CartContext
+  const [selectedLanguage, setSelectedLanguage] = React.useState('VI');
+  
   const handleLanguageChange = (event) => {
     setSelectedLanguage(event.target.value);
-    // Add logic to change language settings in your application
   };
 
   const handleButtonClick = (path) => {
-    navigate(path); 
+    navigate(path);
   };
 
   return (
     <StyledToolbar>
       <Container maxWidth="lg">
         <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item xs={5} sx={{ display: 'flex', justifyContent: 'space-between'}}>
+          <Grid item xs={5} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <StyledNavLink to="/" exact activeClassName="active">
               TRANG CHỦ
             </StyledNavLink>
@@ -100,7 +98,7 @@ const Header = () => {
             </StyledNavLink>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center' }} >
+          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Logo src="/public/Logo.jpg" alt="Logo" onClick={() => handleButtonClick("/")} />
           </Grid>
 
@@ -128,13 +126,13 @@ const Header = () => {
                 </IconButton>
               }
             />
-            <LanguageSelect selectedLanguage={selectedLanguage} onChange={handleLanguageChange}  />
+            <LanguageSelect selectedLanguage={selectedLanguage} onChange={handleLanguageChange} />
             <StyledNavLink to="/account">
               <AccountCircleIcon sx={{ fontSize: '2vw' }} />
             </StyledNavLink>
             <StyledNavLink to="/cart">
               <StyledBadge badgeContent={cartCount} color="secondary">
-                <ShoppingCartIcon sx={{ fontSize: '2vw' }}/>
+                <ShoppingCartIcon sx={{ fontSize: '2vw' }} />
               </StyledBadge>
             </StyledNavLink>
           </Grid>

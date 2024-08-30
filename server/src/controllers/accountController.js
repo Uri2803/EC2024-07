@@ -28,7 +28,7 @@ const login = async (req, res) => {
                     email: email,
                     username: user.Username,
                     role: user.Role
-                }, JWT_SECRET, { expiresIn: '1h' });
+                }, JWT_SECRET, { expiresIn: '2h' });
                 res.status(200).json({
                     status: true,
                     token,

@@ -30,7 +30,6 @@ let getProductDetail = async (req, res) =>{
   const { productID } = req.params;
     if(productID){
         try{
-            console.log(productID)
             const [product] = await db.query('SELECT * FROM Products WHERE Products.ProductID = ? ', [productID])
             res.status(200).json({status: true, product:product[0]});
 

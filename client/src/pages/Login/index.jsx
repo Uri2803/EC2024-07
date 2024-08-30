@@ -152,6 +152,7 @@ export default function Login() {
           id="input-with-icon-textfield"
           label="Password"
           value={password}
+           type="password"
           onChange={(e) => setPassword(e.target.value)}
           InputProps={{
             startAdornment: (

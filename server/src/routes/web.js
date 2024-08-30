@@ -19,6 +19,8 @@ let initWebRoutes = (app) => {
   route.post('/register', Acount.register);
   route.post('/cart/add', Acount.authenticateJWT, Cart.addToCart);
   route.get('/cart', Acount.authenticateJWT, Cart.getCart); 
+  route.delete('/remove/:productID',Acount.authenticateJWT, Cart.removeFromCart);
+  route.put('/cart/update', Acount.authenticateJWT,Cart.updateCartQuantity);
   return app.use('/', route);
 };
 

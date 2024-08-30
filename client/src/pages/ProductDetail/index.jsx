@@ -7,7 +7,7 @@ import ProductSlider from './ProductSlider';
 import styled from 'styled-components';
 import ProductInfor from './ProductInfor';
 import Evaluate from './Evaluate';
-import Product from '../../components/Product'
+import Product from '../../components/Product';
 import { getProductDetail, addToCart as apiAddToCart, isAuthenticated } from '../../service/api';
 import { useCart } from '../../context/CartContext'; // Import CartContext
 
@@ -57,7 +57,7 @@ const EvaluateBox = styled(Box)`
   flex-wrap: wrap;
 `;
 
-const BoxTitle = styled (Box)`
+const BoxTitle = styled(Box)`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -105,23 +105,23 @@ const ProductDetail = () => {
     }
 
     try {
-      // Cập nhật giỏ hàng cục bộ
+     
       addToCart(id, quantity);
 
-      // Gọi API để đồng bộ hóa với máy chủ
-      const response = await apiAddToCart(id, quantity);
-      console.log('Product added to cart:', response);
-      // Handle success (e.g., show a success message or update UI)
     } catch (error) {
       console.error('Error adding product to cart:', error);
-      // Handle error
+
     }
   };
 
   const getProduct = async (productID) => {
     try {
       const data = await getProductDetail(productID);
-      setProduct(data.product);
+      if (data && data.product) {
+        setProduct(data.product);
+      } else {
+        console.error('Invalid product data:', data);
+      }
     } catch (err) {
       console.error('Error fetching data:', err);
     }
@@ -141,7 +141,8 @@ const ProductDetail = () => {
         <ProductInforBox>
           <ProductInfor product={product} />
           <BoxButton>
-            <Button onClick={handleDecrement}
+            <Button 
+              onClick={handleDecrement}
               sx={{
                 borderRadius: "5px 0 0 5px",
                 maxHeight: '3vw',
@@ -181,7 +182,8 @@ const ProductDetail = () => {
                 },
               }}
             />
-            <Button onClick={handleIncrement}
+            <Button 
+              onClick={handleIncrement}
               sx={{
                 borderRadius: "0 5px 5px 0",
                 maxHeight: '3vw',
