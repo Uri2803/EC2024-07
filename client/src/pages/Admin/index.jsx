@@ -94,19 +94,19 @@ export default function Admin() {
       }
     };
     const [userInfor, setUserInfor] = useState('');
-    // const [error, setError] = useState('');
-    // const getUser = async ()=>{
-    //   try{
-    //     const result = await getUserInfor();
-    //     setUserInfor(result.userInfor)
+    const [error, setError] = useState('');
+    const getUser = async ()=>{
+      try{
+        const result = await getUserInfor();
+        setUserInfor(result.userInfor)
 
-    //   }catch(err){
-    //     setError(err.response?.data?.message || 'Login failed.');
-    //   }
-    // }
-    // useEffect(()=>{
-    //   getUser();
-    // }, []);
+      }catch(err){
+        setError(err.response?.data?.message || 'Login failed.');
+      }
+    }
+    useEffect(()=>{
+      getUser();
+    }, []);
   
     return (
       <MainContainer>
