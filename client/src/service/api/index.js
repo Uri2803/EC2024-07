@@ -74,3 +74,11 @@ export const getAllOrders = async () => {
         throw error;
     }
 };
+export const orderConfirmation = async (orderID) => {
+    try {
+        const response = await axios.get(`${url.REST_API}/updateorders/${orderID}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

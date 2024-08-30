@@ -24,6 +24,22 @@ let getAllOrders = async (req, res) => {
   }
 };
 
+let setOrder = async (req, res) => {
+    const orderID = req.params.orderID;
+    try {
+        await db.query(
+          `UPDATE Orders 
+           SET OrderStatus = 1 
+           WHERE OrderID = ?`, 
+          [orderID]
+        );
+      res.status(200).json({ status: true });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
 module.exports = {
   getAllOrders: getAllOrders,
+  setOrder: setOrder,
 };

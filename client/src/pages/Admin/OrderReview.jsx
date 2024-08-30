@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getAllOrders } from '../../service/api';
+import { getAllOrders , orderConfirmation } from '../../service/api';
 // import orders from './Data';
 
 
@@ -102,11 +102,12 @@ const DataContainer = styled.div`
 export default function OrderReview() {
   const [rawData , setRawData] = useState([]);
 
-  const handleCheckTrue = () => {
-    addToCart();
+  const handleCheckTrue = (orderID) => {
+    orderConfirmation(orderID);
+    getRawData();
   };
   const handleCheckFalse = () => {
-    addToCart();
+    orderConfirmation();
   };
   const getRawData = async () =>{
       try{
@@ -174,7 +175,7 @@ export default function OrderReview() {
                 </ProductInfo>
               </OrderItem>
             ))}
-            <ActionButton onClick={handleCheckTrue}>Xác nhận đơn hàng</ActionButton>
+            <ActionButton onClick={() => handleCheckTrue(order.orderId)}>Xác nhận đơn hàng</ActionButton>
             <ActionButton onClick={handleCheckFalse}>Hủy đơn hàng</ActionButton>
           </OrderContent>
         </OrderContainer>
