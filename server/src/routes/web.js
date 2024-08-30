@@ -1,6 +1,7 @@
 import express from 'express';
 import Products from '../controllers/productController';
 import Acount from '../controllers/accountController';
+import Cart from '../controllers/cartController'
 let route = express.Router();
 
 let initWebRoutes = (app) => {
@@ -15,7 +16,11 @@ let initWebRoutes = (app) => {
   route.get('/productdetail/:productID', Products.getProductDetail);
   route.get('/allproducts', Products.getAllProducts);
   route.post('/login', Acount.login);
-
+  route.post('/register', Acount.register);
+  route.post('/cart/add', Acount.authenticateJWT, Cart.addToCart);
+  route.get('/cart', Acount.authenticateJWT, Cart.getCart); 
+  route.delete('/remove/:productID',Acount.authenticateJWT, Cart.removeFromCart);
+  route.put('/cart/update', Acount.authenticateJWT,Cart.updateCartQuantity);
   return app.use('/', route);
 };
 

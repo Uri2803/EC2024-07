@@ -24,7 +24,6 @@ export const isAuthenticated = async () => {
             return false;
         }
     } catch (error) {
-        console.error('Error checking authentication:', error);
         return false;
     }
 };
@@ -46,14 +45,15 @@ export const getUserInfor = async () => {
     }
 };
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (filters = {}) => {
     try {
-        const response = await axios.get(`${url.REST_API}/allproducts`);
-        return response.data;
+      const filterParams = new URLSearchParams(filters).toString();
+      const response = await axios.get(`${url.REST_API}/allproducts?${filterParams}`);
+      return response.data;
     } catch (error) {
-        throw error;
+      throw error;
     }
-};
+  };
 export const getProductDetail = async (productID) => {
     try {
         
@@ -61,7 +61,85 @@ export const getProductDetail = async (productID) => {
         
         return response.data;
     } catch (error) {
-        console.log('data', error)
+        throw error;
+    }
+};
+
+export const register = async (email, username, password) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/register`, {
+            email,
+            password,
+            username
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const addToCart = async (productID, quantity) => {
+    try {
+      const response = await axios.post(`${url.REST_API}/cart/add`, {
+        productID,
+        quantity
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+  export const getCart = async () => {
+    try {
+        const response = await axios.get(`${url.REST_API}/cart`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            return [];
+        }
+    } catch (error) {
+        throw error;
+    }
+};
+export const removeFromCart = async (productID) => {
+    try {
+    console.log(productID)
+    const response = await axios.delete(`${url.REST_API}/remove/${productID}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+      console.log('Response Data:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+      throw error;
+    }
+};
+export const updateCartQuantity = async (productID, quantity) => {
+    try {
+        const response = await axios.put(`${url.REST_API}/cart/update`, {
+            productID,
+            quantity
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        return response.data;
+    } catch (error) {
         throw error;
     }
 };

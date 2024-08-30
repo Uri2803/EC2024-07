@@ -25,7 +25,7 @@ const BoxImg = styled.div`
 const ProductImg = styled.img`
     width: 95%;
     min-height: 95%;
-    max-height: 100%;
+    max-height: 95%;
     object-fit: cover;
     boder-radius: 15px;
 `;

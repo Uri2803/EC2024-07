@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { Box, Avatar, Typography } from '@mui/material'
 import styled from 'styled-components'
 import Rating from '../../components/Rating'
-
+import { getProductDetail} from '../../service/api';
+import { useNavigate } from "react-router-dom";
 
 const BoxEvaluate = styled(Box)`
     width: 25vw;
@@ -13,8 +14,7 @@ const BoxEvaluate = styled(Box)`
 `;
 
 const BoxAva = styled(Box)`
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+
 `;
 const BoxInfor = styled(Box)`
     width: 20vw;
@@ -27,32 +27,32 @@ const TextBox = styled(Box)`
 `;
 
 
-export default function ProductItem() {
+export default function ProductItem({product}) {
+    console.log(product)
+    const productName = product.ProductName || '';
+    const [name, ...flavorParts] = productName.split(' ');
+    const flavor = flavorParts.join(' ');
+    const navigate = useNavigate(); 
+    const handleClick = () => {
+        navigate(`/productdetail/${product.ProductID}`);
+      };
   return (
-    <BoxEvaluate>
+    <BoxEvaluate onClick={handleClick}>
 
         <BoxAva>
         <Avatar
             alt=""
-            src="/public/Logo.jpg"
+            src={`${product.ImageUrl}/img1.jpg`}
             sx={{ width: '7vw', height: '7vw' }}
         />
 
         </BoxAva>
         <BoxInfor>
             <TextBox>
-                <Typography  variant='h6'>Sừng bò</Typography>
-                <Typography  variant='body1'>  Hương vị: Hạnh nhân</Typography>
-            </TextBox>
-           
-           
-           
-            
-           
-            
+            <Typography variant='h6'>{name}</Typography>
+            <Typography variant='body1'>Hương vị: {flavor}</Typography>
+            </TextBox>    
         </BoxInfor>
-
-    
     </BoxEvaluate>
   )
 }

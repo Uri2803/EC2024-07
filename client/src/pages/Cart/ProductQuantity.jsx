@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import  {Button} from '@mui/material'
+import { useCart } from '../../context/CartContext'; 
 
 
 const StyleSpan = styled.span`
@@ -10,17 +11,42 @@ const StyleSpan = styled.span`
     display: flext;
     flex-direction: row;
 `;
-export default function ProductQuantity() {
-    const [count, setCount] = useState(1);
+export default function ProductQuantity({quantity, productID}) {
+    const [count, setCount] = useState(quantity);
+    const { updateCartQuantity, removeFromCart } = useCart();
 
-  const handleIncrement = () => {
-    setCount(count + 1);
+    const handleIncrement = async () => {
+      try {
+          setCount(prevCount => {
+              const newCount = prevCount + 1;
+              updateCartQuantity(productID, newCount); // Cập nhật số lượng sản phẩm trên server
+              return newCount;
+          });
+      } catch (error) {
+          console.error('Error incrementing quantity:', error);
+      }
   };
 
-  const handleDecrement = () => {
+  const handleDecrement = async () => {
     if (count > 1) {
-      setCount(count - 1);
-    }
+      try {
+          setCount(prevCount => {
+              const newCount = prevCount - 1;
+              updateCartQuantity(productID, newCount); // Cập nhật số lượng sản phẩm trên server
+              return newCount;
+          });
+      } catch (error) {
+          console.error('Error decrementing quantity:', error);
+      }
+  } else if (count === 1) {
+      // Xóa sản phẩm khỏi giỏ hàng nếu số lượng trở về 0
+      try {
+          await removeFromCart(productID);
+          setCount(0);
+      } catch (error) {
+          console.error('Error removing from cart:', error);
+      }
+  }
   };
 
   return (
@@ -65,7 +91,7 @@ export default function ProductQuantity() {
             >
             {count}
             </Button>
-            <Button onClick={handleDecrement}
+            <Button onClick={handleIncrement}
             sx={{
                 borderRadius: "0 5px 5px 0",
                 height: '2vw',

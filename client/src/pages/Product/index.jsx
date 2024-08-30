@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { Box, TextField, Grid, Slider, Pagination } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Filter from './Filter';
 import Data from './Data';
@@ -31,7 +31,6 @@ const BodyBox = styled(Box)`
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
- 
 `;
 
 const Category = styled(Box)`
@@ -48,7 +47,6 @@ const Category = styled(Box)`
         width: 29vw;
         margin: 1vw;
   }
-    
 `;
 
 const BoxProduct = styled(Box)`
@@ -58,7 +56,7 @@ const BoxProduct = styled(Box)`
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    pading: 2vw;
+    padding: 2vw;
     margin-left: 1vw;
     @media (max-width: 768px) {
         width: 60vw;
@@ -77,6 +75,7 @@ const CategoryTile = styled.div`
     font-weight: 600;
     font-size: 1.3vw;
 `;
+
 const StyledPagination = styled(Pagination)`
   .MuiPaginationItem-root {
     color: #000; 
@@ -90,51 +89,92 @@ const StyledPagination = styled(Pagination)`
   }
 `;
 
-
 export default function Product({ filter }) {
     const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [selectedFilters, setSelectedFilters] = useState({});
+    const productsPerPage = 6;
 
-    const getProducts = async () =>{
-        try{
-            const data = await getAllProducts();
-            
+    const getProducts = async () => {
+        try {
+            const data = await getAllProducts(selectedFilters);
+
             if (data.status && Array.isArray(data.products)) {
                 setProducts(data.products);
+                setFilteredProducts(data.products);
             } else {
                 console.error('Products is not an array or status is false:', data.products);
             }
-            
-        }catch(err){
+        } catch (err) {
             console.error('Error fetching data:', err);
         }
-    }
-    useEffect(()=>{
+    };
+
+    useEffect(() => {
         getProducts();
-        console.log('res: ', );
-    },[])
+    }, [selectedFilters]);
+
+    useEffect(() => {
+        filterProducts();
+    }, [selectedFilters]);
+
+    const filterProducts = () => {
+        let tempProducts = products;
+    
+        if (Object.keys(selectedFilters).length > 0) {
+            tempProducts = tempProducts.filter(product => {
+                return Object.entries(selectedFilters).every(([key, values]) => {
+                    if (Array.isArray(values)) {
+                        return values.includes(product[key]);
+                    } else {
+                        return product[key] === values;
+                    }
+                });
+            });
+        }
+    
+        setFilteredProducts(tempProducts);
+        setCurrentPage(1); // Reset về trang đầu tiên khi thay đổi bộ lọc
+    };
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
+
+    const handleChangePage = (event, value) => {
+        setCurrentPage(value);
+    };
 
     return (
         <MainContainer>
-            <Header/>
+            <Header />
             <BodyBox>
                 <Category>
                     <CategoryTile>
-                        <FilterAltIcon sx={{ fontSize: '2.5vw' }}/>
+                        <FilterAltIcon sx={{ fontSize: '2.5vw' }} />
                         BỘ LỌC TÌM KIẾM
                     </CategoryTile>
-                    <Filter filter={Data.filter_1}/>
-                    <Filter filter={Data.filter_2}/>
-                    <FilterPrice/>
-                    
+                    <Filter filter={Data.filter_1} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
+                    <Filter filter={Data.filter_2} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
+                    <FilterPrice />
                 </Category>
                 <BoxProduct>
-                {products.map((product, index) => (
-                        <ProductItem product={product} key={index}/>
-                ))}
-        </BoxProduct>
+                    {currentProducts.map((product, index) => (
+                        <ProductItem product={product} key={index} />
+                    ))}
+                </BoxProduct>
             </BodyBox>
-            <StyledPagination count={5} shape="rounded"  sx={{fontSize: '5vw'}}/>
-            <Footer/>
+            <StyledPagination
+                count={pageCount}
+                page={currentPage}
+                onChange={handleChangePage}
+                shape="rounded"
+                sx={{ fontSize: '5vw' }}
+            />
+            <Footer />
         </MainContainer>
     );
 }

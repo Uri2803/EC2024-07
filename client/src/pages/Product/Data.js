@@ -1,20 +1,29 @@
 const Data = {
     filter_1: {
-        tile: 'THEO LOẠI BÁNH',
+        title: 'THEO LOẠI BÁNH',
+        name: 'typePoduct',
         option: [
-          { value: 'Bánh mì', label: '' },
-          { value: 'Bánh sừng bò', label: '' },
-          { value: 'Bánh vòng', label: '' },
-          { value: 'bánh xốp', label: '' }
+          { value: 'Donut', label: '' },
+          { value: 'Muffin', label: '' },
+          { value: 'Croissant', label: '' },
         ]
     },
     filter_2: {
-        tile: 'THEO HƯƠNG VỊ',
+        title: 'THEO HƯƠNG VỊ',
+        name: 'flavor',
         option: [
+          { value: 'Truyền thống', label: '' },
           { value: 'Chocolate', label: '' },
-          { value: 'Dâu', label: '' },
           { value: 'Chuối', label: '' },
-          { value: 'Bạc hà', label: '' }
+          { value: 'Việt quất', label: '' },
+          { value: 'Mâm xôi', label: '' },
+          { value: 'Dâu', label: '' },
+          { value: 'Cà rốt', label: '' },
+          { value: 'Chanh', label: '' },
+          { value: 'Kem', label: '' },
+          { value: 'Matcha', label: '' },
+          { value: 'Trứng muối', label: '' },
+
         ]
     }
 }

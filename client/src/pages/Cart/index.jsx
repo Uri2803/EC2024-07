@@ -4,7 +4,8 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ProductItem from './ProductItem';
 import ProductQuantity from './ProductQuantity';
-import { DataGrid } from '@mui/x-data-grid';
+import { useCart } from '../../context/CartContext'; 
+import { useNavigate } from "react-router-dom";
 
 const MainContainer = styled.div`
   margin: 0;
@@ -37,6 +38,7 @@ const TableHeader = styled.th`
   padding: 15px;
   text-align: center;
 `;
+
 const TableHeaderleft = styled.th`
   padding: 15px;
   text-align: left;
@@ -45,22 +47,17 @@ const TableHeaderleft = styled.th`
 const TableCellLeft = styled.td`
   padding: 15px;
   text-align: left;
-  margin: 2vw 2vw;
 `;
 
 const TableCell = styled.td`
   padding: 15px;
   text-align: center; 
-  margin: 2vw 2vw;
-  padding: 15px;
-  
 `;
 
 const TableRow = styled.tr`
   &:nth-child(even) {
     background-color: #f9f9f9;
   }
-
 `;
 
 const Button = styled.button`
@@ -74,31 +71,34 @@ const Button = styled.button`
     background-color: #e67c73;
   }
 `;
-const columns = [
-    { field: 'product', headerName: 'Sản phẩm', width: 300, renderCell: (params) => <ProductItem  /> },
-    { field: 'price', headerName: 'Giá', width: 150, renderCell: (params) => `${params.value}đ` },
-    { field: 'quantity', headerName: 'Số lượng', width: 200, renderCell: (params) => <ProductQuantity /> },
-    { field: 'total', headerName: 'Số Tiền', width: 150,  },
-    {
-      field: 'actions',
-      headerName: 'Thao Tác',
-      width: 150,
-      renderCell: (params) => (
-        <Button onClick={() => handleRemove(params.row.id)}>Xóa</Button>
-      ),
-    },
-  ];
+const TotalTitel = styled.td`
+  padding: 15px 1px;
+  text-align: right;
+  font-weight: bold;
+`;
 
-
-const cart = [
-  { id: 1, product: 'Product 1', price: 100, quantity: 2 },
-  { id: 2, product: 'Product 2', price: 200, quantity: 1 },
-  { id: 2, product: 'Product 2', price: 200, quantity: 1 },
-  // Thêm sản phẩm khác ở đây
-];
-
+const TotalCell = styled.td`
+  padding: 15px 1px;
+  text-align: center;
+  font-weight: bold;
+`;
 
 const Cart = () => {
+  const { cart, removeFromCart } = useCart(); 
+
+  // Hàm tính tổng giá trị giỏ hàng
+  const calculateCartTotal = () => {
+    return cart.reduce((total, item) => total + item.Price * item.CartItemQuantity, 0);
+  };
+  const handleRemoveFromCart = async (productID) => {
+    try {
+      await removeFromCart(productID);
+      // Giỏ hàng sẽ tự động cập nhật nhờ useCart hook
+    } catch (error) {
+      console.error('Error removing from cart:', error);
+    }
+  };
+
   return (
     <MainContainer>
       <Header />
@@ -106,8 +106,8 @@ const Cart = () => {
         <Table>
           <thead>
             <tr>
-              <TableHeaderleft width="20vw">Sản phẩm</TableHeaderleft>
-              <TableHeader >Đơn Giá</TableHeader>
+              <TableHeaderleft>Sản phẩm</TableHeaderleft>
+              <TableHeader>Đơn Giá</TableHeader>
               <TableHeader>Số Lượng</TableHeader>
               <TableHeader>Số Tiền</TableHeader>
               <TableHeader>Thao Tác</TableHeader>
@@ -115,29 +115,30 @@ const Cart = () => {
           </thead>
           <tbody>
             {cart.map((item) => (
-              <TableRow key={item.id}>
-                <TableCellLeft ><ProductItem/></TableCellLeft>
-                <TableCell>{item.price}đ </TableCell>
-                <TableCell><ProductQuantity/></TableCell>
-                <TableCell>${item.price * item.quantity}</TableCell>
+              <TableRow key={item.ProductID}>
+                <TableCellLeft>
+                  <ProductItem product={{ ImageUrl: item.ImageUrl, ProductName: item.ProductName }} />
+                </TableCellLeft>
+                <TableCell>{item.Price.toLocaleString('vi-VN')}đ</TableCell>
                 <TableCell>
-                  <Button onClick={() => handleRemove(item.id)}>Xóa</Button>
+                  <ProductQuantity  quantity={item.CartItemQuantity} productID = {item.ProductID}/>
+                </TableCell>
+                <TableCell>{(item.Price * item.CartItemQuantity).toLocaleString('vi-VN')}đ</TableCell>
+                <TableCell>
+                  <Button onClick={() => removeFromCart(item.ProductID)}>Xóa</Button>
                 </TableCell>
               </TableRow>
-              
             ))}
+            <TableRow>
+              <TotalTitel colSpan="4">Tổng giỏ hàng:</TotalTitel>
+              <TotalCell colSpan="2">{calculateCartTotal().toLocaleString('vi-VN')}đ</TotalCell>
+            </TableRow>
           </tbody>
         </Table>
-
-       
       </BodyBox>
       <Footer />
     </MainContainer>
   );
-};
-
-const handleRemove = (id) => {
-  console.log(`Remove product with id ${id}`);
 };
 
 export default Cart;
