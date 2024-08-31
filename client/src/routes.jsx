@@ -10,6 +10,7 @@ import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
 import Payment from './pages/Checkout';
 import Cart from './pages/Cart';
+import Order from './pages/Order';
 
 const isAuthenticated = () => {
   // Check if user is authenticated
@@ -104,6 +105,14 @@ const routes = [
     component: Cart,
     propsLayout: {
       title: "Cart",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/order",
+    component: Order,
+    propsLayout: {
+      title: "Order",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },

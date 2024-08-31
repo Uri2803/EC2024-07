@@ -85,20 +85,9 @@ const TotalCell = styled.td`
 
 const Cart = () => {
   const { cart, removeFromCart } = useCart(); 
-
-  // Hàm tính tổng giá trị giỏ hàng
   const calculateCartTotal = () => {
     return cart.reduce((total, item) => total + item.Price * item.CartItemQuantity, 0);
   };
-  const handleRemoveFromCart = async (productID) => {
-    try {
-      await removeFromCart(productID);
-      // Giỏ hàng sẽ tự động cập nhật nhờ useCart hook
-    } catch (error) {
-      console.error('Error removing from cart:', error);
-    }
-  };
-
   return (
     <MainContainer>
       <Header />

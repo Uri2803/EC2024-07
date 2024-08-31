@@ -143,3 +143,40 @@ export const updateCartQuantity = async (productID, quantity) => {
         throw error;
     }
 };
+
+export const getProvince = async () => {
+    try {
+        const response = axios.get('https://esgoo.net/api-tinhthanh/1/0.htm');
+        return (await response).data ;
+        
+    } catch (error) {
+        throw error;
+    }
+};
+export const getDistricts = async (provinceId) => {
+    try {
+      const response = await axios.get(`https://esgoo.net/api-tinhthanh/2/${provinceId}.htm`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching districts data:', error);
+      throw error;
+    }
+  };
+  export const getWards = async (districtId) => {
+    try {
+      const response = await axios.get(`https://esgoo.net/api-tinhthanh/3/${districtId}.htm`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching wards data:', error);
+      throw error;
+    }
+  };
+  
+  export const getshippingCost = async (lat, lon) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/calculate-shipping`, { lat, lon});
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

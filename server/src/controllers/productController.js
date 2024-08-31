@@ -1,7 +1,6 @@
 import db from '../model/database';
 
 let getAllProducts = async (req, res) => {
-  console.log(req.query)
   try {
     const { typePoduct, flavor } = req.query;
     let query = 'SELECT * FROM Products JOIN TypeProducts ON TypeProducts.TypeProductID = Products.TypeProductID WHERE 1=1';
