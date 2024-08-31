@@ -27,10 +27,10 @@ export const CartProvider = ({ children }) => {
       fetchCart();
       setShouldFetch(false);
     }
-  }, [shouldFetch]);
+  }, [][shouldFetch]);
 
-  // Cập nhật số lượng sản phẩm trong giỏ hàng
   const getCartCount = () => {
+    
     return cart.reduce((total, item) => total + (item.CartItemQuantity || 0), 0);
   };
 

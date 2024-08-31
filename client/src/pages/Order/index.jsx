@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { Box, Avatar, Select, Grid, MenuItem, Typography, FormControl, InputLabel, OutlinedInput } from '@mui/material';
-import { getProvince, getDistricts, getWards, getshippingCost } from '../../service/api';
+import { Box, Avatar, Select, Grid, MenuItem, Typography, FormControl, InputLabel, OutlinedInput , CircularProgress } from '@mui/material';
+import { getProvince, getDistricts, getWards, getshippingCost, getUserInfor } from '../../service/api';
 import { useCart } from '../../context/CartContext'; 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 const paypalOptions = {
     "client-id": "AYtH9i-MIFXQKrUj8dIbTnVpXCpRmc6IntqbaIjQLZWHHD6e5-V-4apifhskLmHwVYO4bt5oxLJE7q6b"
   };
@@ -163,7 +164,8 @@ const Order = () => {
   const [shippingCost, setShippingCost] = useState(0);
   const [discount, setDiscount] = useState(0)
   const { cart} = useCart(); 
-
+  const [userInfor, setUserInfor] = useState('');
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
@@ -226,11 +228,6 @@ const Order = () => {
       console.error('Error fetching shipping cost:', error);
     }
   };
-
-  
-  
-  
-  
   const handleProvinceChange = (event) => {
     setProvinceId(event.target.value);
   };
@@ -244,6 +241,7 @@ const Order = () => {
     
   };
   const handlePaymentSelect = (method) => {
+    if(userInfor.Email && userInfor.PhoneNumber && userInfor.FullName)
     setSelectedPayment(method); 
   };
 
@@ -257,6 +255,17 @@ const Order = () => {
     // Handle successful PayPal payment here
     console.log('Payment successful:', details, data);
   };
+  const getUser = async ()=>{
+    try{
+      const result = await getUserInfor();
+      setUserInfor(result.userInfor)
+    }catch(err){
+      setError(err.response?.data?.message || 'Login failed.');
+    }
+  }
+  useEffect(()=>{
+    getUser();
+  }, []);
   return (
     <MainContainer>
       <Header />
@@ -271,6 +280,7 @@ const Order = () => {
                             id="outlined-adornment-Ho"
                             label="Họ Tên"
                             name="Họ Tên"
+                            value={userInfor? userInfor.UserFullName: ''}
                         />
                     </FormControl>
                 </Grid>
@@ -281,16 +291,19 @@ const Order = () => {
                             id="outlined-adornment-SDT"
                             label="Số điện thoại"
                             name="Số điện thoại"
+                            value={userInfor? userInfor.PhoneNumber: ''}
+                            
                         />
                     </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                     <FormControl sx={{ width: '100%' }} variant="outlined">
-                        <InputLabel htmlFor="outlined-adornment-SDT">Số điện thoại</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-SDT">Email</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-SDT"
-                            label="Số điện thoại"
-                            name="Số điện thoại"
+                            label="Email"
+                            name="Email"
+                            value={userInfor? userInfor.Email: ''}
                         />
                     </FormControl>
                 </Grid>
@@ -483,12 +496,9 @@ const Order = () => {
                     <Quantity></Quantity>
                     <Price>{(calculateCartTotal() + shippingCost).toLocaleString('vi-VN')  }</Price>
             </CartItem>
-            
-            
-
-                
-            
+        
             {selectedPayment === 'paypal' &&(
+               
                     <PayPalBox>
                     <PayPalScriptProvider options={paypalOptions}>
                     <PayPalButtons
@@ -499,16 +509,18 @@ const Order = () => {
                                 value: (calculateCartTotal() + shippingCost - discount).toFixed(2)
                             }
                             }]
+                        
                         });
                         }}
                         onApprove={handlePayPalSuccess}
+                        
                     />
                     </PayPalScriptProvider>
                 </PayPalBox>
             )}
             {selectedPayment != 'paypal' &&(
+               
                 <BoxVoucher>
-                
                 <PaymentSubmit> <Typography variant='h6'> Thanh Toán </Typography> </PaymentSubmit>
                 </BoxVoucher>
             )

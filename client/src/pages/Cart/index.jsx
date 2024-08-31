@@ -6,6 +6,8 @@ import ProductItem from './ProductItem';
 import ProductQuantity from './ProductQuantity';
 import { useCart } from '../../context/CartContext'; 
 import { useNavigate } from "react-router-dom";
+import { Typography } from '@mui/material';
+
 
 const MainContainer = styled.div`
   margin: 0;
@@ -61,32 +63,48 @@ const TableRow = styled.tr`
 `;
 
 const Button = styled.button`
-  padding: 5px 10px;
+  width: 80%;
+  height: 5vh;
+  padding: 10px;
+  margin: 20px 0;
   background-color: #f48c48;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #e67c73;
-  }
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; 
 `;
-const TotalTitel = styled.td`
-  padding: 15px 1px;
-  text-align: right;
-  font-weight: bold;
-`;
+
 
 const TotalCell = styled.td`
   padding: 15px 1px;
   text-align: center;
   font-weight: bold;
+  justify-content: center;
+  align-items: center;
+`;
+const SubmitButton = styled.div`
+  width: 90%;
+  height: 5vh;
+  padding: 10px;
+  margin: 20px 0;
+  background-color: #f48c48;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; /* Thêm cursor pointer để hiển thị con trỏ khi hover */
+  position: relative;
 `;
 
 const Cart = () => {
   const { cart, removeFromCart } = useCart(); 
   const calculateCartTotal = () => {
     return cart.reduce((total, item) => total + item.Price * item.CartItemQuantity, 0);
+  };
+  const navigate = useNavigate(); 
+  const handleClick = () => {
+    navigate(`/order`);
   };
   return (
     <MainContainer>
@@ -119,8 +137,14 @@ const Cart = () => {
               </TableRow>
             ))}
             <TableRow>
-              <TotalTitel colSpan="4">Tổng giỏ hàng:</TotalTitel>
-              <TotalCell colSpan="2">{calculateCartTotal().toLocaleString('vi-VN')}đ</TotalCell>
+              <TableCellLeft></TableCellLeft>
+              <TableCell></TableCell>
+              <TableCell> <Typography variant='h6'> Tổng giỏ hàng</Typography></TableCell>
+              <TableCell>
+              <TotalCell>{calculateCartTotal().toLocaleString('vi-VN')}đ</TotalCell>
+              </TableCell>
+              
+              <SubmitButton onClick={handleClick}> Đặt hàng </SubmitButton>
             </TableRow>
           </tbody>
         </Table>

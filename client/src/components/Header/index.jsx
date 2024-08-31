@@ -68,7 +68,7 @@ const IconButtonStyled = styled(IconButton)`
 `;
 
 const Header = () => {
-  const { cartCount } = useCart(); // Lấy số lượng sản phẩm từ CartContext
+  const { cart, cartCount } = useCart(); 
   const [selectedLanguage, setSelectedLanguage] = React.useState('VI');
   
   const handleLanguageChange = (event) => {
