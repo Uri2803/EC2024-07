@@ -25,7 +25,7 @@ let getAllOrders = async (req, res) => {
 };
 
 let setOrder = async (req, res) => {
-    const {orderID} = req.body;
+  const { orderID } = req.body;
     try {
         await db.query(
           `UPDATE Orders 
@@ -39,19 +39,41 @@ let setOrder = async (req, res) => {
     }
   };
 
-  let deleteOrder = async (req, res) => {
-    const {orderID} = req.body;
+  let removeOrder = async (req, res) => {
+    const {orderID} = req.params;
     try {
-        // // await db.beginTransaction();
-        // await db.query(
-        //   `DELETE FROM OrderDetails WHERE OrderID = ?`, 
-        //   [orderID]
-        // );
-        await db.query('CALL deleteorder(?)', [orderID]);
-        // await db.commit();
-      res.status(200).json({ status: true });
+      if (!orderID) {
+        return res.status(400).json({ status: 'error', message: 'Order ID is required.' });
+      }
+
+      const [orderResults] = await db.query('SELECT OrderID FROM Orders WHERE OrderID = ?', [orderID]);
+      if (orderResults.length === 0) {
+          return res.status(404).json({ status: 'error', message: 'Order not found.' });
+      }
+
+      // const [orderDetailsResults] = await db.query('SELECT OrderDetailID FROM OrderDetails WHERE OrderID = ?', [orderID]);
+      // if (orderResults.length === 0) {
+      //     return res.status(404).json({ status: 'error', message: 'OrderDetails not found.' });
+      // }
+
+      // const [paymentResults] = await db.query('SELECT PaymentID FROM Payment WHERE OrderID = ?', [orderID]);
+      // if (orderResults.length === 0) {
+      //     return res.status(404).json({ status: 'error', message: 'Payment not found.' });
+      // }
+
+      await db.query('DELETE FROM Payment WHERE OrderID = ?', [orderID]);
+
+      await db.query('DELETE FROM OrderDetails WHERE OrderID = ?', [orderID]);
+
+      const [result] = await db.query('DELETE FROM Orders WHERE OrderID = ?', [orderID]);
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ status: 'error', message: 'Order not found in cart.' });
+      }
+
+      return res.status(200).json({ status: 'success', message: 'Order and related information deleted successfully.' });
+
     } catch (error) {
-        // await db.rollback(); 
       res.status(500).json({ error: error.message });
     }
   };
@@ -59,5 +81,5 @@ let setOrder = async (req, res) => {
 module.exports = {
   getAllOrders: getAllOrders,
   setOrder: setOrder,
-  deleteOrder: deleteOrder,
+  removeOrder: removeOrder,
 };

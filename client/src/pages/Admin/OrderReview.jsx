@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getAllOrders , orderConfirmation ,orderDelete } from '../../service/api';
+import { Pagination } from '@mui/material';
 // import orders from './Data';
 
 
@@ -99,9 +100,21 @@ const DataContainer = styled.div`
   border-radius: 20px;
   background-color: #fff;
 `;
+
+const StyledPagination = styled(Pagination)`
+  .MuiPaginationItem-root {
+    color: #000; 
+    &:hover {
+      color: #F48C48; 
+    }
+  }
+  .Mui-selected {
+    color: #fff; 
+    background-color: #F48C48 !important;
+  }
+`;
 export default function OrderReview() {
   const [rawData , setRawData] = useState([]);
-
   const handleCheckTrue = async (orderID) => {
     try {
       await orderConfirmation(orderID); 
@@ -165,11 +178,21 @@ export default function OrderReview() {
 
     return acc;
 }, []);
+const [currentPage, setCurrentPage] = useState(1);
+const orderPerPage = 5;
+const indexOfLastOrder = currentPage * orderPerPage;
+const indexOfFirstOrder = indexOfLastOrder - orderPerPage;
+const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
+const pageCount = Math.ceil(orders.length / orderPerPage);
+
+const handleChangePage = (event, value) => {
+  setCurrentPage(value);
+};
   return (
     <ContentContainer>
       <TileDiv style={{ color: '#F48C48', fontWeight: 600 }}>Duyệt đơn hàng</TileDiv>
-      {orders.map((order, index) => (
+      {currentOrders.map((order, index) => (
         <OrderContainer key={index}>
           <OrderHeader>
             <span>{order.orderId}</span>
@@ -191,6 +214,13 @@ export default function OrderReview() {
           </OrderContent>
         </OrderContainer>
       ))}
+      <StyledPagination
+                count={pageCount}
+                page={currentPage}
+                onChange={handleChangePage}
+                shape="rounded"
+                sx={{ fontSize: '5vw', display: 'flex', justifyContent: 'center' }}
+            />
     </ContentContainer>
   );
 }

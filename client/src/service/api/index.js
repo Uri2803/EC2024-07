@@ -68,15 +68,27 @@ export const getProductDetail = async (productID) => {
 
 export const getAllOrders = async () => {
     try {
-        const response = await axios.get(`${url.REST_API}/allorders`);
-        return response.data;
+        const response = await axios.get(`${url.REST_API}/allorders/`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
     } catch (error) {
         throw error;
     }
 };
 export const orderConfirmation = async (orderID) => {
     try {
-        const response = await axios.post(`${url.REST_API}/updateorders`, {orderID});
+        const response = await axios.put(`${url.REST_API}/updateorders`, {orderID},{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        console.log('Response Data:', response.data);
         return response.data;
     } catch (error) {
         throw error;
@@ -84,7 +96,13 @@ export const orderConfirmation = async (orderID) => {
 };
 export const orderDelete = async (orderID) => {
     try {
-        const response = await axios.post(`${url.REST_API}/deleteorders`, {orderID});
+        const response = await axios.delete(`${url.REST_API}/remove/order/${orderID}`,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        console.log('Response Data:', response.data);
         return response.data;
     } catch (error) {
         throw error;
