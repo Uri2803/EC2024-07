@@ -48,7 +48,7 @@ export const getUserInfor = async () => {
 
 export const getAllProducts = async () => {
     try {
-        const response = await axios.get(`${url.REST_API}/allproducts`);
+        const response = await axios.get(`${url.REST_API}/allproducts` );
         return response.data;
     } catch (error) {
         throw error;
@@ -57,7 +57,12 @@ export const getAllProducts = async () => {
 
 export const getAllAccounts = async () => {
     try {
-        const response = await axios.get(`${url.REST_API}/admin`);
+        const response = await axios.get(`${url.REST_API}/admin/getallacount`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }) ;
         return response.data;
     } catch (error) {
         throw error;

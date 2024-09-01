@@ -75,8 +75,10 @@ let getUserInfor = async (req, res) => {
 };
 
 let getAllAccounts = async (req, res) => {
+
     try {
       const [accounts] = await db.query('SELECT * FROM Account');
+
       res.status(200).json({status: true, accounts:accounts});
     } catch (error) {
       res.status(500).json({ error: error.message });

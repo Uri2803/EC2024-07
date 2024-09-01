@@ -125,8 +125,29 @@ const TileDiv = styled.div`
     }
 `;
 
-export default function AccountTable({accounts}){
-    console.log(accounts);
+export default function AccountTable(){
+    
+    const [accounts, setAccounts] = useState([]);
+    const getAccounts= async() => {
+        try{
+            const data = await getAllAccounts();
+            console.log('test' , data)
+    
+            if (data.status ) {
+                console.log(data)
+                setAccounts(data.accounts);
+            } else {
+                console.error('Grillers is not an array or status is false:', data.griller);
+            }
+            
+        }catch(err){
+            console.error('Error fetching data:', err);
+        }
+    }
+    useEffect(()=>{
+        getAccounts();
+        console.log('res: ', );
+    },[]) 
     return (
         <TableContainer>
             <TileDiv style={{ color: '#F48C48', fontWeight: 600 }}>Danh sách tài khoản</TileDiv>
