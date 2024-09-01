@@ -73,8 +73,18 @@ let getUserInfor = async (req, res) => {
         return res.status(404).json({ status: false, message: 'No data found or login failed' });
     }
 };
+
+let getAllAccounts = async (req, res) => {
+    try {
+      const [accounts] = await db.query('SELECT * FROM Account');
+      res.status(200).json({status: true, accounts:accounts});
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 export default {
     login,
     authenticateJWT,
-    getUserInfor
+    getUserInfor,
+    getAllAccounts
 };
