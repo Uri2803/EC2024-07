@@ -130,7 +130,7 @@ export default function Login() {
             Register here!
           </StyledNavLink>
         </TextLogin>
-        <InputStyled
+        < InputStyled
           placeholder="Enter your Email"
           sx={{ mb: 4 }}
           id="input-with-icon-textfield"
