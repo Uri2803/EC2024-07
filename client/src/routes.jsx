@@ -112,6 +112,26 @@ const routes = [
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
+  {
+    path: "/admin",
+    component: Admin,
+    protected: true,
+    isAuthenticated,
+    propsLayout: {
+      title: "Admin",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/chef",
+    component: Chef,
+    protected: true,
+    isAuthenticated,
+    propsLayout: {
+      title: "Chef",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
 ];
 
 export default routes;
