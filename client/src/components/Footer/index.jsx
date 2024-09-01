@@ -7,6 +7,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import EmailIcon from '@mui/icons-material/Email';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const FooterContainer = styled(Box)`
   width: 100vw;
@@ -32,6 +33,19 @@ const Payment = styled.img`
 
 const StyledTypography = styled.p`
   font-family: Tahoma, sans-serif;
+  font-size: 1.5vw;
+  font-weight: bold;
+  color: #fff; 
+   @media (max-width: 768px) {
+    font-size: 1.8vw;
+  }
+  @media (max-width: 480px) {
+    font-size: 2vw;
+  }
+`;
+
+const StyledText = styled.p`
+  font-family: Tahoma, sans-serif;
   font-size: 1.2vw;
   color: #fff; 
    @media (max-width: 768px) {
@@ -40,6 +54,25 @@ const StyledTypography = styled.p`
   @media (max-width: 480px) {
     font-size: 2vw;
   }
+`;
+
+const StyledNavLink = styled(NavLink)`
+  font-family: Tahoma, sans-serif;
+  font-size: 1.2vw;
+  color: #fff; 
+  text-decoration: none;
+   @media (max-width: 768px) {
+    font-size: 1.8vw;
+  }
+  @media (max-width: 480px) {
+    font-size: 2vw;
+  }
+`;
+
+const NavLinksContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const Menu = styled(Grid)`
@@ -78,15 +111,11 @@ const Contact = styled.div`
   }
 `;
 
-
-
 const Copyright = styled(Typography)`
   font-size: 14px;
   color: #666;
   margin-top: 16px;
 `;
-
-
 
 const Footer = () => {
   return (
@@ -94,9 +123,9 @@ const Footer = () => {
       <Grid container spacing={2}>
         <Grid item xs={5} style={{ marginLeft: '4vw' }}>
           <StyledTypography variant="h1" gutterBottom>QKAA Bakery</StyledTypography>
-          <StyledTypography gutterBottom>Địa chỉ: 227 Nguyễn Văn Cừ, phường 4, Quận 5, TP. HCM</StyledTypography>
-          <StyledTypography gutterBottom>Hotline: 0987654321</StyledTypography>
-          <StyledTypography gutterBottom>Email: qkaa.bakery@gmail.com</StyledTypography>
+          <StyledText gutterBottom>Địa chỉ: 227 Nguyễn Văn Cừ, phường 4, Quận 5, TP. HCM</StyledText>
+          <StyledText gutterBottom>Hotline: 0987654321</StyledText>
+          <StyledText gutterBottom>Email: qkaa.bakery@gmail.com</StyledText>
           <Grid container spacing={1}>
             <Grid item>
               <IconButton aria-label="Facebook">
@@ -117,11 +146,14 @@ const Footer = () => {
         </Grid>
         <Grid item xs={3}>
           <StyledTypography variant="h6" gutterBottom>Liên kết nhanh</StyledTypography>
-          <StyledTypography gutterBottom>Giới thiệu</StyledTypography>
-          <StyledTypography gutterBottom>Chính sách đổi trả</StyledTypography>
-          <StyledTypography gutterBottom>Chính sách bảo mật</StyledTypography>
-          <StyledTypography gutterBottom>Điều khoản dịch vụ</StyledTypography>
-          <StyledTypography gutterBottom>Câu hỏi thường gặp</StyledTypography>
+          <NavLinksContainer>
+            <StyledNavLink to="/about" exact activeClassName="active">Về chúng tôi</StyledNavLink>
+            <StyledNavLink to="/return-policy" exact activeClassName="active">Chính sách đổi trả</StyledNavLink>
+            <StyledNavLink to="/privacy-policy" exact activeClassName="active">Chính sách bảo mật</StyledNavLink>
+            <StyledNavLink to="/shipping-policy" exact activeClassName="active">Chính sách vận chuyển</StyledNavLink>
+            <StyledNavLink to="/payment-policy" exact activeClassName="active">Chính sách thanh toán</StyledNavLink>
+          </NavLinksContainer>
+
         </Grid>
         <Grid item xs={3} container direction="column" alignItems="center">
           <StyledTypography variant="h5" gutterBottom>Hỗ trợ thanh toán</StyledTypography>
