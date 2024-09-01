@@ -171,7 +171,8 @@ CREATE TABLE ProductBatch (
     ProductID VARCHAR(10),
     GrillerID VARCHAR(10),
     Quantity INT,
-    CookingTime DATE,
+    CookingTime INT,
+    BatchStatus VARCHAR(50),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
     FOREIGN KEY (GrillerID) REFERENCES Griller(GrillerID)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
