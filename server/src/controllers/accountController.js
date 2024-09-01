@@ -86,5 +86,5 @@ export default {
     login,
     authenticateJWT,
     getUserInfor,
-    getAllAccounts
+    getAllAccounts: getAllAccounts
 };
