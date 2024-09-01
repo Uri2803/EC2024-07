@@ -79,12 +79,6 @@ const getOrder = async (req, res) => {
     }
 };
 
-module.exports = {
-    createOrder:createOrder,
-    getOrder:getOrder,
-    
-  };
-import db from '../model/database';
 
 let getAllOrders = async (req, res) => {
   try {
@@ -168,4 +162,6 @@ module.exports = {
   getAllOrders: getAllOrders,
   setOrder: setOrder,
   removeOrder: removeOrder,
+  createOrder:createOrder,
+getOrder:getOrder,
 };

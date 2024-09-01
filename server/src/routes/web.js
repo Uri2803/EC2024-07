@@ -1,9 +1,9 @@
 import express from 'express';
 import Products from '../controllers/productController';
 import Acount from '../controllers/accountController';
-import Cart from '../controllers/cartController'
-import Ship from '../controllers/shipController'
-import Order from '../controllers/orderController'
+import Cart from '../controllers/cartController';
+import Ship from '../controllers/shipController';
+import Order from '../controllers/orderController';
 let route = express.Router();
 
 let initWebRoutes = (app) => {
