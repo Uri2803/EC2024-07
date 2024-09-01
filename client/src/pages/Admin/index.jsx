@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styled from 'styled-components';
 import { Box, Typography, Paper } from '@mui/material';
 import OrderReview from './OrderReview';
 import { getUserInfor } from '../../service/api';
+import { useNavigate } from 'react-router-dom';
 
 const MainContainer = styled.div`
   margin: 0;
@@ -80,6 +81,7 @@ const ContentContainer = styled(Box)`
 `;
 
 export default function Admin() {
+  const navigate = useNavigate();
     const [activeButton, setActiveButton] = useState('Duyệt đơn hàng');
     const renderContent = () => {
       switch (activeButton) {
@@ -88,6 +90,7 @@ export default function Admin() {
         case 'Quản lý tài khoản':
           return <Typography variant="h6">Quản lý tài khoản.</Typography>;
         case 'Đăng xuất':
+          handleLogout();
           return <Typography variant="h6">Bạn đã đăng xuất.</Typography>;
         default:
           return <Typography variant="h6">Vui lòng chọn một mục.</Typography>;
@@ -105,6 +108,11 @@ export default function Admin() {
         setError(err.response?.data?.message || 'Login failed.');
       }
     }
+    const handleLogout = useCallback(() => {
+      localStorage.removeItem('token');
+      navigate('/');
+    }, [navigate]);
+  
     useEffect(()=>{
       getUser();
     }, []);

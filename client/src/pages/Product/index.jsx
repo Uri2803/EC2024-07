@@ -55,7 +55,7 @@ const BoxProduct = styled(Box)`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    
     padding: 2vw;
     margin-left: 1vw;
     @media (max-width: 768px) {
@@ -94,55 +94,58 @@ export default function Product({ filter }) {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedFilters, setSelectedFilters] = useState({});
+    const [priceRange, setPriceRange] = useState([1000, 500000]); // Added priceRange state
     const productsPerPage = 6;
 
     const getProducts = async () => {
         try {
-            const data = await getAllProducts(selectedFilters);
-
-            if (data.status && Array.isArray(data.products)) {
-                setProducts(data.products);
-                setFilteredProducts(data.products);
-            } else {
-                console.error('Products is not an array or status is false:', data.products);
-            }
-        } catch (err) {
-            console.error('Error fetching data:', err);
+            const query = new URLSearchParams({
+                ...selectedFilters,
+                minPrice: priceRange[0],
+                maxPrice: priceRange[1],
+            }).toString();
+            const response = await getAllProducts(query);
+            setProducts(response.products);
+        } catch (error) {
+            console.error('Error fetching products:', error);
         }
     };
 
     useEffect(() => {
         getProducts();
-    }, [selectedFilters]);
+    }, [selectedFilters, priceRange, currentPage]);
 
     useEffect(() => {
         filterProducts();
-    }, [selectedFilters]);
+    }, [products, selectedFilters, priceRange]);
 
     const filterProducts = () => {
-        let tempProducts = products;
-    
-        if (Object.keys(selectedFilters).length > 0) {
-            tempProducts = tempProducts.filter(product => {
-                return Object.entries(selectedFilters).every(([key, values]) => {
-                    if (Array.isArray(values)) {
-                        return values.includes(product[key]);
-                    } else {
-                        return product[key] === values;
-                    }
-                });
-            });
+        let result = [...products];
+
+        if (selectedFilters) {
+            const { typePoduct, flavor } = selectedFilters;
+            if (typePoduct) {
+                const typeProductNames = typePoduct.split(',');
+                result = result.filter(product =>
+                    typeProductNames.includes(product.TypeProductName)
+                );
+            }
+            if (flavor) {
+                const flavors = flavor.split(',').map(f => f.trim());
+                result = result.filter(product =>
+                    flavors.some(flavor => product.ProductName.includes(flavor))
+                );
+            }
         }
-    
-        setFilteredProducts(tempProducts);
-        setCurrentPage(1); // Reset về trang đầu tiên khi thay đổi bộ lọc
+
+        const [minPrice, maxPrice] = priceRange;
+        result = result.filter(product => product.Price >= minPrice && product.Price <= maxPrice);
+
+        setFilteredProducts(result);
     };
 
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-
     const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
+    const currentProducts = filteredProducts.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage);
 
     const handleChangePage = (event, value) => {
         setCurrentPage(value);
@@ -159,7 +162,7 @@ export default function Product({ filter }) {
                     </CategoryTile>
                     <Filter filter={Data.filter_1} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
                     <Filter filter={Data.filter_2} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
-                    <FilterPrice />
+                    <FilterPrice onChange={setPriceRange} />
                 </Category>
                 <BoxProduct>
                     {currentProducts.map((product, index) => (

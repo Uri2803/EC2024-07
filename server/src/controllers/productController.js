@@ -2,7 +2,7 @@ import db from '../model/database';
 
 let getAllProducts = async (req, res) => {
   try {
-    const { typePoduct, flavor } = req.query;
+    const { typePoduct, flavor, minPrice, maxPrice } = req.query;
     let query = 'SELECT * FROM Products JOIN TypeProducts ON TypeProducts.TypeProductID = Products.TypeProductID WHERE 1=1';
     let queryParams = [];
     if (typePoduct) {
@@ -15,6 +15,15 @@ let getAllProducts = async (req, res) => {
       const flavors = flavor.split(',').map(f => f.trim()); 
       query += ' AND (' + flavors.map(() => 'Products.ProductName LIKE ?').join(' OR ') + ')';
       queryParams.push(...flavors.map(f => `%${f}%`)); 
+    }
+    if (minPrice) {
+      query += ' AND Products.Price >= ?';
+      queryParams.push(Number(minPrice));
+    }
+
+    if (maxPrice) {
+      query += ' AND Products.Price <= ?';
+      queryParams.push(Number(maxPrice));
     }
     const [products] = await db.query(query, queryParams);
 

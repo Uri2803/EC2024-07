@@ -29,7 +29,7 @@ const LanguageSelect = ({ selectedLanguage, onChange }) => {
             <img
               src={lang.flag}
               alt={lang.name}
-              style={{ width: '1.5vh', height: '1.5vh', marginRight: '1vw', marginTop: '1vh' }}
+              style={{ width: '1.5vw', marginRight: '1vw', marginTop: '1vh', objectFit: 'cover' }}
             />
           </ListItemIcon>
           <span>{lang.code}</span>

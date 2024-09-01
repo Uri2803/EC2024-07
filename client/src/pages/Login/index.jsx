@@ -121,10 +121,18 @@ export default function Login() {
       console.log(email, password);
       const result = await loginUser(email, password);
       localStorage.setItem('token', result.token);
-      console.log(result);
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true }); 
-      window.location.reload(); 
+      const user = result.user
+      if(user.role== 'Customer'){
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true }); 
+        window.location.reload(); 
+
+      }
+      if(user.role === 'Employee'){
+        navigate('/admin'); 
+        window.location.reload();
+      }
+      
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed.');
     } finally {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Slider, InputAdornment, Box } from '@mui/material';
+import { Grid, TextField, Slider } from '@mui/material';
 import styled from 'styled-components';
 
 const PriceFilter = styled(TextField)`
@@ -43,7 +43,7 @@ const CustomSlider = styled(Slider)`
         border: 1px solid #666;
     }
     .MuiSlider-track {
-         height: 0.5vw;
+        height: 0.5vw;
         background-color: Orange;
         border: 1px solid #666;
     }
@@ -55,25 +55,26 @@ const CustomSlider = styled(Slider)`
     }
 `;
 
-export default function FilterPrice() {
-    const formatValue = (value) => {
-        return `${Math.round(value / 1000).toLocaleString('vi-VN')}.000đ`;
-    };
+export default function FilterPrice({ onChange }) {
+    const formatValue = (value) => `${Math.round(value / 1000).toLocaleString('vi-VN')}.000đ`;
 
-    const [value, setValue] = useState([1000, 500000]);
+    const [value, setValue] = useState([1000, 50000]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        onChange(newValue); // Notify parent about the change
     };
 
     const handleFromChange = (event) => {
         const newValue = [Number(event.target.value.replace(/\./g, '')) * 1000, value[1]];
         setValue(newValue);
+        onChange(newValue); // Notify parent about the change
     };
 
     const handleToChange = (event) => {
         const newValue = [value[0], Number(event.target.value.replace(/\./g, '')) * 1000];
         setValue(newValue);
+        onChange(newValue); // Notify parent about the change
     };
 
     return (
@@ -110,7 +111,7 @@ export default function FilterPrice() {
                         valueLabelFormat={formatValue}
                         disableSwap
                         min={1000}
-                        max={500000}
+                        max={50000}
                     />
                 </Grid>
             </Grid>
