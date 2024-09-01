@@ -57,16 +57,16 @@ export const getAllProducts = async () => {
 
 export const getAllAccounts = async () => {
     try {
-        const response = await axios.get(`${url.REST_API}/admin/allaccounts`);
+        const response = await axios.get(`${url.REST_API}/admin`);
         return response.data;
     } catch (error) {
         throw error;
     }
 }
 
-export const getAllProductBatch = async () => {
+export const getAllGrillers= async () => {
     try {
-        const response = await axios.get(`${url.REST_API}/admin/chef`);
+        const response = await axios.get(`${url.REST_API}/admin`);
         return response.data;
     } catch (error) {
         throw error;
