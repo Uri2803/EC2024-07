@@ -196,7 +196,7 @@ const handleChangePage = (event, value) => {
         <OrderContainer key={index}>
           <OrderHeader>
             <span>{order.orderId}</span>
-            <DataContainer style={{ color: '#4285F4' }}>{order.status}</DataContainer>
+            <DataContainer style={{ color: order.status === 'Chưa xác nhận' ? '#4285F4' : '#34A853' }}>{order.status}</DataContainer>
           </OrderHeader>
           <OrderContent>
             {order.items.map((item, idx) => (

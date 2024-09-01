@@ -73,16 +73,14 @@ const ItemButton = styled(Box)`
 
 const ContentContainer = styled(Box)`
   width: 60vw;
-  margin: 2vw;
+  margin: 1vw;
   padding: 20px;
   font-family: Tahoma, sans-serif;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-
 `;
 
 export default function Chef() {
-  const [activeButton, setActiveButton] = useState('Quản lý bếp');
+  const [activeButton, setActiveButton] = useState('Quản lý lò nướng');
   const renderContent = () => {
     switch (activeButton) {
       case 'Quản lý bếp':
@@ -97,17 +95,17 @@ export default function Chef() {
   };
   const [userInfor, setUserInfor] = useState('');
   const [error, setError] = useState('');
-  // const getUser = async ()=>{
-  //   try{
-  //     const result = await getUserInfor();
-  //     setUserInfor(result.userInfor)
-  //   }catch(err){
-  //     setError(err.response?.data?.message || 'Login failed.');
-  //   }
-  // }
-  // useEffect(()=>{
-  //   getUser();
-  // }, []);
+  const getUser = async ()=>{
+    try{
+      const result = await getUserInfor();
+      setUserInfor(result.userInfor)
+    }catch(err){
+      setError(err.response?.data?.message || 'Login failed.');
+    }
+  }
+  useEffect(()=>{
+    getUser();
+  }, []);
 
   return (
     <MainContainer>

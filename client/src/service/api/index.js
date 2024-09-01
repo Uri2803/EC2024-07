@@ -68,7 +68,7 @@ export const getProductDetail = async (productID) => {
 
 export const getAllOrders = async () => {
     try {
-        const response = await axios.get(`${url.REST_API}/allorders/`, {
+        const response = await axios.get(`${url.REST_API}/getallorders/`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -104,6 +104,50 @@ export const orderDelete = async (orderID) => {
         });
         console.log('Response Data:', response.data);
         return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const getAllGrillers = async () => {
+    try {
+        const response = await axios.get(`${url.REST_API}/getallgrillers/`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const removeGriller = async (grillerID) => {
+    try {
+        const response = await axios.delete(`${url.REST_API}/remove/griller/${grillerID}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        console.log('Response Data:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error removing griller:', error);
+        throw error;
+    }
+};
+
+export const updateGriller = async (grillerID) => {
+    try {
+        const response = await axios.put(`${url.REST_API}/update/griller/`, {grillerID}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
     } catch (error) {
         throw error;
     }

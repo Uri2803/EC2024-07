@@ -41,6 +41,7 @@ let setOrder = async (req, res) => {
 
   let removeOrder = async (req, res) => {
     const {orderID} = req.params;
+    console.log(orderID);
     try {
       if (!orderID) {
         return res.status(400).json({ status: 'error', message: 'Order ID is required.' });
