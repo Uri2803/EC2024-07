@@ -2,10 +2,21 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { Box, Avatar, Select, Grid, MenuItem, Typography, FormControl, InputLabel, OutlinedInput , CircularProgress } from '@mui/material';
-import { getProvince, getDistricts, getWards, getshippingCost, getUserInfor } from '../../service/api';
+import { Box, Avatar, Select, Grid, MenuItem, Typography, FormControl, InputLabel, OutlinedInput ,Alert, CircularProgress } from '@mui/material';
+import { getProvince, getDistricts, getWards, getShippingCost, getUserInfor , getShippingDate, createOrder} from '../../service/api';
 import { useCart } from '../../context/CartContext'; 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { useNavigate } from "react-router-dom";
+const formatDateTimeForInput = (isoDateTime) => {
+    const date = new Date(isoDateTime);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
 
 const paypalOptions = {
     "client-id": "AYtH9i-MIFXQKrUj8dIbTnVpXCpRmc6IntqbaIjQLZWHHD6e5-V-4apifhskLmHwVYO4bt5oxLJE7q6b"
@@ -26,7 +37,6 @@ const BodyBox = styled.div`
   width: 80vw;
   display: flex;
   justify-content: center;
- 
   margin: 10vh 0;
   flex-direction: row;
 `;
@@ -163,9 +173,18 @@ const Order = () => {
   const [selectedPayment, setSelectedPayment] = useState('');
   const [shippingCost, setShippingCost] = useState(0);
   const [discount, setDiscount] = useState(0)
+  const [initShipDate, setInitShipdate] =useState('');
   const { cart} = useCart(); 
-  const [userInfor, setUserInfor] = useState('');
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); 
+  const [userInfor, setUserInfor] = useState({
+    UserFullName: '',
+    PhoneNumber: '',
+    Email: '',
+    Address: '',
+    HouseStreet: '',
+    Note: '',
+    ShippDate: ''
+  });
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
@@ -215,16 +234,20 @@ const Order = () => {
       const ward = wards.find((ward) => ward.id === wardId);
       console.log(ward)
       if (ward) {
-        fetchShippingCost(ward.latitude, ward.longitude); // Ensure latitude and longitude are used correctly
+        fetchShippingCost(ward.latitude, ward.longitude);
+        fetchShippDate(cart, ward) 
       }
     }
+    
   }, [wardId, wards]); 
 
   const fetchShippingCost = async (lat, long) => {
     try {
-      const data = await getshippingCost(lat, long);
+      const data = await getShippingCost(lat, long);
       setShippingCost(data.shippingCost);
+      setmessNotif('')
     } catch (error) {
+        setmessNotif('Không hỗ trợ giao hàng tại địa điểm này')
       console.error('Error fetching shipping cost:', error);
     }
   };
@@ -240,9 +263,15 @@ const Order = () => {
     setWardId(event.target.value);
     
   };
+  const [messNotif, setmessNotif] = useState("");
   const handlePaymentSelect = (method) => {
-    if(userInfor.Email && userInfor.PhoneNumber && userInfor.FullName)
-    setSelectedPayment(method); 
+    if(userInfor. UserFullName && userInfor.Email && userInfor.PhoneNumber && selectedWard && userInfor.HouseStreet){
+        setmessNotif('')
+        setSelectedPayment(method);
+        
+    }else{
+        setmessNotif('Vui lòng điền đủ thông tin')
+    } 
   };
 
   const selectedProvince = provinces.find((province) => province.id === provinceId);
@@ -251,21 +280,86 @@ const Order = () => {
   const calculateCartTotal = () => {
     return cart.reduce((total, item) => total + item.Price * item.CartItemQuantity, 0);
   };
-  const handlePayPalSuccess = (details, data) => {
-    // Handle successful PayPal payment here
-    console.log('Payment successful:', details, data);
+  
+  const handleSubmit = async () => {
+    
+    try {
+      const response = await await createOrder( userInfor, cart ,shippingCost, calculateCartTotal())
+      console.log(response)
+      console.log('ctd', response)
+      if (response.status) {
+        setmessNotif("Order placed successfully!");
+        alert('thanh toán và đặt hàng thành công');
+        console.log('thành công')
+        handleNavigation(response.orderID);  
+      } else {
+        alert('Lỗi thanh toán vui lòng thử lại');
+        setmessNotif("Error placing the order.");
+      }
+    } catch (error) {
+        alert('Lỗi thanh toán vui lòng thử lại');
+        setmessNotif("Error placing the order.");
+      console.error('Error submitting order:', error);
+    }
   };
-  const getUser = async ()=>{
-    try{
+
+  const getUser = async () => {
+    try {
       const result = await getUserInfor();
-      setUserInfor(result.userInfor)
-    }catch(err){
-      setError(err.response?.data?.message || 'Login failed.');
+      setUserInfor(result.userInfor);
+    } catch (err) {
+      console.error(err.response?.data?.message || 'Login failed.');
     }
   }
+  const fetchShippDate = async (cart, ward) => {
+    try {
+      const result = await getShippingDate(cart, ward);
+      const shipdate = result.estimatedShippingDate;
+      console.log('Ship date fetched:', shipdate); // Kiểm tra giá trị shipdate
+  
+      await setUserInfor(prevState => ({
+        ...prevState,
+        ShippDate: shipdate
+      }));
+      setInitShipdate(shipdate)
+    } catch (err) {
+      console.error(err.response?.data?.message || 'Login failed.');
+    }
+  };
+  
   useEffect(()=>{
     getUser();
+    
   }, []);
+  const handleNavigation = (orderID) => {
+    // Sử dụng navigate để điều hướng
+    navigate(`/ordersuccess/${orderID}`);
+
+    // Sau khi điều hướng xong, reload lại trang
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    if (selectedWard || selectedDistrict || selectedProvince) {
+      setUserInfor({
+        ...userInfor,
+        Address: `${selectedWard && selectedWard.full_name ? selectedWard.full_name + ', ' : ''}${selectedDistrict && selectedDistrict.full_name ? selectedDistrict.full_name + ', ' : ''}${selectedProvince && selectedProvince.full_name ? selectedProvince.full_name : ''}`
+      });
+    }
+  }, [selectedWard, selectedDistrict, selectedProvince]);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+   if (name === 'ShippDate' && value < initShipDate) {
+       alert('Ngày giao hàng không được nhỏ hơn ngày dự kiến giao hàng.');
+        return;
+    } else {
+        setUserInfor({
+            ...userInfor,
+            [name]: value
+        });
+    }
+};
+  
   return (
     <MainContainer>
       <Header />
@@ -279,8 +373,9 @@ const Order = () => {
                         <OutlinedInput
                             id="outlined-adornment-Ho"
                             label="Họ Tên"
-                            name="Họ Tên"
-                            value={userInfor? userInfor.UserFullName: ''}
+                            name="UserFullName"
+                            value={userInfor.UserFullName}
+                            onChange={handleInputChange}
                         />
                     </FormControl>
                 </Grid>
@@ -290,8 +385,9 @@ const Order = () => {
                         <OutlinedInput
                             id="outlined-adornment-SDT"
                             label="Số điện thoại"
-                            name="Số điện thoại"
-                            value={userInfor? userInfor.PhoneNumber: ''}
+                            name="PhoneNumber"
+                            value={userInfor.PhoneNumber}
+                            onChange={handleInputChange}
                             
                         />
                     </FormControl>
@@ -300,10 +396,11 @@ const Order = () => {
                     <FormControl sx={{ width: '100%' }} variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-SDT">Email</InputLabel>
                         <OutlinedInput
-                            id="outlined-adornment-SDT"
+                            id="outlined-adornment-Email"
                             label="Email"
                             name="Email"
-                            value={userInfor? userInfor.Email: ''}
+                            value={userInfor.Email}
+                            onChange={handleInputChange}
                         />
                     </FormControl>
                 </Grid>
@@ -367,8 +464,11 @@ const Order = () => {
                         <OutlinedInput
                             id="outlined-adornment-sonha-tenduongct"
                             label="Số nhà, Tên đường"
-                            name="địa chỉ"
+                            name="HouseStreet"
                             placeholder="(VD: 227 Nguyễn Văn Cừ)"
+                          
+                            value={userInfor.HouseStreet}
+                            onChange={handleInputChange}
                         />
                     </FormControl>
                 </Grid>
@@ -376,25 +476,54 @@ const Order = () => {
                     <FormControl sx={{ width: '100%' }} variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-diachi">Địa chỉ</InputLabel>
                         <OutlinedInput
-                            id="outlined-adornment-diachi"
-                            label="Địa chỉ"
-                            name="Địa chỉ"
-                            value={`${selectedWard ? selectedWard.full_name + ', ' : ''}${selectedDistrict ? selectedDistrict.full_name + ', ' : ''}${selectedProvince ? selectedProvince.full_name : ''}`}
+                            id="outlined-adornment-Diachi"
+                            label="Địa Chỉ"
+                            name="Address"
+                            value={userInfor.Address}
+                            onChange={handleInputChange}
                             placeholder="Xã/Phường, Quận/Huyện, Tỉnh/Thành"
                         />
                     </FormControl>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={4}>
+                    <FormControl sx={{ width: '100%' }} variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-Ngaygiaobanh" >Ngày giao Bánh</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-ShippDate"
+                            label="ShippDate"
+                            name="ShippDate"
+                            type="datetime-local"
+                            value={formatDateTimeForInput(userInfor.ShippDate)}
+                            onChange={(event) => handleInputChange(event, userInfor, setUserInfor)}
+                            
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid item xs={8}>
                     <FormControl sx={{ width: '100%' }} variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-ghichu">Ghi chú</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-ghichu"
                             label="Ghi chú"
-                            name="Ghi chú"
+                            name="Note"
+                            value={userInfor.Note}
+                            onChange={handleInputChange}
                             placeholder="Ghi chú (ví dụ: giao giờ hành chính)"
                         />
                     </FormControl>
                 </Grid>
+                <Grid item xs={12}>
+                {messNotif ? (
+                    <Alert severity="error">{messNotif}</Alert>
+                ) : null}
+
+                </Grid>
+                
+
+               
+
+                  
+               
             </Grid>
 
 
@@ -483,7 +612,7 @@ const Order = () => {
                 <CartItem>
                     <ProductName>Giảm giá</ProductName>
                     <Quantity></Quantity>
-                    <Price>{calculateCartTotal().toLocaleString('vi-VN')}đ</Price>
+                    <Price>{discount.toLocaleString('vi-VN')}đ</Price>
                 </CartItem>
                 <CartItem>
                     <ProductName>Phí giao hàng</ProductName>
@@ -494,27 +623,31 @@ const Order = () => {
             <CartItem>
                     <ProductName>Tổng thanh toán</ProductName>
                     <Quantity></Quantity>
-                    <Price>{(calculateCartTotal() + shippingCost).toLocaleString('vi-VN')  }</Price>
+                    <Price>{(calculateCartTotal() + shippingCost - discount ).toLocaleString('vi-VN') }</Price>
             </CartItem>
         
             {selectedPayment === 'paypal' &&(
-               
                     <PayPalBox>
                     <PayPalScriptProvider options={paypalOptions}>
-                    <PayPalButtons
-                        createOrder={(data, actions) => {
-                        return actions.order.create({
-                            purchase_units: [{
-                            amount: {
-                                value: (calculateCartTotal() + shippingCost - discount).toFixed(2)
-                            }
-                            }]
-                        
-                        });
-                        }}
-                        onApprove={handlePayPalSuccess}
-                        
-                    />
+                        <PayPalButtons
+                            createOrder={(data, actions) => {
+                                return actions.order.create({
+                                    purchase_units: [{
+                                        amount: {
+                                            value: calculateCartTotal() + shippingCost - discount,
+                                        },
+                                    }],
+                                });
+                            }}
+                            onApprove={async (data, actions) => {
+                                await actions.order.capture();
+                                handleSubmit(); // Call your handleSubmit function to complete the order
+                            }}
+                            onError={(err) => {
+                                console.error("PayPal Checkout error:", err);
+                                setmessNotif("Payment failed. Please try again.");
+                            }}
+                        />
                     </PayPalScriptProvider>
                 </PayPalBox>
             )}

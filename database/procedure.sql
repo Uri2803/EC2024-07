@@ -104,3 +104,31 @@ BEGIN
     SET NEW.CartID = newCartID;
 END;
 
+
+CREATE TRIGGER before_insert_order
+BEFORE INSERT ON Orders
+FOR EACH ROW
+BEGIN
+    DECLARE nextID INT;
+    DECLARE newOrderID VARCHAR(10);
+    SELECT IFNULL(MAX(CAST(SUBSTRING(OrderID, 3) AS UNSIGNED)), 0) + 1 INTO nextID
+    FROM Orders;
+    SET newOrderID = CONCAT('DH', LPAD(nextID, 4, '0'));
+    SET NEW.OrderID = newOrderID;
+END;
+
+CREATE TRIGGER before_insert_orderdetail
+BEFORE INSERT ON OrderDetails
+FOR EACH ROW
+BEGIN
+    DECLARE nextID INT;
+    DECLARE newOrderDetailID VARCHAR(10);
+
+    SELECT IFNULL(MAX(CAST(SUBSTRING(OrderDetailID, 3) AS UNSIGNED)), 0) + 1 INTO nextID
+    FROM OrderDetails;
+    
+    -- Tạo CartID theo định dạng GH0001, GH0002, ...
+    SET newOrderDetailID = CONCAT('CT', LPAD(nextID, 4, '0'));
+    SET NEW.OrderDetailID = newOrderDetailID;
+END;
+

@@ -48,7 +48,6 @@ const getCart = async (req, res) => {
 };
 
 const removeFromCart = async (req, res) => {
-    console.log(req);
     try {
         const { productID } = req.params;
         const email = req.user.email;

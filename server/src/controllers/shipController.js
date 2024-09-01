@@ -29,7 +29,7 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   ];
   let calculateShipping = async (req, res) => {
     const { lat, lon } = req.body;
-    console.log(req.body)
+
     if(lat&& lon){
         const distance = calculateDistance(quan7Lat,quan7Lon , lat, lon);
         let shippingCost = 0;
@@ -53,7 +53,54 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   
    
   };
+
+  const deliveryTimes = [
+    { maxDistance: 30, time: 2 },    
+    { maxDistance: 50, time: 4 },   
+    { maxDistance: 100, time: 6 },    
+    { maxDistance: 200, time: 24 }, 
+    { maxDistance: 500, time: 36 },
+    { maxDistance: 1000, time: 42 }, 
+    { maxDistance: 1000, time: 72 } 
+];
+
+
+  let calculateShipDate =(req, res)=>{
+    
+    const {cart} = req.body;
+    const {ward} = req.body;
+    const distance = calculateDistance(quan7Lat,quan7Lon , ward.latitude, ward.longitude);
+    let timeShipping = 0;
+    for (const rate of deliveryTimes) {
+      if (distance <= rate.maxDistance) {
+        timeShipping = rate.time;
+          break;
+      }
+      }
+    const orderDate = new Date(); 
+    let totalPreparationTime = 0;
+  let totalCookingTime = 0;
+  cart.forEach(item => {
+    totalPreparationTime = Math.max(item.PrepareTime, totalPreparationTime);
+    totalCookingTime = Math.max(item.CookingTime, totalCookingTime);
+  });
+    const estimatedShippingDate = new Date(orderDate);
+    estimatedShippingDate.setHours(
+     estimatedShippingDate.getHours() +totalPreparationTime + totalCookingTime + 1 + timeShipping // +1 giờ cho thời gian ship
+    );
+    if(estimatedShippingDate.getHours()<8 || estimatedShippingDate.getHours() >20){
+      estimatedShippingDate.setHours(8)
+      estimatedShippingDate.setMinutes(30)
+    }
+    res.json({
+      estimatedShippingDate: estimatedShippingDate.toISOString()
+  });
+  }
+
+
   module.exports = {
-    calculateShipping: calculateShipping
+    calculateShipping: calculateShipping,
+    calculateShipDate:calculateShipDate
+    
 
   };

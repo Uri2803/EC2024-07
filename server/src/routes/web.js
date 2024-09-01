@@ -3,6 +3,7 @@ import Products from '../controllers/productController';
 import Acount from '../controllers/accountController';
 import Cart from '../controllers/cartController'
 import Ship from '../controllers/shipController'
+import Order from '../controllers/orderController'
 let route = express.Router();
 
 let initWebRoutes = (app) => {
@@ -22,7 +23,10 @@ let initWebRoutes = (app) => {
   route.get('/cart', Acount.authenticateJWT, Cart.getCart); 
   route.delete('/remove/:productID',Acount.authenticateJWT, Cart.removeFromCart);
   route.put('/cart/update', Acount.authenticateJWT,Cart.updateCartQuantity);
-  route.post('/calculate-shipping', Ship.calculateShipping)
+  route.post('/calculate-shipping', Ship.calculateShipping);
+  route.post('/calculate-shippingdate', Ship.calculateShipDate);
+  route.post('/order', Acount.authenticateJWT, Order.createOrder);
+  route.get('/getorder/:orderID', Order.getOrder)
   return app.use('/', route);
 };
 

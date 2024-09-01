@@ -32,8 +32,14 @@ const ProductImg = styled.img`
 export default function ProductItem({product}) {
   const navigate = useNavigate(); 
   const handleClick = () => {
-    navigate(`/productdetail/${product.ProductID}`);
+    navigate(`/productdetail/${product.ProductID}`, { state: { scrollToTop: true } });
   };
+
+  React.useEffect(() => {
+    if (window.location.pathname.includes('/productdetail')) {
+      window.scrollTo(0, 0);
+    }
+  }, [window.location.pathname]);
   return (
 
     <ItemBox  onClick={handleClick}>
@@ -46,7 +52,7 @@ export default function ProductItem({product}) {
         {product.ProductName}
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{fontSize: '1vw'}}>
-        {product.Price}
+        {product.Price.toLocaleString('vi-VN')} 
       </Typography>
     </CardContent>
       <RatingBox value={{ value: 5, 

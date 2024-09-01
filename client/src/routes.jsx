@@ -11,6 +11,7 @@ import Checkout from './pages/Checkout';
 import Payment from './pages/Checkout';
 import Cart from './pages/Cart';
 import Order from './pages/Order';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 const isAuthenticated = () => {
   // Check if user is authenticated
@@ -113,6 +114,14 @@ const routes = [
     component: Order,
     propsLayout: {
       title: "Order",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/ordersuccess/:id",
+    component: PaymentSuccess,
+    propsLayout: {
+      title: "PaymentSuccess",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },

@@ -172,7 +172,7 @@ export const getDistricts = async (provinceId) => {
     }
   };
   
-  export const getshippingCost = async (lat, lon) => {
+  export const getShippingCost = async (lat, lon) => {
     try {
         const response = await axios.post(`${url.REST_API}/calculate-shipping`, { lat, lon});
         return response.data;
@@ -180,3 +180,38 @@ export const getDistricts = async (provinceId) => {
         throw error;
     }
 };
+export const getShippingDate = async (cart, ward) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/calculate-shippingdate`, { cart, ward});
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const createOrder = async (userInfor, cart, shippingCost, orderPrice) => {
+   
+    try {
+        const response = await axios.post(`${url.REST_API}/order`, { userInfor, cart, shippingCost, orderPrice }, 
+           { headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const getOrder = async (orderID) => {
+    try {
+        console.log('cvh', orderID)
+        const response = await axios.get(`${url.REST_API}/getorder/${orderID}` );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+

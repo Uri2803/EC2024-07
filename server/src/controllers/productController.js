@@ -12,11 +12,13 @@ let getAllProducts = async (req, res) => {
     }
     
     if (flavor) {
-      const flavors = flavor.split(',').map(f => f.trim()); // Cắt bỏ khoảng trắng
+      const flavors = flavor.split(',').map(f => f.trim()); 
       query += ' AND (' + flavors.map(() => 'Products.ProductName LIKE ?').join(' OR ') + ')';
-      queryParams.push(...flavors.map(f => `%${f}%`)); // Đẩy tất cả hương vị vào queryParams
+      queryParams.push(...flavors.map(f => `%${f}%`)); 
     }
     const [products] = await db.query(query, queryParams);
+
+    
     res.status(200).json({ status: true, products });
   } catch (error) {
     res.status(500).json({ error: error.message });

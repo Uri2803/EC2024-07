@@ -32,6 +32,7 @@ INSERT INTO TypeProducts (TypeProductID, TypeProductName) VALUES
 ('LB0003','Baguette'),
 ('LB0004','Croissant');
 
+
 INSERT INTO Orders (OrderID, CustomerID, OrderDate, OrderPrice, ShippingDate, ShippingPrice, ShippingAddress, OrderStatus)
 VALUES ('DH0001', 'KH0001', '2024-08-01', 100000, '2024-08-03', 20000, '123 Lý Thường Kiệt, Quận 1, TP. Hồ Chí Minh', 'Processing');
 
