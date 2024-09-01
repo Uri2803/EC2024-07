@@ -125,26 +125,8 @@ const TileDiv = styled.div`
     }
 `;
 
-export default function AccountTable({account}){
-    // const [account, setAccounts] = useState([]);
-    // const getAccounts = async() => {
-    //     try{
-    //         const data = await getAllAccounts();
-            
-    //         if (data.status && Array.isArray(data.account)) {
-    //             setAccounts(data.account);
-    //         } else {
-    //             console.error('Accounts is not an array or status is false:', data.account);
-    //         }
-            
-    //     }catch(err){
-    //         console.error('Error fetching data:', err);
-    //     }
-    // }
-    // useEffect(()=>{
-    //     getAccounts();
-    //     console.log('res: ', );
-    // },[]) 
+export default function AccountTable({accounts}){
+    console.log(accounts);
     return (
         <TableContainer>
             <TileDiv style={{ color: '#F48C48', fontWeight: 600 }}>Danh sách tài khoản</TileDiv>
@@ -160,7 +142,7 @@ export default function AccountTable({account}){
                 </tr>
                 </thead>
                 <tbody>
-                {account.map((item, index) => (
+                {accounts.map((item, index) => (
                     <tr key={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
