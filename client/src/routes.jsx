@@ -132,6 +132,22 @@ const routes = [
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
+  {
+    path: "/order",
+    component: Order,
+    propsLayout: {
+      title: "Order",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/ordersuccess/:id",
+    component: PaymentSuccess,
+    propsLayout: {
+      title: "PaymentSuccess",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
 ];
 
 export default routes;
