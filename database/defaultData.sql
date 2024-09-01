@@ -124,7 +124,7 @@ INSERT INTO Employees (EmployeeID, Email, EmployeeName, Position, Salary, Gender
 ('EM0001', 'nguyen.van.abc@example.com', 'Nguyễn Văn A', 'Chef', 15000000, 'Nam');
 
 INSERT INTO ProductBatch (ProductBatchID, ProductID, GrillerID, Quantity, CookingTime) VALUES
-('PB0001', 'MU0001', 'GR0001', 5, '2023-08-02');
+('PB0001', 'MU0001', 'GR0001', 5, '20');
 
 INSERT INTO Coupon (CouponID, ExpiryDate, CouponDescription) VALUES 
     ('FREESHIP', '2024-12-31', 'Miễn ship cho đơn hàng trên 150k'),
