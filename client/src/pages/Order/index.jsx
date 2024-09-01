@@ -6,7 +6,8 @@ import { Box, Avatar, Select, Grid, MenuItem, Typography, FormControl, InputLabe
 import { getProvince, getDistricts, getWards, getShippingCost, getUserInfor , getShippingDate, createOrder} from '../../service/api';
 import { useCart } from '../../context/CartContext'; 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
+
 const formatDateTimeForInput = (isoDateTime) => {
     const date = new Date(isoDateTime);
     const year = date.getFullYear();
@@ -176,6 +177,7 @@ const Order = () => {
   const [initShipDate, setInitShipdate] =useState('');
   const { cart} = useCart(); 
   const navigate = useNavigate(); 
+  const location = useLocation();
   const [userInfor, setUserInfor] = useState({
     UserFullName: '',
     PhoneNumber: '',
@@ -292,6 +294,7 @@ const Order = () => {
         alert('thanh toán và đặt hàng thành công');
         console.log('thành công')
         handleNavigation(response.orderID);  
+        window.location.reload(); 
       } else {
         alert('Lỗi thanh toán vui lòng thử lại');
         setmessNotif("Error placing the order.");

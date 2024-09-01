@@ -111,6 +111,8 @@ const routes = [
   {
     path: "/cart",
     component: Cart,
+    protected: true,
+    isAuthenticated,
     propsLayout: {
       title: "Cart",
       icon: <PermIdentityIcon fontSize="large" />,

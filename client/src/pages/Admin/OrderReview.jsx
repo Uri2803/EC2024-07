@@ -201,7 +201,7 @@ const handleChangePage = (event, value) => {
           <OrderContent>
             {order.items.map((item, idx) => (
               <OrderItem key={idx}>
-                <ProductImage src={`${item.image}/img1.jpg`} alt={item.name} />
+                <ProductImage src={item.image} alt={item.name} />
                 <ProductInfo>
                 <span style={{ display: 'block' }}>{item.name}</span>        
                 <span style={{ display: 'block' }}>x{item.quantity}</span>   

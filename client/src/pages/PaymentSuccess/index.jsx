@@ -9,6 +9,7 @@ import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Stack from '@mui/material/Stack';
+import HomeIcon from '@mui/icons-material/Home';
 
 import { getOrder , getUserInfor} from '../../service/api';
 const formatDateTimeForInput = (isoDateTime) => {
@@ -18,6 +19,7 @@ const formatDateTimeForInput = (isoDateTime) => {
   const day = String(date.getDate()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
+  
   
   return `${day}-${month}-${year}`;
 };
@@ -102,7 +104,17 @@ max-height: 95%;
 object-fit: cover;
 boder-radius: 15px;
 `;
-
+const HomeButton = styled.div`
+  position: fixed; /* Change from absolute to fixed */
+  bottom: 15px; 
+  right: 15px;  
+  background-color: #f48c48; 
+  border-radius: 15px; 
+  padding: 10px 20px; 
+  color: white;
+  cursor: pointer; 
+  z-index: 1000; /* Ensure it's above other content */
+`;
 
 
 
@@ -110,6 +122,7 @@ export default function PaymentSuccess() {
   const { id } = useParams();
   const [order, setOrder] = useState([])
   const [orderInfo, setOrderInfo] = useState('')
+  const navigate = useNavigate();
   const fetchOrder = async (orderID) => {
     try {
       const data = await getOrder(orderID);
@@ -130,6 +143,9 @@ export default function PaymentSuccess() {
     window.scrollTo(0, 0); 
 
   }, [id]);
+  const handleHome = ()=>{
+    navigate('/');
+  }
   const [userInfor, setUserInfor] = useState('');
   const [error, setError] = useState('');
   const getUser = async ()=>{
@@ -215,8 +231,11 @@ export default function PaymentSuccess() {
                       <Price> {(orderInfo.OrderPrice + orderInfo.ShippingPrice - (orderInfo.OrderPrice * 0/100)).toLocaleString('vi-VN') }đ</Price>
               </OrangeCartItem>
               </BoxInfor>
-
+             
       </BodyBox>
+      <HomeButton onClick={handleHome}>
+                <HomeIcon />
+              </HomeButton>
       <Footer/>
     </MainContainer>
   )

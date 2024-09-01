@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styled from 'styled-components';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import AcountInfor from './AcountInfor';
-import { getUserInfor } from '../../service/api';
+import { getUserInfor, getOrderHistory, getOrder } from '../../service/api';
+import { useNavigate } from 'react-router-dom';
+import OrderHistory from './OrderHistory';
+import Address from './Address';
 
 const MainContainer = styled.div`
   margin: 0;
@@ -31,10 +34,9 @@ const AcountBox = styled(Box)`
 const TextDiv = styled.div`
   width: 80vw;
   text-align: right;
-  padding: 10 0px;
+  padding: 10px 0;
   margin-top: 50px;
   font-family: Tahoma, sans-serif;
-  
 `;
 
 const BoxButton = styled.div`
@@ -59,13 +61,6 @@ const ItemButton = styled(Box)`
   cursor: pointer;
   font-family: Tahoma, sans-serif;
   font-size: 1vw;
-  @media (max-width: 768px) {
-    font-size: 1.5vw;
-  }
-  @media (max-width: 480px) {
-    font-size: 1.4vw;
-     width: 20vw;
-  }
   &:hover {
     background-color: ${props => props.active ? '#FFAD33' : '#FFEBCC'};
   }
@@ -78,47 +73,92 @@ const ContentContainer = styled(Box)`
   font-family: Tahoma, sans-serif;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-
 `;
 
 export default function Account() {
   const [activeButton, setActiveButton] = useState('Thông tin tài khoản');
-  const renderContent = () => {
+  const [userInfor, setUserInfor] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
+
+  const getUser = async () => {
+    try {
+      const result = await getUserInfor();
+      setUserInfor(result.userInfor);
+    } catch (err) {
+      console.error('Error fetching user information:', err);
+    }
+  };
+
+  const getoders = async () => {
+    console.log('Fetching order history');
+    try {
+        const data = await getOrderHistory();
+        if (data && data.order) {
+          const o =data.order;
+            const updatedOrders = await Promise.all(
+                o.map(async (order) => {
+                    const details = await fetchOrderDetails(order.OrderID);
+                    const od = details.order;
+                    return { ...order, od };
+                })
+            );
+            setOrders(updatedOrders);
+        } else {
+            console.error('Error: Orders is not an array or status is false:', data.order);
+        }
+    } catch (err) {
+        console.error('Error fetching order history:', err);
+    }
+};
+
+  const fetchOrderDetails = async (orderID) => {
+    try {
+        const details = await getOrder(orderID);
+        return details;
+    } catch (error) {
+        console.error(`Error fetching details for OrderID ${orderID}:`, error);
+        return [];
+    }
+  };
+
+
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem('token');
+    navigate('/');
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+        await getUser();
+        await getoders();
+    };
+    fetchData();
+}, []);
+
+  const renderContent = useCallback(() => {
     switch (activeButton) {
       case 'Thông tin tài khoản':
-        return <AcountInfor userInfor={userInfor}/>;
+        return <AcountInfor userInfor={userInfor} />;
       case 'Sổ địa chỉ':
-        return <Typography variant="h6">Đây là sổ địa chỉ của bạn.</Typography>;
+        return <Address orders={orders} Address={userInfor.Address}/>;
       case 'Lịch sử đơn hàng':
-        return <Typography variant="h6">Đây là lịch sử đơn hàng của bạn.</Typography>;
+        return <OrderHistory orders={orders}  />;
       case 'Đánh giá':
         return <Typography variant="h6">Đây là đánh giá của bạn.</Typography>;
       case 'Đăng xuất':
+        handleLogout();
         return <Typography variant="h6">Bạn đã đăng xuất.</Typography>;
       default:
         return <Typography variant="h6">Vui lòng chọn một mục.</Typography>;
     }
-  };
-  const [userInfor, setUserInfor] = useState('');
-  const [error, setError] = useState('');
-  const getUser = async ()=>{
-    try{
-      const result = await getUserInfor();
-      setUserInfor(result.userInfor)
-    }catch(err){
-      setError(err.response?.data?.message || 'Login failed.');
-    }
-  }
-  useEffect(()=>{
-    getUser();
-  }, []);
+  }, [activeButton, userInfor, orders, handleLogout]);
 
   return (
     <MainContainer>
       <Header />
-      <TextDiv>Xin chào! <strong>{userInfor.Username}  </strong> </TextDiv>
+      <TextDiv>Xin chào! <strong>{userInfor?.Username}</strong></TextDiv>
       <AcountBox>
-      
         <BoxButton>
           {['Thông tin tài khoản', 'Sổ địa chỉ', 'Lịch sử đơn hàng', 'Đánh giá', 'Đăng xuất'].map(buttonName => (
             <ItemButton

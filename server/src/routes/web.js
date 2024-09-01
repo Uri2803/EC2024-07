@@ -30,6 +30,7 @@ let initWebRoutes = (app) => {
   route.post('/calculate-shippingdate', Ship.calculateShipDate);
   route.post('/order', Acount.authenticateJWT, Order.createOrder);
   route.get('/getorder/:orderID', Order.getOrder)
+  route.get('/orderhistory', Acount.authenticateJWT, Order.getOrderHistory)
   return app.use('/', route);
 };
 

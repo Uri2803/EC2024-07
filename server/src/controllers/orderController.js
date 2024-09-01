@@ -158,10 +158,44 @@ let setOrder = async (req, res) => {
     }
   };
 
+let getOrderHistory = async(req, res)=>{
+    const email = req.user.email;
+    console.log(req)
+    try{
+        const [customerResult] = await db.query('SELECT CustomerID FROM Customers WHERE Email = ?', [email]);
+        const customerID = customerResult[0].CustomerID;
+        if(customerID){
+            const [order] = await db.query(
+                `SELECT *
+                FROM Orders
+                WHERE Orders.CustomerID = ?`, 
+                [customerID]
+              );
+              console.log(order)
+            if (order.length === 0) {
+                return res.status(404).json({ status: 'info', message: ' is empty.' });
+            }
+            return res.status(200).json({ status: 'success', order});
+        }
+        else{
+            return res.status(404).json({ status: 'info', message: ' is empty.' });
+
+        }
+        
+
+    }catch(err){
+        res.status(500).json({ error: err.message });
+
+    }
+    
+
+}
+
 module.exports = {
   getAllOrders: getAllOrders,
   setOrder: setOrder,
   removeOrder: removeOrder,
   createOrder:createOrder,
-getOrder:getOrder,
+  getOrder:getOrder,
+  getOrderHistory :getOrderHistory 
 };

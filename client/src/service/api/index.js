@@ -258,4 +258,20 @@ export const orderDelete = async (orderID) => {
 };
 
 
+export const getOrderHistory = async () => {
+
+    try {
+        const response = await axios.get(`${url.REST_API}/orderhistory`,{
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 

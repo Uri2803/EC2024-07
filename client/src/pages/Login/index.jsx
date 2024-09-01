@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation  } from 'react-router-dom';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { Box, InputAdornment, TextField, CircularProgress } from '@mui/material';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import LockPersonIcon from '@mui/icons-material/LockPerson';
 import { loginUser } from '../../service/api'; 
+import HomeIcon from '@mui/icons-material/Home';
 
 const MainContainer = styled.div`
   margin: 0;
@@ -95,6 +96,16 @@ const StyledNavLink = styled(NavLink)`
 const Spinner = styled(CircularProgress)`
   position: absolute;
 `;
+const HomeButton = styled.div`
+  position: absolute;
+  bottom: 15px; 
+  right: 15px;  
+  background-color: #f48c48; 
+  border-radius: 15px; 
+  padding: 10px 20px; 
+  color: white;
+  cursor: pointer; 
+`;
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -102,6 +113,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false); // State for loading
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async () => {
     setLoading(true); // Set loading state to true
@@ -110,13 +122,18 @@ export default function Login() {
       const result = await loginUser(email, password);
       localStorage.setItem('token', result.token);
       console.log(result);
-      navigate('/'); 
+      const from = location.state?.from?.pathname || '/';
+      navigate(from, { replace: true }); 
+      window.location.reload(); 
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed.');
     } finally {
       setLoading(false);
     }
   };
+  const handleHome = ()=>{
+    navigate('/');
+  }
 
   return (
     <MainContainer>
@@ -167,7 +184,14 @@ export default function Login() {
         <SubmitButton onClick={handleLogin}>
           {loading ? <Spinner /> : 'Login'}
         </SubmitButton>
+
+        <HomeButton onClick={handleHome}>
+          <HomeIcon />
+        </HomeButton>
+        
       </FormLogin>
+
     </MainContainer>
+    
   );
 }

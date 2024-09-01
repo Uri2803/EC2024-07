@@ -52,7 +52,6 @@ const login = async (req, res) => {
 
 let getUserInfor = async (req, res) => {
     const user  = req.user; 
-    console.log(user);
     if (user.email && user.role) {
         try {
             const [results] = await db.query('CALL GET_USSER_INFOR (?, ?)', [user.email, user.role]);
@@ -77,7 +76,7 @@ let getUserInfor = async (req, res) => {
 
 let register = async (req, res)=>{
     const {email, username, password} = req.body;
-    console.log(req.body);
+
 
     if(email && username && password){
         try{
@@ -87,7 +86,7 @@ let register = async (req, res)=>{
                 status: true
             });
         }catch(err){
-            console.log(err)
+        
             return res.status(500).json({ status: false, message: err.message });
 
         }
