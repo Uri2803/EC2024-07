@@ -28,7 +28,7 @@ const login = async (req, res) => {
                     email: email,
                     username: user.Username,
                     role: user.Role
-                }, JWT_SECRET, { expiresIn: '1h' });
+                }, JWT_SECRET, { expiresIn: '2h' });
                 res.status(200).json({
                     status: true,
                     token,
@@ -52,6 +52,7 @@ const login = async (req, res) => {
 
 let getUserInfor = async (req, res) => {
     const user  = req.user; 
+    console.log(user);
     if (user.email && user.role) {
         try {
             const [results] = await db.query('CALL GET_USSER_INFOR (?, ?)', [user.email, user.role]);
@@ -66,6 +67,7 @@ let getUserInfor = async (req, res) => {
                 return res.status(404).json({ status: false, message: 'No data found or login failed' });
             }
         } catch (err) {
+            console.error(err);
             return res.status(500).json({ status: false, message: 'Internal Server Error' });
         }
     } else {

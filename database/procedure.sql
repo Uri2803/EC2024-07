@@ -56,7 +56,7 @@ BEGIN
         WHERE CT.Email = email;
     ELSEIF role = 'Employee' THEN
         SELECT E.*, AC.Username
-        FROM Employee E 
+        FROM Employees E 
         JOIN Account AC ON AC.Email =  CT.Email
         WHERE E.Email = email;
     ELSE 
