@@ -9,6 +9,7 @@ BEGIN
     SET HashedPassword = LOWER(HEX(SHA2(Password, 256)));
     RETURN HashedPassword;
 END;
+
 ---------------------
 
 
@@ -55,7 +56,7 @@ BEGIN
         WHERE CT.Email = email;
     ELSEIF role = 'Employee' THEN
         SELECT E.*, AC.Username
-        FROM Employee E 
+        FROM Employees E 
         JOIN Account AC ON AC.Email =  CT.Email
         WHERE E.Email = email;
     ELSE 
@@ -132,3 +133,19 @@ BEGIN
     SET NEW.OrderDetailID = newOrderDetailID;
 END;
 
+CREATE OR REPLACE PROCEDURE deleteorder(
+    IN orderID VARCHAR(255)
+)
+BEGIN
+    IF EXISTS (SELECT 1 FROM Orders WHERE Orders.OrderID = orderID) THEN
+		IF EXISTS (SELECT 1 FROM Payment WHERE Payment.OrderID = orderID) then
+			DELETE FROM Payment WHERE OrderID = orderID;
+        END IF;
+        DELETE FROM OrderDetails WHERE OrderID = orderID;
+		DELETE FROM Orders WHERE OrderID = orderID;
+    ELSE
+        -- Raise error if login fails
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Không tồn tại hoặc đã xóa';
+    END IF;
+    
+END;

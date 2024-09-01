@@ -17,6 +17,9 @@ let initWebRoutes = (app) => {
   route.get('/userinfor', Acount.authenticateJWT, Acount.getUserInfor);
   route.get('/productdetail/:productID', Products.getProductDetail);
   route.get('/allproducts', Products.getAllProducts);
+  route.put('/updateorders',Acount.authenticateJWT, Order.setOrder);
+  route.delete('/remove/order/:orderID',Acount.authenticateJWT, Order.removeOrder);
+  route.get('/allorders',Acount.authenticateJWT, Order.getAllOrders);
   route.post('/login', Acount.login);
   route.post('/register', Acount.register);
   route.post('/cart/add', Acount.authenticateJWT, Cart.addToCart);
@@ -31,3 +34,4 @@ let initWebRoutes = (app) => {
 };
 
 module.exports = initWebRoutes;
+

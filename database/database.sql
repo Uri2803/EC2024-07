@@ -30,7 +30,7 @@ CREATE TABLE Orders (
     ShippingAddress VARCHAR(250),
     OrderPrice INT,
     ShippingPrice INT,
-    OrderStatus VARCHAR(50),
+    OrderStatus BOOLEAN,
     FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

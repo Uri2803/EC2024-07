@@ -52,6 +52,7 @@ const login = async (req, res) => {
 
 let getUserInfor = async (req, res) => {
     const user  = req.user; 
+    console.log(user);
     if (user.email && user.role) {
         try {
             const [results] = await db.query('CALL GET_USSER_INFOR (?, ?)', [user.email, user.role]);
