@@ -3,6 +3,7 @@ import { Typography, Box, TextField } from '@mui/material';
 import styled from 'styled-components';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { useState } from "react";
 
 const MainContainer = styled.div`
   margin: 0;
@@ -22,12 +23,6 @@ const BodyBox = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-`;
-
-const Banner = styled.img`
-  width: 98vw;
-  margin: 1vw 0;
-  height: 35vh;
 `;
 
 const BoxContent = styled.div`
@@ -52,6 +47,7 @@ const BoxContent = styled.div`
     background: rgba(0, 0, 0, 0.6); 
     z-index: 1;
   }
+    margin-top: 1rem;
 `;
 
 const ProductContainer = styled.div`
@@ -68,7 +64,7 @@ const ProductImage = styled.img`
 `;
 
 const ProductDetails = styled.div`
-  margin-top: 1rem;
+  margin-top: 2rem;
 `;
 const BoxImg = styled.div`
   display:flex;
@@ -147,14 +143,94 @@ const InputContainer = styled.div`
   width: 30vw;
 `;
 
+const slideStyles = {
+  width: "98vw",
+  height: "400px",  // Set a fixed height
+  borderRadius: "10px",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+};
 
+const rightArrowStyles = {
+  position: "absolute",
+  top: "50%",
+  transform: "translate(0, -50%)",
+  right: "32px",
+  fontSize: "45px",
+  color: "#F48C48",
+  zIndex: 1,
+  cursor: "pointer",
+};
+
+const leftArrowStyles = {
+  position: "absolute",
+  top: "50%",
+  transform: "translate(0, -50%)",
+  left: "32px",
+  fontSize: "45px",
+  color: "#F48C48",
+  zIndex: 1,
+  cursor: "pointer",
+};
+
+const sliderStyles = {
+  position: "relative",
+  height: "100%",
+};
+
+const ImageSlider = ({ slides }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const goToPrevious = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToNext = () => {
+    const isLastSlide = currentIndex === slides.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToSlide = (slideIndex) => {
+    setCurrentIndex(slideIndex);
+  };
+
+  const slideStylesWidthBackground = {
+    ...slideStyles,
+    backgroundImage: `url(${slides[currentIndex].url})`,
+  };
+
+  return (
+    <div style={sliderStyles}>
+      <div>
+        <div onClick={goToPrevious} style={leftArrowStyles}>
+          ❰
+        </div>
+        <div onClick={goToNext} style={rightArrowStyles}>
+          ❱
+        </div>
+      </div>
+      <div style={slideStylesWidthBackground}>
+      </div>
+    </div>
+  );
+};
+
+const slides = [
+  { url: "./public/mainpage/giangsinh.png", title: "Slide 1" },
+  { url: "./public/mainpage/midautumn.png", title: "Slide 2" },
+  { url: "./public/mainpage/opening.png", title: "Slide 3" },
+];
 
 const Mainpage = () => {
   return (
     <MainContainer>
       <Header />
       <BodyBox>
-        <Banner src="./public/Banner.png" alt="Banner" />
+      
+        <ImageSlider slides={slides} />
         <BoxContent>
     
           <ProductContainer>
