@@ -10,6 +10,10 @@ import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
 import Payment from './pages/Checkout';
 import Cart from './pages/Cart';
+import returnPolicy from './pages/Policy/returnPolicy';
+import paymentPolicy from './pages/Policy/paymentPolicy';
+import shippingPolicy from './pages/Policy/shippingPolicy';
+import privacyPolicy from './pages/Policy/privacyPolicy';
 
 const isAuthenticated = () => {
   // Check if user is authenticated
@@ -104,6 +108,38 @@ const routes = [
     component: Cart,
     propsLayout: {
       title: "Cart",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/return-policy",
+    component: returnPolicy,
+    propsLayout: {
+      title: "returnPolicy",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/shipping-policy",
+    component: shippingPolicy,
+    propsLayout: {
+      title: "shippingPolicy",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/privacy-policy",
+    component: privacyPolicy,
+    propsLayout: {
+      title: "privacyPolicy",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/payment-policy",
+    component: paymentPolicy,
+    propsLayout: {
+      title: "paymentPolicy",
       icon: <PermIdentityIcon fontSize="large" />,
     },
   },
