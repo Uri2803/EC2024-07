@@ -30,7 +30,7 @@ BEGIN
             JOIN Customers C ON C.Email = AC.Email
             WHERE AC.Email = email;
         ELSEIF userRole = 'Employee' THEN
-            SELECT AC.Username, AC.Role, E.EmployeeID
+            SELECT AC.Username, E.Position as Role, E.EmployeeID
             FROM Account AC
             JOIN Employees E ON E.Email = AC.Email
             WHERE AC.Email = email;
@@ -54,10 +54,15 @@ BEGIN
         FROM Customers CT 
         JOIN Account AC ON AC.Email =  CT.Email
         WHERE CT.Email = email;
-    ELSEIF role = 'Employee' THEN
+    ELSEIF role = 'Admin' THEN
         SELECT E.*, AC.Username
         FROM Employees E 
-        JOIN Account AC ON AC.Email =  CT.Email
+        JOIN Account AC ON AC.Email =  E.Email
+        WHERE E.Email = email;
+    ELSEIF role = 'Chef' THEN
+        SELECT E.*, AC.Username
+        FROM Employees E 
+        JOIN Account AC ON AC.Email =  E.Email
         WHERE E.Email = email;
     ELSE 
      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Không có quyền truy cập';
@@ -131,21 +136,4 @@ BEGIN
     -- Tạo CartID theo định dạng GH0001, GH0002, ...
     SET newOrderDetailID = CONCAT('CT', LPAD(nextID, 4, '0'));
     SET NEW.OrderDetailID = newOrderDetailID;
-END;
-
-CREATE OR REPLACE PROCEDURE deleteorder(
-    IN orderID VARCHAR(255)
-)
-BEGIN
-    IF EXISTS (SELECT 1 FROM Orders WHERE Orders.OrderID = orderID) THEN
-		IF EXISTS (SELECT 1 FROM Payment WHERE Payment.OrderID = orderID) then
-			DELETE FROM Payment WHERE OrderID = orderID;
-        END IF;
-        DELETE FROM OrderDetails WHERE OrderID = orderID;
-		DELETE FROM Orders WHERE OrderID = orderID;
-    ELSE
-        -- Raise error if login fails
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Không tồn tại hoặc đã xóa';
-    END IF;
-    
 END;
