@@ -121,26 +121,29 @@ export default function Product({ filter }) {
 
     const filterProducts = () => {
         let result = [...products];
-
+    
         if (selectedFilters) {
             const { typePoduct, flavor } = selectedFilters;
-            if (typePoduct) {
+    
+            // Kiểm tra nếu typePoduct là chuỗi trước khi gọi .split()
+            if (typeof typePoduct === 'string' && typePoduct) {
                 const typeProductNames = typePoduct.split(',');
                 result = result.filter(product =>
                     typeProductNames.includes(product.TypeProductName)
                 );
             }
-            if (flavor) {
+    
+            if (typeof flavor === 'string' && flavor) {
                 const flavors = flavor.split(',').map(f => f.trim());
                 result = result.filter(product =>
                     flavors.some(flavor => product.ProductName.includes(flavor))
                 );
             }
         }
-
+    
         const [minPrice, maxPrice] = priceRange;
         result = result.filter(product => product.Price >= minPrice && product.Price <= maxPrice);
-
+    
         setFilteredProducts(result);
     };
 
