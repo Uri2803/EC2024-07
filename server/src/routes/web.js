@@ -35,6 +35,7 @@ let initWebRoutes = (app) => {
 
 
   route.post('/create_payment_url', VNPAy.createVNPAy);
+  route.post('/querydr',VNPAy.queryVNPAy);
 
   return app.use('/', route);
 };
