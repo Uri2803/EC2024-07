@@ -7,30 +7,8 @@ import styled from 'styled-components';
 // import TableHead from '@mui/material/TableHead';
 // import TableRow from '@mui/material/TableRow';
 import { Box, Button } from '@mui/material';
-import { getAllGrillers } from '../../../service/api';
+import {  getAllProductBatchs } from '../../../service/api';
 
-
-const SubmitButton = styled.button`
-    width: 20%;
-    height: 5vh;
-    padding: 10px;
-    background-color: #F48C48;
-    border-color: black;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1vw;
-    media (max-width: 768px) {
-        font-size: 1.5vw;
-        width: 40%;
-    }
-    @media (max-width: 480px) {
-        font-size: 2vw;
-        width: 45%;
-    }
-`;
 
 const EditButton = styled.button`
   padding: 5px 10px;
@@ -126,15 +104,17 @@ const TileDiv = styled.div`
 `;
 
 export default function ChefTable(){
-    const [griller, setGrillers] = useState('');
-    const getGrillers = async() => {
+    const [productBatchs, setProductBatchs] = useState([]);
+    const getProductBatchs = async() => {
         try{
-            const data = await getAllGrillesrs();
+            const data = await getAllProductBatchs();
+            console.log('test' , data)
             
-            if (data.status && Array.isArray(data.griller)) {
-                setGrillers(data.griller);
+            if (data.status) {
+                console.log(data)
+                setProductBatchs(data.productBatchs);
             } else {
-                console.error('Grillers is not an array or status is false:', data.griller);
+                console.error('ProductBatch is not an array or status is false:', data.productBatchs);
             }
             
         }catch(err){
@@ -142,7 +122,7 @@ export default function ChefTable(){
         }
     }
     useEffect(()=>{
-        getGrillers();
+        getProductBatchs();
         console.log('res: ', );
     },[]) 
     return (
@@ -158,21 +138,20 @@ export default function ChefTable(){
                     <th></th>
                 </tr>
                 </thead>
-                {/* <tbody>
-                {griller.map((item, index) => (
+                <tbody>
+                {productBatchs.map((item, index) => (
                     <tr key={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                        <td>{item.grillerID}</td>
-                        <td>{item.productID}</td>
-                        <td>{item.quantity}</td>
-                        <td>{item.time}</td>
-                        <td align="center"><DeleteButton className='btn btn-danger'>Delete</DeleteButton></td>
+                        <td>{item.GrillerID}</td>
+                        <td>{item.ProductID}</td>
+                        <td>{item.Quantity}</td>
+                        <td>{item.CookingTime}</td>
+                        <td align="center"><DeleteButton className='btn btn-danger'>Đang nấu</DeleteButton></td>
                     </tr>
                 ))}
-                </tbody> */}
-            </Table>
-            <SubmitButton variant='primary'>Add Account</SubmitButton> 
+                </tbody>
+            </Table> 
         </TableContainer>
     )
 };
