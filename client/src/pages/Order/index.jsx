@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Box, Avatar, Select, Grid, MenuItem, Typography, FormControl, InputLabel, OutlinedInput ,Alert, CircularProgress } from '@mui/material';
-import { getProvince, getDistricts, getWards, getShippingCost, getUserInfor , getShippingDate, createOrder} from '../../service/api';
+import { getProvince, getDistricts, getWards, getShippingCost, getUserInfor , getShippingDate, createOrder, createPaymentUrl} from '../../service/api';
 import { useCart } from '../../context/CartContext'; 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate, useLocation  } from "react-router-dom";
+import VNPay from './VNPay'
 
 const formatDateTimeForInput = (isoDateTime) => {
     const date = new Date(isoDateTime);
@@ -362,6 +363,18 @@ const Order = () => {
         });
     }
 };
+const VNPayBox = styled.div`
+  width: 100%;
+  margin: 2vw 0;
+`;
+const handleVNPaySubmit = () => {
+  // VNPay-specific logic to handle payment submission
+  if (selectedPayment === 'vnpay') {
+    alert('Redirecting to VNPay...');
+    return <VNPay totalPayment={(calculateCartTotal() + shippingCost - discount) } />;
+   
+  }
+};
   
   return (
     <MainContainer>
@@ -654,13 +667,17 @@ const Order = () => {
                     </PayPalScriptProvider>
                 </PayPalBox>
             )}
-            {selectedPayment != 'paypal' &&(
+            {selectedPayment == 'momo' &&(
                
                 <BoxVoucher>
                 <PaymentSubmit> <Typography variant='h6'> Thanh Toán </Typography> </PaymentSubmit>
                 </BoxVoucher>
             )
             }
+            {selectedPayment === 'vnpay' && (
+              <VNPay totalPayment={calculateCartTotal() + shippingCost - discount} />
+            
+          )}
             
 
 

@@ -4,6 +4,7 @@ import Acount from '../controllers/accountController';
 import Cart from '../controllers/cartController';
 import Ship from '../controllers/shipController';
 import Order from '../controllers/orderController';
+import VNPAy  from '../controllers/vnpController';
 import Griller from '../controllers/grillerController';
 import Coupon from '../controllers/CouponController';
 
@@ -32,6 +33,12 @@ let initWebRoutes = (app) => {
   route.post('/calculate-shipping', Ship.calculateShipping);
   route.post('/calculate-shippingdate', Ship.calculateShipDate);
   route.post('/order', Acount.authenticateJWT, Order.createOrder);
+  route.get('/getorder/:orderID', Order.getOrder)
+  route.get('/orderhistory', Acount.authenticateJWT, Order.getOrderHistory)
+
+
+  route.post('/create_payment_url', VNPAy.createVNPAy);
+
   route.get('/getorder/:orderID', Order.getOrder);
   route.get('/orderhistory', Acount.authenticateJWT, Order.getOrderHistory);
   route.get('/getallgrillers',Acount.authenticateJWT, Griller.getAllGrillers);

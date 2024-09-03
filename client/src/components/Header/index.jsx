@@ -1,5 +1,5 @@
 // Header.js
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useCart } from '../../context/CartContext'; // Đảm bảo bạn đã import đúng Context
 import { Toolbar, Container, Grid, InputBase, IconButton, Badge } from '@mui/material';
@@ -7,7 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import LanguageSelect from '../LanguageSelect';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const StyledBadge = styled(Badge)(() => ({
   '& .MuiBadge-badge': {
@@ -70,6 +70,8 @@ const IconButtonStyled = styled(IconButton)`
 const Header = () => {
   const { cart, cartCount } = useCart(); 
   const [selectedLanguage, setSelectedLanguage] = React.useState('VI');
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
   
   const handleLanguageChange = (event) => {
     setSelectedLanguage(event.target.value);
@@ -78,6 +80,13 @@ const Header = () => {
   const handleButtonClick = (path) => {
     navigate(path);
   };
+  const handleSearch = (event) => {
+    event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+    if (searchTerm.trim()) {
+      navigate(`/products?search=${searchTerm}`); // Chuyển hướng tới trang sản phẩm kèm từ khóa tìm kiếm
+    }
+  };
+
 
   return (
     <StyledToolbar>
@@ -103,8 +112,12 @@ const Header = () => {
           </Grid>
 
           <Grid item xs={5} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            
+          <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center' }}>
             <InputBase
               placeholder="Tìm kiếm..."
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật searchTerm khi nhập liệu
               sx={{
                 width: '26vh',
                 height: '4vh',
@@ -120,12 +133,11 @@ const Header = () => {
                   boxShadow: '0 0 0 2px #a5c3f7',
                 },
               }}
-              endAdornment={
-                <IconButton type="submit" aria-label="search">
-                  <SearchIcon sx={{ fontSize: '2vw' }} />
-                </IconButton>
-              }
             />
+            <IconButton type="submit" aria-label="search">
+              <SearchIcon sx={{ fontSize: '2vw' }} />
+            </IconButton>
+        </form>
             <LanguageSelect selectedLanguage={selectedLanguage} onChange={handleLanguageChange} />
             <StyledNavLink to="/account">
               <AccountCircleIcon sx={{ fontSize: '2vw' }} />

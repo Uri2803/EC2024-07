@@ -19,6 +19,7 @@ const authenticateJWT = (req, res, next) => {
 };
 const login = async (req, res) => {
     const { email, password } = req.body;
+    console.log(email)
     if (email && password) {
         try {
             const [results] = await db.query('CALL LOGIN(?, ?)', [email, password]);
