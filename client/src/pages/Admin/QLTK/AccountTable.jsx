@@ -126,7 +126,6 @@ const TileDiv = styled.div`
 `;
 
 export default function AccountTable(){
-    
     const [accounts, setAccounts] = useState([]);
     const getAccounts= async() => {
         try{
@@ -137,7 +136,7 @@ export default function AccountTable(){
                 console.log(data)
                 setAccounts(data.accounts);
             } else {
-                console.error('Grillers is not an array or status is false:', data.griller);
+                console.error('Accounts is not an array or status is false:', data.accounts);
             }
             
         }catch(err){
