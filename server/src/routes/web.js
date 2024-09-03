@@ -4,6 +4,7 @@ import Acount from '../controllers/accountController';
 import Cart from '../controllers/cartController';
 import Ship from '../controllers/shipController';
 import Order from '../controllers/orderController';
+import VNPAy  from '../controllers/vnpController';
 let route = express.Router();
 
 let initWebRoutes = (app) => {
@@ -31,6 +32,10 @@ let initWebRoutes = (app) => {
   route.post('/order', Acount.authenticateJWT, Order.createOrder);
   route.get('/getorder/:orderID', Order.getOrder)
   route.get('/orderhistory', Acount.authenticateJWT, Order.getOrderHistory)
+
+
+  route.post('/create_payment_url', VNPAy.createVNPAy);
+
   return app.use('/', route);
 };
 

@@ -273,5 +273,24 @@ export const getOrderHistory = async () => {
     }
 };
 
-
+export const createPaymentUrl = async (amount, bankCode, orderDescription, orderType, language) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/create_payment_url`, {
+            amount: amount,
+            bankCode: bankCode,
+            orderDescription: orderDescription,
+            orderType: orderType,
+            language: language
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        // Assuming the response contains the payment URL
+        return response.request.responseURL;
+    } catch (error) {
+        throw error; // Pass the error to be handled by the calling function
+    }
+};
 
