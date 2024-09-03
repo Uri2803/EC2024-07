@@ -9,6 +9,7 @@ import Data from './Data';
 import FilterPrice from './FilterPrice';
 import ProductItem from './Product';
 import { getAllProducts } from '../../service/api';
+import { useLocation, useNavigate } from 'react-router-dom'; 
 
 const MainContainer = styled.div`
   margin: 0;
@@ -88,6 +89,14 @@ const StyledPagination = styled(Pagination)`
     background-color: #F48C48 !important;
   }
 `;
+const NoProductsMessage = styled.div`
+  width: 100%;
+  text-align: center;
+  font-size: 1.2vw;
+  color: ${(props) => props.theme.colors.text};
+  margin-top: 2vw;
+`;
+
 
 export default function Product({ filter }) {
     const [products, setProducts] = useState([]);
@@ -96,16 +105,27 @@ export default function Product({ filter }) {
     const [selectedFilters, setSelectedFilters] = useState({});
     const [priceRange, setPriceRange] = useState([1000, 500000]); // Added priceRange state
     const productsPerPage = 6;
-
+    const location = useLocation();
+    const navigate = useNavigate(); 
+    const queryParams = new URLSearchParams(location.search);
+    const searchTerm = queryParams.get('search')
+    console.log(searchTerm)
     const getProducts = async () => {
         try {
             const query = new URLSearchParams({
                 ...selectedFilters,
                 minPrice: priceRange[0],
                 maxPrice: priceRange[1],
+                search: searchTerm || ''
             }).toString();
             const response = await getAllProducts(query);
             setProducts(response.products);
+             // Xóa tham số tìm kiếm nếu có sản phẩm
+             if (response.products.length <= 0) {
+               
+            }
+
+           
         } catch (error) {
             console.error('Error fetching products:', error);
         }
@@ -113,7 +133,7 @@ export default function Product({ filter }) {
 
     useEffect(() => {
         getProducts();
-    }, [selectedFilters, priceRange, currentPage]);
+    }, [selectedFilters, priceRange, currentPage, searchTerm]);
 
     useEffect(() => {
         filterProducts();
@@ -121,7 +141,7 @@ export default function Product({ filter }) {
 
     const filterProducts = () => {
         let result = [...products];
-    
+        
         if (selectedFilters) {
             const { typePoduct, flavor } = selectedFilters;
     
@@ -168,9 +188,13 @@ export default function Product({ filter }) {
                     <FilterPrice onChange={setPriceRange} />
                 </Category>
                 <BoxProduct>
-                    {currentProducts.map((product, index) => (
+                    {currentProducts.length > 0 ? (
+                        currentProducts.map((product, index) => (
                         <ProductItem product={product} key={index} />
-                    ))}
+                        ))
+                    ) : (
+                        <NoProductsMessage>Không có sản phẩm nào được tìm thấy.</NoProductsMessage>
+                    )}
                 </BoxProduct>
             </BodyBox>
             <StyledPagination

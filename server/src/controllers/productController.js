@@ -1,8 +1,10 @@
 import db from '../model/database';
 
 let getAllProducts = async (req, res) => {
+  console.log(req.query)
+  
   try {
-    const { typePoduct, flavor, minPrice, maxPrice } = req.query;
+    const { typePoduct, flavor, minPrice, maxPrice, search } = req.query;
     let query = 'SELECT * FROM Products JOIN TypeProducts ON TypeProducts.TypeProductID = Products.TypeProductID WHERE 1=1';
     let queryParams = [];
     if (typePoduct) {
@@ -25,6 +27,11 @@ let getAllProducts = async (req, res) => {
       query += ' AND Products.Price <= ?';
       queryParams.push(Number(maxPrice));
     }
+    if (search) {
+      query += ' AND (Products.ProductName LIKE ? )';
+      // Thêm hai tham số tìm kiếm vào mảng `queryParams`
+      queryParams.push(`%${search}%`);
+    }
     const [products] = await db.query(query, queryParams);
 
     
@@ -37,6 +44,7 @@ let getAllProducts = async (req, res) => {
 
 
 let getProductDetail = async (req, res) =>{
+
   const { productID } = req.params;
     if(productID){
         try{
