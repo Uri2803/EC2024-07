@@ -49,6 +49,15 @@ const login = async (req, res) => {
     }
 };
 
+let getAllProductBatchs = async (req, res) => {
+    try {
+      const [productBatchs] = await db.query('SELECT * FROM ProductBatch');
+      res.status(200).json({status: true, productBatchs:productBatchs});
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
 
 let getUserInfor = async (req, res) => {
     const user  = req.user; 
@@ -88,5 +97,6 @@ export default {
     login,
     authenticateJWT,
     getUserInfor,
-    getAllAccounts: getAllAccounts
+    getAllAccounts: getAllAccounts,
+    getAllProductBatchs: getAllProductBatchs
 };
