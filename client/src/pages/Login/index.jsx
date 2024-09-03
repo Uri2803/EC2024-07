@@ -128,8 +128,12 @@ export default function Login() {
         window.location.reload(); 
 
       }
-      if(user.role === 'Employee'){
+      if(user.role === 'Admin'){
         navigate('/admin'); 
+        window.location.reload();
+      }
+      if(user.role === 'Chef'){
+        navigate('/chef'); 
         window.location.reload();
       }
       

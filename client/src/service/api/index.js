@@ -273,5 +273,124 @@ export const getOrderHistory = async () => {
     }
 };
 
+export const getAllGrillers = async () => {
+    try {
+        const response = await axios.get(`${url.REST_API}/getallgrillers/`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
+export const removeGriller = async (grillerID) => {
+    try {
+        const response = await axios.delete(`${url.REST_API}/remove/griller/${grillerID}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        console.log('Response Data:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error removing griller:', error);
+        throw error;
+    }
+};
 
+export const updateGriller = async (griller) => {
+    try {
+        const response = await axios.put(`${url.REST_API}/update/griller/`, {griller}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const newGriller = async (griller) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/add/griller/`, {griller}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getAllCoupons = async () => {
+    try {
+        const response = await axios.get(`${url.REST_API}/getallcoupons/`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const removeCoupon = async (couponID) => {
+    try {
+        const response = await axios.delete(`${url.REST_API}/remove/coupon/${couponID}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        console.log('Response Data:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error removing griller:', error);
+        throw error;
+    }
+};
+
+export const updateCoupon = async (coupon) => {
+    try {
+        const response = await axios.put(`${url.REST_API}/update/coupon/`, {coupon}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const newCoupon = async (coupon) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/add/coupon/`, {coupon}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+          console.log('Response Data:', response.data);
+          return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

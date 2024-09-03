@@ -29,8 +29,8 @@ BEGIN
             FROM Account AC
             JOIN Customers C ON C.Email = AC.Email
             WHERE AC.Email = email;
-        ELSEIF userRole = 'Employee' THEN
-            SELECT AC.Username, AC.Role, E.EmployeeID
+        ELSE
+            SELECT AC.Username, E.Position as Role, E.EmployeeID
             FROM Account AC
             JOIN Employees E ON E.Email = AC.Email
             WHERE AC.Email = email;
@@ -54,12 +54,18 @@ BEGIN
         FROM Customers CT 
         JOIN Account AC ON AC.Email =  CT.Email
         WHERE CT.Email = email;
-    ELSEIF role = 'Employee' THEN
+    ELSEIF role = 'Admin' THEN
         SELECT E.*, AC.Username
         FROM Employees E 
-        JOIN Account AC ON AC.Email =  CT.Email
+        JOIN Account AC ON AC.Email =  E.Email
+        WHERE E.Email = email;
+	ELSEIF role = 'Chef' THEN
+        SELECT E.*, AC.Username
+        FROM Employees E 
+        JOIN Account AC ON AC.Email =  E.Email
         WHERE E.Email = email;
     ELSE 
+    
      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Không có quyền truy cập';
     END IF;
 END;

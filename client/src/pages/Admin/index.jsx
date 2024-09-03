@@ -6,6 +6,7 @@ import { Box, Typography, Paper } from '@mui/material';
 import OrderReview from './OrderReview';
 import { getUserInfor } from '../../service/api';
 import { useNavigate } from 'react-router-dom';
+import Coupon from './Coupon';
 
 const MainContainer = styled.div`
   margin: 0;
@@ -89,9 +90,11 @@ export default function Admin() {
           return <OrderReview userInfor={userInfor}/>;
         case 'Quản lý tài khoản':
           return <Typography variant="h6">Quản lý tài khoản.</Typography>;
+        case 'Coupon':
+            return <Coupon userInfor={userInfor}/>;
         case 'Đăng xuất':
-          handleLogout();
-          return <Typography variant="h6">Bạn đã đăng xuất.</Typography>;
+            handleLogout();
+            return <Typography variant="h6">Bạn đã đăng xuất.</Typography>;
         default:
           return <Typography variant="h6">Vui lòng chọn một mục.</Typography>;
       }
@@ -124,7 +127,7 @@ export default function Admin() {
         <AdminBox>
         
           <BoxButton>
-            {['Duyệt đơn hàng', 'Quản lý tài khoản', 'Đăng xuất'].map(buttonName => (
+            {['Duyệt đơn hàng', 'Quản lý tài khoản','Coupon', 'Đăng xuất'].map(buttonName => (
               <ItemButton
                 key={buttonName}
                 active={activeButton === buttonName}

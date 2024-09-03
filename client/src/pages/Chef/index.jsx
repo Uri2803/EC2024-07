@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styled from 'styled-components';
 import { Box, Typography, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import Griller from './Griller';
 import { getUserInfor } from '../../service/api';
 
@@ -73,15 +74,15 @@ const ItemButton = styled(Box)`
 
 const ContentContainer = styled(Box)`
   width: 60vw;
-  margin: 2vw;
+  margin: 1vw;
   padding: 20px;
   font-family: Tahoma, sans-serif;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 
 `;
 
 export default function Chef() {
+  const navigate = useNavigate();
   const [activeButton, setActiveButton] = useState('Quản lý bếp');
   const renderContent = () => {
     switch (activeButton) {
@@ -90,6 +91,7 @@ export default function Chef() {
       case 'Quản lý lò nướng':
         return <Griller userInfor={userInfor}/>;
       case 'Đăng xuất':
+        handleLogout();
         return <Typography variant="h6">Bạn đã đăng xuất.</Typography>;
       default:
         return <Typography variant="h6">Vui lòng chọn một mục.</Typography>;
@@ -97,17 +99,21 @@ export default function Chef() {
   };
   const [userInfor, setUserInfor] = useState('');
   const [error, setError] = useState('');
-  // const getUser = async ()=>{
-  //   try{
-  //     const result = await getUserInfor();
-  //     setUserInfor(result.userInfor)
-  //   }catch(err){
-  //     setError(err.response?.data?.message || 'Login failed.');
-  //   }
-  // }
-  // useEffect(()=>{
-  //   getUser();
-  // }, []);
+  const getUser = async ()=>{
+    try{
+      const result = await getUserInfor();
+      setUserInfor(result.userInfor)
+    }catch(err){
+      setError(err.response?.data?.message || 'Login failed.');
+    }
+  }
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem('token');
+    navigate('/');
+  }, [navigate]);
+  useEffect(()=>{
+    getUser();
+  }, []);
 
   return (
     <MainContainer>

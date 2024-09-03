@@ -4,6 +4,9 @@ import Acount from '../controllers/accountController';
 import Cart from '../controllers/cartController';
 import Ship from '../controllers/shipController';
 import Order from '../controllers/orderController';
+import Griller from '../controllers/grillerController';
+import Coupon from '../controllers/CouponController';
+
 let route = express.Router();
 
 let initWebRoutes = (app) => {
@@ -29,8 +32,18 @@ let initWebRoutes = (app) => {
   route.post('/calculate-shipping', Ship.calculateShipping);
   route.post('/calculate-shippingdate', Ship.calculateShipDate);
   route.post('/order', Acount.authenticateJWT, Order.createOrder);
-  route.get('/getorder/:orderID', Order.getOrder)
-  route.get('/orderhistory', Acount.authenticateJWT, Order.getOrderHistory)
+  route.get('/getorder/:orderID', Order.getOrder);
+  route.get('/orderhistory', Acount.authenticateJWT, Order.getOrderHistory);
+  route.get('/getallgrillers',Acount.authenticateJWT, Griller.getAllGrillers);
+  route.put('/update/griller',Acount.authenticateJWT, Griller.setGriller);
+  route.delete('/remove/griller/:grillerID',Acount.authenticateJWT, Griller.removeGriller);
+  route.post('/add/griller/', Acount.authenticateJWT, Griller.addGriller);
+
+  route.get('/getallcoupons', Coupon.getAllCoupons);
+  route.put('/update/coupon',Acount.authenticateJWT, Coupon.setCoupon);
+  route.delete('/remove/coupon/:couponID',Acount.authenticateJWT, Coupon.removeCoupon);
+  route.post('/add/Coupon/', Acount.authenticateJWT, Coupon.addCoupon);
+
   return app.use('/', route);
 };
 

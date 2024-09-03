@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Box, Button } from '@mui/material';
-import { getAllGrillers, removeGriller } from '../../service/api';
-import GrillerModal from './GrillerModal';
-import NewGrillerModal from './NewGrillerModal';
+import { getAllCoupons, removeCoupon } from '../../service/api';
+import { format } from 'date-fns';
+import CouponModal from './CouponModal';
+import NewCouponModal from './NewCouponModal';
+
 const ContentContainer = styled.div`
   width: 100%;
   padding: 2vw;
@@ -123,100 +125,100 @@ const TileDiv = styled.div`
     }
 `;
 
-export default function Griller(){
-    const [grillers, setGrillers] = useState([]);
-    const [selectedGriller, setSelectedGriller] = useState(null);
+export default function Coupon(){
+    const [Coupons, setCoupons] = useState([]);
+    const [selectedCoupon, setSelectedCoupon] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalOpenNew, setModalOpenNew] = useState(false);
-    const getGrillers = async() => {
+    const getCoupons = async() => {
         try{
-            const data = await getAllGrillers();
+            const data = await getAllCoupons();
             
-            if (data.status && Array.isArray(data.grillers)) {
-                setGrillers(data.grillers);
+            if (data.status && Array.isArray(data.coupons)) {
+                setCoupons(data.coupons);
             } else {
-                console.error('Grillers is not an array or status is false:', data.grillers);
+                console.error('Coupons is not an array or status is false:', data.Coupons);
             }
             
         }catch(err){
             console.error('Error fetching data:', err);
         }
     }
-    const handleRemoveGriller = async (GrillerID) => {
+    const handleRemoveCoupon = async (CouponID) => {
         try {
-          await removeGriller(GrillerID);
-          getGrillers();
+          await removeCoupon(CouponID);
+          getCoupons();
         } catch (error) {
           console.error('Error confirming order:', error);
         }
       };
     
-      const handleUpdateGriller = (griller) => {
-        setSelectedGriller(griller);
+      const handleUpdateCoupon = (coupon) => {
+        setSelectedCoupon(coupon);
         setModalOpen(true);
       };
     
       const handleModalClose = () => {
         setModalOpen(false);
-        setSelectedGriller(null);
-        getGrillers(); // Refresh the data after updating
+        setSelectedCoupon(null);
+        getCoupons(); // Refresh the data after updating
       };
-      const handleAddGriller = () => {
+      const handleAddCoupon = () => {
         setModalOpenNew(true);
       };
     
       const handleNewModalClose = () => {
         setModalOpenNew(false);
-        getGrillers(); // Refresh the data after updating
+        getCoupons(); // Refresh the data after updating
       };
       
     useEffect(()=>{
-      getGrillers();
+      getCoupons();
       console.log('res: ', );
     },[]) 
     return (
         <ContentContainer>
         <TableContainer>
-            <TileDiv style={{ color: '#F48C48', fontWeight: 600 }}>Quản lý lò nướng</TileDiv>
+            <TileDiv style={{ color: '#F48C48', fontWeight: 600 }}>Quản lý Coupon</TileDiv>
             <Table>
                 <thead>
                 <tr>
-                    <th align="left" style={{ color: 'white',borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px'}}>Mã lò nướng</th>
-                    <th align="left" style={{ color: 'white'}}>Tên lò nướng</th>
-                    <th align="left" style={{ color: 'white'}}>Trạng thái</th>
+                    <th align="left" style={{ color: 'white',borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px'}}>Mã Coupon</th>
+                    <th align="left" style={{ color: 'white'}}>Ngày hết hạn</th>
+                    <th align="left" style={{ color: 'white'}}>Description</th>
                     <th></th>
                     <th style={{borderTopRightRadius: '8px', borderBottomRightRadius: '8px'}}></th>
 
                 </tr>
                 </thead>
                 <tbody>
-                {grillers.map((item, index) => (
+                {Coupons.map((item, index) => (
                     <tr key={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                        <td>{item.GrillerID}</td>
-                        <td>{item.GrillerName}</td>
-                        <td>{item.GrillerStatus}</td>
-                        <td align="center"><EditButton onClick={() => handleRemoveGriller(item.GrillerID)}>Xóa</EditButton></td>
-                        <td align="center"><EditButton onClick={() => handleUpdateGriller(item)}>Cập nhập</EditButton></td>
+                        <td>{item.CouponID}</td>
+                        <td>{format(new Date(item.ExpiryDate), 'dd/MM/yyyy')}</td>
+                        <td>{item.CouponDescription}</td>
+                        <td align="center"><EditButton onClick={() => handleRemoveCoupon(item.CouponID)}>Xóa</EditButton></td>
+                        <td align="center"><EditButton onClick={() => handleUpdateCoupon(item)}>Cập nhập</EditButton></td>
                     </tr>
                 ))}
                 </tbody>
             </Table>
         </TableContainer>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-            <SubmitButton variant='primary' onClick={() => handleAddGriller()}>Thêm lò nướng mới</SubmitButton> 
+            <SubmitButton variant='primary' onClick={() => handleAddCoupon()}>Thêm Coupon</SubmitButton> 
             </div>
             {modalOpen && (
-          <GrillerModal
+          <CouponModal
             open={modalOpen}
-            griller={selectedGriller}
+            coupon={selectedCoupon}
             onClose={handleModalClose}
             onSave={handleModalClose} // Triggered when save is clicked in the modal
           />
           )}
             {modalOpenNew && (
-          <NewGrillerModal
+          <NewCouponModal
           open={modalOpenNew}
           onClose={handleNewModalClose}
           onSave={handleNewModalClose} // Triggered when save is clicked in the modal
