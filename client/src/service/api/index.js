@@ -57,7 +57,7 @@ export const getAllProducts = async () => {
 
 export const getAllAccounts = async () => {
     try {
-        const response = await axios.get(`${url.REST_API}/admin/getallacount`, {
+        const response = await axios.get(`${url.REST_API}/admin/getallacounts`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -69,9 +69,14 @@ export const getAllAccounts = async () => {
     }
 }
 
-export const getAllGrillers= async () => {
+export const getAllProductBatchs= async () => {
     try {
-        const response = await axios.get(`${url.REST_API}/admin`);
+        const response = await axios.get(`${url.REST_API}/admin/getallproductbatchs`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
         return response.data;
     } catch (error) {
         throw error;
