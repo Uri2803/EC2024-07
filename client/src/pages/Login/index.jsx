@@ -132,9 +132,9 @@ export default function Login() {
         navigate('/admin'); 
         window.location.reload();
       }
-      if(user.role === 'Chef'){
+      if(user.role === 'Kitchen'){
         navigate('/chef'); 
-        window.location.reload();
+  
       }
       
     } catch (err) {
