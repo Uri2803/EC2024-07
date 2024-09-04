@@ -39,6 +39,7 @@ let initWebRoutes = (app) => {
 
 
   route.post('/create_payment_url', VNPAy.createVNPAy);
+  route.post('/querydr',VNPAy.queryVNPAy);
 
   route.get('/getorder/:orderID', Order.getOrder);
   route.get('/orderhistory', Acount.authenticateJWT, Order.getOrderHistory);

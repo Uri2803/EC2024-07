@@ -21,9 +21,9 @@ const PaymentSubmit = styled.div`
 `
 const VNPay = ({totalPayment}) => {
     console.log('abc',totalPayment)
-    const [amount, setAmount] = useState(totalPayment/100); // Ví dụ: Số tiền cần thanh toán
+    const [amount, setAmount] = useState(totalPayment); // Ví dụ: Số tiền cần thanh toán
     const [bankCode, setBankCode] = useState('NCB'); // Mã ngân hàng
-    const [orderDescription, setOrderDescription] = useState('Thanh toán đơn hàng XYZ');
+    const [orderDescription, setOrderDescription] = useState('Thanh toan đon hang XYZ');
     const [orderType, setOrderType] = useState('billpayment'); // Loại đơn hàng
     const [language, setLanguage] = useState('vn'); // Ngôn ngữ
     

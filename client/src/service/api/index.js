@@ -270,6 +270,7 @@ export const getOrderHistory = async () => {
         return response.data;
     } catch (error) {
         throw error;
+        
     }
 };
 

@@ -5,7 +5,8 @@ const { format } = require('date-fns');
 const tmnCode = 'TYI7O97Z';
 const secretKey = 'PA9LMWSQV35BAZX4TE4OEDRXDUZ2WGHG';
 const vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-const returnUrl = 'http://localhost:5173/order/';
+const returnUrl = 'http://localhost:5173/ordersuccess/';
+const vnpApi = 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction';
 
 const sortObject = (obj) => {
     const sorted = {};
@@ -16,6 +17,8 @@ const sortObject = (obj) => {
 };
 
 const createVNPAy = async (req, res) => {
+    process.env.TZ = "Asia/Ho_Chi_Minh";
+    
     try {
         const ipAddr = req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress ||
@@ -30,7 +33,10 @@ const createVNPAy = async (req, res) => {
         const bankCode = req.body.bankCode;
         const orderInfo = req.body.orderDescription;
         const orderType = req.body.orderType;
-        let locale = req.body.language || 'vn';
+        let locale = req.body.language;
+        if (locale === null || locale === "") {
+            locale = "vn";
+        }
         const currCode = 'VND';
 
         if (!amount || !orderInfo || !orderType) {
@@ -51,24 +57,33 @@ const createVNPAy = async (req, res) => {
             'vnp_IpAddr': ipAddr,
             'vnp_CreateDate': createDate
         };
-        console.log(vnp_Params)
-
+        console.log(vnp_Params);
+        
         if (bankCode) {
             vnp_Params['vnp_BankCode'] = bankCode;
         }
-
+        
         vnp_Params = sortObject(vnp_Params);
         const sortedParams = sortObject(vnp_Params);
-
-        const signData = querystring.stringify(sortedParams, { encode: false });
+        
+        // Create a URL object
+        const url = new URL(vnpUrl);
+        
+        // Add parameters to the URL
+        for (let [key, value] of Object.entries(sortedParams)) {
+            url.searchParams.append(key, value);
+        }
+        
+        const signData = url.searchParams.toString();
         console.log('Sign Data:', signData); // Debug: check the sign data
+        
         const hmac = crypto.createHmac("sha512", secretKey);
         const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
         console.log('Signed Hash:', signed); // Debug: check the signed hash
-
-        vnp_Params['vnp_SecureHash'] = signed;
-
-        const finalUrl = `${vnpUrl}?${querystring.stringify(vnp_Params, { encode: false })}`;
+        
+        url.searchParams.append('vnp_SecureHash', signed);
+        
+        const finalUrl = url.toString();
         console.log('Redirecting to:', finalUrl);
         res.redirect(finalUrl);
     } catch (error) {
@@ -77,6 +92,82 @@ const createVNPAy = async (req, res) => {
     }
 };
 
+const queryVNPAy = async (req, res) => {
+    process.env.TZ = "Asia/Ho_Chi_Minh";
+  let date = new Date();
+
+  let config = require("config");
+  let crypto = require("crypto");
+
+  let vnp_TmnCode = config.get("vnp_TmnCode");
+  let secretKey = config.get("vnp_HashSecret");
+  let vnp_Api = config.get("vnp_Api");
+
+  let vnp_TxnRef = req.body.orderId;
+  let vnp_TransactionDate = req.body.transDate;
+
+  let vnp_RequestId = moment(date).format("HHmmss");
+  let vnp_Version = "2.1.0";
+  let vnp_Command = "querydr";
+  let vnp_OrderInfo = "Truy van GD ma:" + vnp_TxnRef;
+
+  let vnp_IpAddr =
+    req.headers["x-forwarded-for"] ||
+    req.connection.remoteAddress ||
+    req.socket.remoteAddress ||
+    req.connection.socket.remoteAddress;
+
+  let currCode = "VND";
+  let vnp_CreateDate = moment(date).format("YYYYMMDDHHmmss");
+
+  let data =
+    vnp_RequestId +
+    "|" +
+    vnp_Version +
+    "|" +
+    vnp_Command +
+    "|" +
+    vnp_TmnCode +
+    "|" +
+    vnp_TxnRef +
+    "|" +
+    vnp_TransactionDate +
+    "|" +
+    vnp_CreateDate +
+    "|" +
+    vnp_IpAddr +
+    "|" +
+    vnp_OrderInfo;
+
+  let hmac = crypto.createHmac("sha512", secretKey);
+  let vnp_SecureHash = hmac.update(new Buffer(data, "utf-8")).digest("hex");
+
+  let dataObj = {
+    vnp_RequestId: vnp_RequestId,
+    vnp_Version: vnp_Version,
+    vnp_Command: vnp_Command,
+    vnp_TmnCode: vnp_TmnCode,
+    vnp_TxnRef: vnp_TxnRef,
+    vnp_OrderInfo: vnp_OrderInfo,
+    vnp_TransactionDate: vnp_TransactionDate,
+    vnp_CreateDate: vnp_CreateDate,
+    vnp_IpAddr: vnp_IpAddr,
+    vnp_SecureHash: vnp_SecureHash,
+  };
+  request(
+    {
+      url: vnpApi,
+      method: "POST",
+      json: true,
+      body: dataObj,
+    },
+    function (error, response, body) {
+      console.log(response);
+    }
+  );
+
+}
+
 module.exports = {
-    createVNPAy
+    createVNPAy, queryVNPAy
 };
