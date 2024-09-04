@@ -54,6 +54,7 @@ let initWebRoutes = (app) => {
   route.post('/add/Coupon/', Acount.authenticateJWT, Coupon.addCoupon);
 
   route.post('/validateVoucher', Voucher.validateVoucher);
+  app.get('/vnpaysuccess', VNPAy.handlePaymentResult);
 
   return app.use('/', route);
 };

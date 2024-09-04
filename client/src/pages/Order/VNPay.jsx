@@ -29,8 +29,8 @@ const VNPay = ({totalPayment}) => {
     
     const handleVNPayPayment = async () => {
         try {
-            const paymentUrl = await createPaymentUrl(amount, bankCode, orderDescription, orderType, language);
-            window.location.href = paymentUrl; // Chuyển hướng tới URL thanh toán
+           const paymentUrl = await createPaymentUrl(amount, bankCode, orderDescription, orderType, language);
+            window.location.href = paymentUrl.finalUrl; // Chuyển hướng tới URL thanh toán
         } catch (error) {
             console.error('Error creating VNPay payment URL:', error);
             // Xử lý lỗi nếu có

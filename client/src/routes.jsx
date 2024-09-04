@@ -18,6 +18,7 @@ import Admin from './pages/Admin';
 import Chef from './pages/Chef';
 import Order from './pages/Order';
 import PaymentSuccess from './pages/PaymentSuccess';
+import VNPaytResult from './pages/Order/VNPayResult';
 
 
 const isAuthenticated = () => {
@@ -181,6 +182,14 @@ const routes = [
   {
     path: "/ordersuccess/:id",
     component: PaymentSuccess,
+    propsLayout: {
+      title: "PaymentSuccess",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/vnpaysuccess",
+    component: VNPaytResult ,
     propsLayout: {
       title: "PaymentSuccess",
       icon: <PermIdentityIcon fontSize="large" />,

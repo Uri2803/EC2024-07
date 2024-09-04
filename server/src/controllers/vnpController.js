@@ -5,7 +5,7 @@ const { format } = require('date-fns');
 const tmnCode = 'TYI7O97Z';
 const secretKey = 'PA9LMWSQV35BAZX4TE4OEDRXDUZ2WGHG';
 const vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-const returnUrl = 'http://localhost:5173/ordersuccess/';
+const returnUrl = 'https://ec07backery.hmquang.info.vn/vnpaysuccess';
 const vnpApi = 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction';
 
 const sortObject = (obj) => {
@@ -84,8 +84,8 @@ const createVNPAy = async (req, res) => {
         url.searchParams.append('vnp_SecureHash', signed);
         
         const finalUrl = url.toString();
-        console.log('Redirecting to:', finalUrl);
-        res.redirect(finalUrl);
+
+        return res.status(200).json({ status: true, finalUrl });
     } catch (error) {
         console.error('Error in createVNPAy:', error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -168,6 +168,34 @@ const queryVNPAy = async (req, res) => {
 
 }
 
+
+
+const verifyPayment = (params) => { 
+    const secureHash = params.vnp_SecureHash;
+    delete params.vnp_SecureHash; // Xóa tham số secure hash khỏi đối tượng params
+
+    // Sắp xếp tham số theo thứ tự và tạo chuỗi ký
+    const sortedParams = Object.keys(params).sort().map(key => `${key}=${params[key]}`).join('&');
+    const hashString = `${sortedParams}&vnp_secret_key=${secretKey}`;
+
+    // Tính toán chữ ký bảo mật
+    const calculatedHash = crypto.createHash('sha512').update(hashString, 'utf-8').digest('hex');
+
+    return secureHash === calculatedHash;
+};
+  const handlePaymentResult = (req, res) => {
+    const params = req.body;
+    
+    if (verifyPayment(params)) {
+        console.log('hợp lệ ')
+        return res.status(200).json({ status: true, message: 'Thanh toán thành công' });
+    } else {
+        console.log('k hợp lệ ')
+        res.status(500).json({ error: 'Internal Server Error, thanh toán thất bại' });
+    }
+};
+
 module.exports = {
-    createVNPAy, queryVNPAy
+    createVNPAy, queryVNPAy,
+    handlePaymentResult: handlePaymentResult
 };

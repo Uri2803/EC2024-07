@@ -287,9 +287,7 @@ export const createPaymentUrl = async (amount, bankCode, orderDescription, order
                 'Content-Type': 'application/json'
             }
         });
-        
-        // Assuming the response contains the payment URL
-        return response.request.responseURL;
+        return response.data;
     } catch (error) {
         throw error; // Pass the error to be handled by the calling function
     }
@@ -421,6 +419,15 @@ export const newCoupon = async (coupon) => {
 export const voucherApply = async (code ,orderValue, shippingCost ) => {
     try {
         const response = await axios.post(`${url.REST_API}/validateVoucher`, { code ,orderValue, shippingCost});
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const vnpaysuccess = async (params ) => {
+    try {
+        const response = await axios.get(`${url.REST_API}/vnpaysuccess`, { params});
         return response.data;
     } catch (error) {
         throw error;
