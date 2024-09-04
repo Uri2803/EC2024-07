@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { Box, Avatar, Select, Grid, MenuItem, Typography, FormControl, InputLabel, OutlinedInput ,Alert, CircularProgress } from '@mui/material';
-import { getProvince, getDistricts, getWards, getShippingCost, getUserInfor , getShippingDate, createOrder, createPaymentUrl} from '../../service/api';
+import {voucherApply, getProvince, getDistricts, getWards, getShippingCost, getUserInfor , getShippingDate, createOrder, createPaymentUrl} from '../../service/api';
 import { useCart } from '../../context/CartContext'; 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate, useLocation  } from "react-router-dom";
@@ -179,6 +179,8 @@ const Order = () => {
   const { cart} = useCart(); 
   const navigate = useNavigate(); 
   const location = useLocation();
+  const [messageVoucher, SetMessageVoucher] =useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
   const [userInfor, setUserInfor] = useState({
     UserFullName: '',
     PhoneNumber: '',
@@ -188,6 +190,27 @@ const Order = () => {
     Note: '',
     ShippDate: ''
   });
+  const [voucher, setVoucher] = useState(null);
+  const handleVoucherApply = async (code) => {
+    if(code){
+      try {
+          const result = await voucherApply(code, calculateCartTotal(), shippingCost);
+          console.log(result)
+          if (result.valid) {
+              setVoucher(code);
+              setDiscount(result.discount);
+              SetMessageVoucher(result.message)
+              setIsSuccess(true)
+          } else {
+                SetMessageVoucher(result.message)
+          }
+      } catch (error) {
+          console.error('Error applying voucher:', error);
+            SetMessageVoucher('Lỗi khi áp dụng voucher. Vui lòng thử lại.')
+      }
+    }
+};
+
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
@@ -239,10 +262,16 @@ const Order = () => {
       if (ward) {
         fetchShippingCost(ward.latitude, ward.longitude);
         fetchShippDate(cart, ward) 
+        handleVoucherApply (voucher)
+       
       }
     }
     
   }, [wardId, wards]); 
+  useEffect(() => {
+
+    handleVoucherApply (voucher)
+  }, [shippingCost]); 
 
   const fetchShippingCost = async (lat, long) => {
     try {
@@ -264,6 +293,8 @@ const Order = () => {
 
   const handleWardChange = (event) => {
     setWardId(event.target.value);
+
+  
     
   };
   const [messNotif, setmessNotif] = useState("");
@@ -610,15 +641,23 @@ const handleVNPaySubmit = () => {
                             id="outlined-adornment-diachi"
                             label="Mã giảm gái"
                             name="Voucher"
+                            value={voucher || ''}
+                        onChange={(e) => setVoucher(e.target.value)}
                             placeholder="Nhập mã giảm giá"
                         />
                 </FormControl>
-                <SubmitButton>
+                <SubmitButton onClick={() => handleVoucherApply(voucher)}>
                     Kiểm tra
 
                 </SubmitButton>    
+                
 
             </BoxVoucher>
+            {messageVoucher ? (
+                <Alert severity={isSuccess ? "success" : "error"}>
+                    {messageVoucher}
+                </Alert>
+            ) : null}
             <BoxCart>
                 <CartItem>
                     <ProductName>Tạm tính</ProductName>
@@ -628,7 +667,7 @@ const handleVNPaySubmit = () => {
                 <CartItem>
                     <ProductName>Giảm giá</ProductName>
                     <Quantity></Quantity>
-                    <Price>{discount.toLocaleString('vi-VN')}đ</Price>
+                    <Price>-{discount.toLocaleString('vi-VN')}đ</Price>
                 </CartItem>
                 <CartItem>
                     <ProductName>Phí giao hàng</ProductName>

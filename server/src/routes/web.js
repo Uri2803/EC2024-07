@@ -7,6 +7,7 @@ import Order from '../controllers/orderController';
 import VNPAy  from '../controllers/vnpController';
 import Griller from '../controllers/grillerController';
 import Coupon from '../controllers/CouponController';
+import Voucher from '../controllers/voucherController';
 
 let route = express.Router();
 
@@ -50,6 +51,8 @@ let initWebRoutes = (app) => {
   route.put('/update/coupon',Acount.authenticateJWT, Coupon.setCoupon);
   route.delete('/remove/coupon/:couponID',Acount.authenticateJWT, Coupon.removeCoupon);
   route.post('/add/Coupon/', Acount.authenticateJWT, Coupon.addCoupon);
+
+  route.post('/validateVoucher', Voucher.validateVoucher);
 
   return app.use('/', route);
 };

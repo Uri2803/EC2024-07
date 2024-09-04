@@ -416,3 +416,12 @@ export const newCoupon = async (coupon) => {
         throw error;
     }
 };
+
+export const voucherApply = async (code ,orderValue, shippingCost ) => {
+    try {
+        const response = await axios.post(`${url.REST_API}/validateVoucher`, { code ,orderValue, shippingCost});
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
