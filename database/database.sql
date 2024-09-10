@@ -171,7 +171,18 @@ CREATE TABLE ProductBatch (
     ProductID VARCHAR(10),
     GrillerID VARCHAR(10),
     Quantity INT,
-    CookingTime DATE,
+    CookingTime INT,
+    BatchStatus VARCHAR(50),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
     FOREIGN KEY (GrillerID) REFERENCES Griller(GrillerID)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE Coupon (
+    CouponID VARCHAR(10) PRIMARY KEY,
+    ExpiryDate DATE,
+    CouponDescription VARCHAR(255)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+ALTER TABLE Orders
+ADD COLUMN CouponID VARCHAR(10),
+ADD CONSTRAINT fk_coupon FOREIGN KEY (CouponID) REFERENCES Coupon (CouponID);
